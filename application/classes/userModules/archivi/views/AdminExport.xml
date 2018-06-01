@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          xmlns:cmp="archivi.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php"
+          defaultAction="export">
+
+  <glz:Import src="_common.xml"/>
+
+  <mvc:State name="export">
+    <cmp:DataGridSolr id="dataGridExport" hasDigital="true" enableSorting="true" filterByInstitute="true" setLastSearch="true" recordClassName="archivi.models.UnitaArchivistica,archivi.models.UnitaDocumentaria" cssClass="table table-bordered table-striped"
+                      autocompleteController="archivi.controllers.ajax.AutoComplete">
+        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" />
+				<glz:DataGridColumn columnName="identificativo_s" width="15" headerText="{i18n:Identificativo}" />
+        <glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}" renderCell="archivi.views.renderer.CellDenominazione"/>
+        <glz:DataGridColumn columnName="cronologia_s" width="30" headerText="{i18n:Cronologia}"/>
+        <glz:DataGridColumn columnName="livelloDiDescrizione_s" headerText="{i18n:Livello di descrizione}" renderCell="archivi.views.renderer.CellLivelloDiDescrizione"/>
+
+        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" width="10" cssClass="actions" renderCell="archivi.views.renderer.CellShow"/>
+    </cmp:DataGridSolr>
+
+    <c:FormEdit id="exportFormMets" newCode="true">
+      <glz:Panel cssClass="export-option">
+        <glz:Panel cssClass="export-option-checkbox">
+          <glz:Input id="exportAll" type="checkbox" value="exportAll" label="Esporta risultato della ricerca" cssClassLabel="" applyFormItemTemplate="false"/>
+        </glz:Panel>
+        <glz:Panel cssClass="export-option-checkbox">
+          <glz:Input id="exportSelected" type="checkbox" value="exportSelected" label="Esporta record selezionati" cssClassLabel="" applyFormItemTemplate="false"/>
+        </glz:Panel>
+      </glz:Panel>
+      <glz:Panel id="countSelected" />
+      <glz:Input id="exportTitle" cssClass="form-control" label="Titolo esportazione" required="true"/>
+      <glz:Hidden id="ids" />
+      <glz:Input id="exportEmail" cssClass="form-control" label="Email di notifica" required="true"/>
+      <glz:Panel cssClass="export-mag-email-message col-sm-offset-3 col-sm-10 col-xs-12"><glz:Text>L'email verr&#224; inviata al termine dell'operazione, possono essere inseriti pi&#250; valori separati da virgola.</glz:Text></glz:Panel>
+      <glz:HtmlButton label="{i18n:Esporta}" name="action" id="action" cssClass="btn btn-flat btn-info btn-export-mag" value="exportProcedure" data="action=exportProcedure" />
+    </c:FormEdit>
+    <glz:JSscript folder="metafad/gestioneDati/boards/js"/>
+  </mvc:State>
+</mvc:Page>

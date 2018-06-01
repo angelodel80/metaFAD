@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model:Model model:type="document"
+             model:usePrefix="true"
+             model:tableName="metafad.chviewer.modules.solr"
+             xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+             xmlns:glz="http://www.glizy.org/dtd/1.0/">
+
+    <model:Define>
+
+        <!-- system -->
+        <model:Field name="id" type="string" length="30" index="true"/>
+        <model:Field name="filename" type="string" length="30" index="true"/>
+        <model:Field name="isbd" type="text"/>
+        <model:Field name="created" type="string" length="20"/>
+        <model:Field name="mapVersion" type="string" length="20"/>
+        <model:Field name="type" type="string" length="20" index="true"/>
+        <model:Field name="siteCode" type="string" length="20"/>
+
+        <!-- index -->
+        <model:Field name="author_string" type="text" index="true"/>
+        <model:Field name="publicationDate_string" type="string" index="true"/>
+        <model:Field name="inventory_string" type="text" index="true"/>
+        <model:Field name="documentType_string" type="string" index="true"/>
+        <model:Field name="title_string" type="string" index="true"/>
+
+        <!-- custom -->
+
+        <model:Field name="otherEditionSameSupport" type="object" readFormat="false"/>
+        <model:Field name="otherStandardNum" type="object" readFormat="false"/>
+        <model:Field name="otherTitleRelated" type="object" readFormat="false"/>
+        <model:Field name="author" type="object" readFormat="false"/>
+        <model:Field name="authorSintetic" type="object" readFormat="false"/>
+        <model:Field name="authorSecondary" type="object" readFormat="false"/>
+        <model:Field name="deweyClassification" type="object" readFormat="false"/>
+        <model:Field name="deweyCode" type="object" readFormat="false"/>
+        <model:Field name="identificationCode" type="object" readFormat="false"/>
+        <model:Field name="collection" type="object" readFormat="false"/>
+        <model:Field name="composition" type="object" readFormat="false"/>
+        <model:Field name="continuationOf" type="object" readFormat="false"/>
+        <model:Field name="continuationInPartOf" type="object" readFormat="false"/>
+        <model:Field name="date" type="object" readFormat="false"/>
+        <model:Field name="publicationDate" type="object" readFormat="false"/>
+        <model:Field name="cdUniformTitleMusic" type="object" readFormat="false"/>
+        <model:Field name="cdExpressionContent" type="object" readFormat="false"/>
+        <model:Field name="cdElaboration" type="object" readFormat="false"/>
+        <model:Field name="cdOldMaterial" type="object" readFormat="false"/>
+        <model:Field name="cdMonographic" type="object" readFormat="false"/>
+        <model:Field name="cdMusicPrint" type="object" readFormat="false"/>
+        <model:Field name="cdPeriodic" type="object" readFormat="false"/>
+        <model:Field name="cdSupportType" type="object" readFormat="false"/>
+        <model:Field name="elaborationType" type="object" readFormat="false"/>
+        <model:Field name="deweyDescription" type="object" readFormat="false"/>
+        <model:Field name="phisicalDescription" type="object" readFormat="false"/>
+        <model:Field name="seriesCollectionDescription" type="object" readFormat="false"/>
+        <model:Field name="editor" type="object" readFormat="false"/>
+        <model:Field name="edition" type="object" readFormat="false"/>
+        <model:Field name="attachedTo" type="object" readFormat="false"/>
+        <model:Field name="ISBN" type="object" readFormat="false"/>
+        <model:Field name="ISMN" type="object" readFormat="false"/>
+        <model:Field name="ISSN" type="object" readFormat="false"/>
+        <model:Field name="versionId" type="object" readFormat="false"/>
+        <model:Field name="print" type="object" readFormat="false"/>
+        <model:Field name="inventoryCollectionCopies" type="object" readFormat="false"/>
+        <model:Field name="inventory" type="object" readFormat="false"/>
+        <model:Field name="istitution" type="object" readFormat="false"/>
+        <model:Field name="subset" type="object" readFormat="false"/>
+        <model:Field name="set" type="object" readFormat="false"/>
+        <model:Field name="examinationBond" type="object" readFormat="false"/>
+        <model:Field name="analiticPartBond" type="object" readFormat="false"/>
+        <model:Field name="language" type="object" readFormat="false"/>
+        <model:Field name="bibliographicLevel" type="object" readFormat="false"/>
+        <model:Field name="localization" type="object" readFormat="false"/>
+        <model:Field name="electronicLocalization" type="object" readFormat="false"/>
+        <model:Field name="location" type="object" readFormat="false"/>
+        <model:Field name="publicationLocationNormalized" type="object" readFormat="false"/>
+        <model:Field name="editorialMark" type="object" readFormat="false"/>
+        <model:Field name="gnAlternativeResponsability" type="object" readFormat="false"/>
+        <model:Field name="gnMainResponsability" type="object" readFormat="false"/>
+        <model:Field name="gnSecondaryResponsability" type="object" readFormat="false"/>
+        <model:Field name="gnNotAccepted" type="object" readFormat="false"/>
+        <model:Field name="pnNotAccepted" type="object" readFormat="false"/>
+        <model:Field name="pnAlternativeResponsability" type="object" readFormat="false"/>
+        <model:Field name="pnMainResponsability" type="object" readFormat="false"/>
+        <model:Field name="pnSecondaryResponsability" type="object" readFormat="false"/>
+        <model:Field name="contentNotes" type="object" readFormat="false"/>
+        <model:Field name="generalNotes" type="object" readFormat="false"/>
+        <model:Field name="exampleNotes" type="object" readFormat="false"/>
+        <model:Field name="periodicityNote" type="object" readFormat="false"/>
+        <model:Field name="originNotes" type="object" readFormat="false"/>
+        <model:Field name="responsabilityNotes" type="object" readFormat="false"/>
+        <model:Field name="titlesNotes" type="object" readFormat="false"/>
+        <model:Field name="numeration" type="object" readFormat="false"/>
+        <model:Field name="NBN" type="object" readFormat="false"/>
+        <model:Field name="monographyNumber" type="object" readFormat="false"/>
+        <model:Field name="musicEditorialNumber" type="object" readFormat="false"/>
+        <model:Field name="recordOrigin" type="object" readFormat="false"/>
+        <model:Field name="country" type="object" readFormat="false"/>
+        <model:Field name="presentation" type="object" readFormat="false"/>
+        <model:Field name="publication" type="object" readFormat="false"/>
+        <model:Field name="mainResponsability" type="object" readFormat="false"/>
+        <model:Field name="electronicResourceUrl" type="object" readFormat="false"/>
+        <model:Field name="subject" type="object" readFormat="false"/>
+        <model:Field name="documentType" type="object" readFormat="false"/>
+        <model:Field name="title" type="object" readFormat="false"/>
+        <model:Field name="titleSintetic" type="object" readFormat="false"/>
+        <model:Field name="titleAlternative" type="object" readFormat="false"/>
+        <model:Field name="titleKey" type="object" readFormat="false"/>
+        <model:Field name="titleParallel" type="object" readFormat="false"/>
+        <model:Field name="titleUniform" type="object" readFormat="false"/>
+        <model:Field name="translationOf" type="object" readFormat="false"/>
+        <model:Field name="unimarc" type="object" readFormat="false"/>
+        <model:Field name="informativeNote" type="object" readFormat="false"/>
+        <model:Field name="continueWith" type="object" readFormat="false"/>
+        <model:Field name="splitIn" type="object" readFormat="false"/>
+        <model:Field name="hasParts" type="object" readFormat="false"/>
+        <model:Field name="IsPartOf" type="object" readFormat="false"/>
+        <model:Field name="datation" type="object" readFormat="false"/>
+        <model:Field name="ean" type="object" readFormat="false"/>
+        <model:Field name="rapresentation" type="object" readFormat="false"/>
+        <model:Field name="interpreters" type="object" readFormat="false"/>
+        <model:Field name="abstract" type="object" readFormat="false"/>
+        <model:Field name="codedDataGraphic" type="object" readFormat="false"/>
+        <model:Field name="electronicResourceNotes" type="object" readFormat="false"/>
+        <model:Field name="codedDataCartographic" type="object" readFormat="false"/>
+        <model:Field name="codedDataCartographicCar" type="object" readFormat="false"/>
+        <model:Field name="titleFictitious" type="object" readFormat="false"/>
+        <model:Field name="titleSinteticTwo" type="object" readFormat="false"/>
+        <model:Field name="inventoryCollectionCopiesBE" type="object" readFormat="false"/>
+        <model:Field name="electronicResource" type="object" readFormat="false"/>
+
+        <model:Field name="mediationType" type="object" readFormat="false"/>
+
+        <model:Field name="Data_inizio" type="object" readFormat="false"/>
+        <model:Field name="Data_range" type="object" readFormat="false"/>
+        <model:Field name="181_Forma_del_contenuto" type="object" readFormat="false"/>
+        <model:Field name="181_Tipo_di_contenuto" type="object" readFormat="false"/>
+        <model:Field name="181_Movimento" type="object" readFormat="false"/>
+        <model:Field name="181_Dimensionalita" type="object" readFormat="false"/>
+        <model:Field name="181_Sensorialita" type="object" readFormat="false"/>
+        <model:Field name="Titoli_collegati" type="object" readFormat="false"/>
+        <model:Field name="Luogo_2" type="object" readFormat="false"/>
+        <model:Field name="Variante_del_titolo" type="object" readFormat="false"/>
+        <model:Field name="Autore_intestazione" type="object" readFormat="false"/>
+        <model:Field name="Collezione_Faccetta" type="object" readFormat="false"/>
+        <model:Field name="Stampatore" type="object" readFormat="false"/>
+        <model:Field name="Editore_2" type="object" readFormat="false"/>
+        <model:Field name="Data_fine" type="object" readFormat="false"/>
+        <model:Field name="Stampatore_2" type="object" readFormat="false"/>
+        <model:Field name="ISBN2" type="object" readFormat="false"/>
+        <model:Field name="Titolo_uniforme_nome" type="object" readFormat="false"/>
+        <model:Field name="Titolo_uniforme_2" type="object" readFormat="false"/>
+        <model:Field name="140_Illustrazioni" type="object" readFormat="false"/>
+        <model:Field name="140_Illustrazioni_a_tutta_pagina" type="object" readFormat="false"/>
+        <model:Field name="140_Codice_letterario" type="object" readFormat="false"/>
+        <model:Field name="140_Codice_per_la_pubblicazione" type="object" readFormat="false"/>
+        <model:Field name="140_Non_usato" type="object" readFormat="false"/>
+        <model:Field name="Numero_MID" type="object" readFormat="false"/>
+        <model:Field name="ISSN2" type="object" readFormat="false"/>
+        <model:Field name="105_Tipo_testo_letterario" type="object" readFormat="false"/>
+        <model:Field name="140_Forma_del_contenuto" type="object" readFormat="false"/>
+        <model:Field name="125_Codice_presentazione" type="object" readFormat="false"/>
+        <model:Field name="125_Indicatore_di_parti" type="object" readFormat="false"/>
+        <model:Field name="128_Organico_sintetico" type="object" readFormat="false"/>
+        <model:Field name="Organico_sintetico" type="object" readFormat="false"/>
+        <model:Field name="929_Datazione_della_composizione" type="object" readFormat="false"/>
+        <model:Field name="929_Sezioni" type="object" readFormat="false"/>
+        <model:Field name="929_Titolo_di_ordinamento" type="object" readFormat="false"/>
+        <model:Field name="929_Identificativo_del_titolo_uniforme_collegato" type="object" readFormat="false"/>
+        <model:Field name="Organico_analitico" type="object" readFormat="false"/>
+        <model:Field name="929_Numero_di_catalogo_tematico" type="object" readFormat="false"/>
+        <model:Field name="Numero_catalogo_tematico" type="object" readFormat="false"/>
+        <model:Field name="ISMN2" type="object" readFormat="false"/>
+        <model:Field name="Personaggi" type="object" readFormat="false"/>
+        <model:Field name="Sartori" type="object" readFormat="false"/>
+        <model:Field name="929_Numero_d_ordine" type="object" readFormat="false"/>
+        <model:Field name="929_Numero_d_opera" type="object" readFormat="false"/>
+        <model:Field name="929_Tonalita_della_composizione" type="object" readFormat="false"/>
+        <model:Field name="Numero_d_ordine" type="object" readFormat="false"/>
+        <model:Field name="Numero_d_opera" type="object" readFormat="false"/>
+        <model:Field name="116_Tecnica_disegni" type="object" readFormat="false"/>
+        <model:Field name="116_Tecnica_stampa" type="object" readFormat="false"/>
+        <model:Field name="116_Funzione" type="object" readFormat="false"/>
+        <model:Field name="116_Specifica_del_materiale" type="object" readFormat="false"/>
+        <model:Field name="116_Supporto_primario" type="object" readFormat="false"/>
+        <model:Field name="116_Colore" type="object" readFormat="false"/>
+        <model:Field name="Prima_rappresentazione" type="object" readFormat="false"/>
+        <model:Field name="120_Indicatore_di_colore" type="object" readFormat="false"/>
+        <model:Field name="121_Supporto_fisico" type="object" readFormat="false"/>
+
+        <model:Field name="linkedMedia" type="object" readFormat="false"/>
+        <model:Field name="linkedInventoryMedia" type="object" readFormat="false"/>
+        <model:Field name="linkedStruMag" type="array_id" index="true"/>
+        <model:Field name="linkedInventoryStrumag" type="object" readFormat="false"/>
+
+        <model:Field name="linkedIccd" type="string" index="true"/>
+        <model:Field name="ecommerceLicenses" type="object" readFormat="false"/>
+
+        <model:Field name="visibility" type="string"/>
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+      public function getBeAdvancedSearchFields()
+      {
+        $searchFields = array(
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Livello bibliografico',
+            'field' => 'Livello_bibliografico_s_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Tipo di record',
+            'field' => 'Tipo_documento_s_lower',
+          ),
+          array (
+            'type' => 'checkbox',
+            'label' => 'Digitale',
+            'field' => 'digitale_s',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Autore',
+            'field' => 'Autore_ss_lower',
+          ),
+          array (
+            'type' => 'text',
+            'label' => 'Titolo',
+            'field' => 'Titolo_s_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Soggetto',
+            'field' => 'Soggetto_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Editore',
+            'field' => 'Editore_2_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Luogo',
+            'field' => 'Luogo_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Collana',
+            'field' => 'Collezione_Faccetta_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Data',
+            'field' => 'Data_inizio_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Paese',
+            'field' => 'Lingua_ss_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'ID SBN',
+            'field' => 'Codice_identificativo_s_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Inventario',
+            'field' => 'Inventari_e_collocazioni_delle_copie_s_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Collocazione',
+            'field' => 'Inventari_e_collocazioni_delle_copie_s_lower',
+          ),
+          array (
+            'type' => 'autocomplete',
+            'label' => 'Istituto',
+            'field' => 'Localizzazione_ss_lower',
+          )
+        );
+        return $searchFields;
+      }
+      ]]>
+    </model:Script>
+
+</model:Model>

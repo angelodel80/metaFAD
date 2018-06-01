@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="ecommlicenses_tbl"
+        model:usePrefix="false"
+        model:connection="3">
+
+        <model:Script parent="model">
+        <![CDATA[
+            public function getRecordId()
+            {
+                return $this->license_title;
+            }
+        ]]>
+        </model:Script>
+
+        <model:Query name="filterInstitute" type="function">
+        <![CDATA[
+            $iterator->where('instituteKey',__Session::get('usersAndPermissions.instituteKey'));
+      	]]>
+      	</model:Query>
+
+</model:Model>

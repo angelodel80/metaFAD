@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.roles.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State name="index" label="{i18n:Elenco}" url="metafad.usersAndPermissions.roles#list">
+        <com:DataGridAjax id="dataGrid" recordClassName="org.glizycms.roleManager.models.Role"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.usersAndPermissions.roles.controllers.*" fullTextSearch="false"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="role_name" headerText="{i18n:Nome}"/>
+            <glz:DataGridColumn columnName="role_active" headerText="{i18n:GLZ_USER_ACTIVE}" align="center"
+                                        renderCell="org.glizycms.core.application.renderer.CellUserActive"/>
+            <glz:DataGridColumn columnName="role_id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="org.glizycms.contents.views.renderer.CellEditDelete"/>
+        </com:DataGridAjax>
+        <cmp:AddButton label="" acl="*,new" routeUrl="metafad.usersAndPermissions.roles" editableRegion="actions"
+                       recordClassName="org.glizycms.roleManager.models.Role" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State name="edit" label="{i18n:Ruoli}" draw="false">
+        <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.usersAndPermissions.roles.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="org.glizycms.roleManager.models.Role"/>
+            <glz:Input id="role_name" label="{i18n:Nome del ruolo}" size="90" required="true"/>
+            <glz:Checkbox id="role_active" label="{i18n:Attivo}" data="type=checkbox"/>
+            <glz:Input readOnly="true" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.usersAndPermissions.users.models.proxy.UsersProxy;return_object=true" id="users" label="{i18n:Utenti associati}" />
+            <cmp:Permissions id="role_permissions" label="{i18n:Permessi}"/>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                            cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.usersAndPermissions.roles.controllers.*"/>
+        <glz:Hidden id="__model" value="org.glizycms.roleManager.models.Role"/>
+    </mvc:State>
+</mvc:Page>

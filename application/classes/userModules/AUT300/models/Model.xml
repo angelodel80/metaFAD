@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="AUT300"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.modules.iccd.models.ActiveRecordDocumentAUT">
+
+    <model:Script parent="model">
+    <![CDATA[
+    public function getTitle()
+    {
+        return $this->AUTN ? $this->AUTN : null;
+    }
+
+    public function getSolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'AUT300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+			'AUTN' => 'AUTN_s,AUTN_t',
+			'AUTH' => 'AUTH_s,AUTH_t',
+
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getFESolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'AUT300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'feMapping' => ''
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeMappingAdvancedSearch()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'AUT300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'beMapping' => ''
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array(
+			'AUTN' => 'AUTN_t',
+			'AUTH' => 'AUTH_t',
+
+        );
+
+        return $searchFields;
+    }
+
+    public function getFindTermFields()
+    {
+        return array("AUTN","AUTH");
+    }
+
+    public function getRecordId()
+    {
+        $uniqueIccdIdProxy = org_glizy_ObjectFactory::createObject('metafad.gestioneDati.boards.models.proxy.UniqueIccdIdProxy');
+        return $uniqueIccdIdProxy->createUniqueIccdId($this);
+    }
+
+    ]]>
+    </model:Script>
+
+    <model:Define>
+<model:Field name="TSK" validator="notempty" type="string" length="5"/>
+<model:Field name="NCU" type="object" readFormat="false"/>
+<model:Field name="ESC" validator="notempty" type="string" length="25"/>
+<model:Field name="ECP" type="string" length="25"/>
+<model:Field name="AUTN" validator="notempty" index="true" type="string" length="100"/>
+<model:Field name="AUTA" validator="notempty" type="string" length="70"/>
+<model:Field name="AUTC" type="string" length="70"/>
+<model:Field name="AUTO" type="string" length="70"/>
+<model:Field name="AUTP" type="string" length="70"/>
+<model:Field name="AUTE" type="string" length="70"/>
+<model:Field name="AUTF" type="string" length="70"/>
+<model:Field name="AUTV" type="string" length="350"/>
+<model:Field name="AUTZ" type="string" length="1"/>
+<model:Field name="AUTL" type="string" length="50"/>
+<model:Field name="AUTD" type="string" length="25"/>
+<model:Field name="AUTX" type="string" length="50"/>
+<model:Field name="AUTT" type="string" length="25"/>
+<model:Field name="AUTG" type="string" length="250"/>
+<model:Field name="AUTU" validator="notempty" type="string" length="350"/>
+<model:Field name="AUTQ" validator="notempty" type="string" length="100"/>
+<model:Field name="AUTH" validator="notempty" index="true" type="string" length="8"/>
+<model:Field name="CMPD" validator="notempty" type="string" length="4"/>
+<model:Field name="CMPN" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="RSR" type="object" readFormat="false"/>
+<model:Field name="FUR" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="AGG" type="object" readFormat="false"/>
+<model:Field name="AN" type="object" readFormat="false"/>
+
+    </model:Define>
+</model:Model>

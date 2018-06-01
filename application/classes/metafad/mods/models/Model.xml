@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="metafad.mods.models.Model"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="identificativo-rep" type="string" index="fulltext" onlyIndex="true" />
+
+        <!-- identificazione -->
+        <model:Field name="identificativo-rep" type="object" readFormat="false"/>
+        <model:Field name="lingua-rep" type="object" readFormat="false"/>
+        <model:Field name="tipologiaRisorsa" type="string" />
+        <model:Field name="tipoTitolo" type="string" />
+        <model:Field name="titolo" type="string" index="true" />
+        <model:Field name="complementoTitolo" type="string" />
+        <model:Field name="numeroParteTitolo" type="string" />
+        <model:Field name="nomeParte" type="string" />
+        <model:Field name="autore-rep" type="object" readFormat="false"/>
+        <model:Field name="luogo" type="string" />
+        <model:Field name="editore" type="string" />
+        <model:Field name="date" type="object" readFormat="false"/>
+        <model:Field name="qualifica" type="string" />
+        <model:Field name="materia-rep" type="object" readFormat="false"/>
+        <model:Field name="tecnica-rep" type="object" readFormat="false"/>
+        <model:Field name="tipoEstensione" type="string" />
+
+        <!-- semantica -->
+        <model:Field name="abstract" type="text" />
+        <model:Field name="tavolaContenuti" type="text" />
+        <model:Field name="soggetto-rep" type="object" readFormat="false"/>
+        <model:Field name="classificazione" type="string" />
+
+        <!-- relazioni -->
+        <model:Field name="titoloCollegato-rep" type="object" readFormat="false"/>
+        <model:Field name="parte-rep" type="object" readFormat="false"/>
+
+        <!-- copie -->
+        <model:Field name="localizzazione" type="string" />
+        <model:Field name="collocazione-rep" type="object" readFormat="false"/>
+        <model:Field name="condizioniAccesso" type="string" />
+
+        <!-- media -->
+        <model:Field name="linkedStruMag" type="object" readFormat="false"/>
+        <model:Field name="linkedMedia" type="object" readFormat="false"/>
+
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+    public function getSolrDocument()
+    {
+        $solrModel = array (
+            '__id' => 'id',
+            'document' => 'doc_store',
+            '__model' => 'document_type_t',
+            'titolo' => 'titolo_s',
+            'tipologiaRisorsa' => 'tipologiaRisorsa_s',
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array(
+      		'Titolo' => 'titolo_s',
+      		'Tipologia risorsa' => 'tipologiaRisorsa_s',
+        );
+        return $searchFields;
+    }
+
+    public function getRecordId()
+    {
+        return $this->titolo;
+    }
+    ]]></model:Script>
+</model:Model>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    src="metafad.views.TemplateModuleAdminExport">
+
+    <glz:template name="model" value="BIB400.models.Model"/>
+    <glz:template name="autocompleteController" value="metafad.common.controllers.ajax.AutoComplete"/>
+    <glz:template name="grid_fields">
+		<glz:DataGridColumn columnName="BIBM_s" headerText="{i18n:BIBM}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="BIBH_s" headerText="{i18n:BIBH}" renderCell="metafad.common.views.renderer.ShortField"/>
+    </glz:template>
+</glz:include>

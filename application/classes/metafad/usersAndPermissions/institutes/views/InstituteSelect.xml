@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.institutes.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          controllerName="metafad.usersAndPermissions.institutes.controllers.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <cmp:User editableRegion="navigation" />
+
+    <glz:Authenticator accessPageId="Login" label="" logoutPageId="Logout" cssClass="logout" editableRegion="logout" icon="btn btn-info btn-flat fa fa-power-off" />
+
+    <mvc:State name="index" label="{i18n:Elenco}">
+        <glz:LongText adm:htmlEditor="true" editableRegion="pageTitle">
+        <![CDATA[
+            <h1 class="page-title text-center">Scegli l'istituto con cui operare</h1>
+        ]]>
+        </glz:LongText>
+        <cmp:InstituteSelect skin="InstituteSelect.html"/>
+    </mvc:State>
+</mvc:Page>

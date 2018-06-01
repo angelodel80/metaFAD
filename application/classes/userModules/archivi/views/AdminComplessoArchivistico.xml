@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="archivi.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:boards="metafad.gestioneDati.boards.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <com:ModalConfirm label="Attenzione" message="Sicuro di voler proseguire?"/>
+    <com:ModalAlert label="Attenzione" message="Operazione non corretta"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active" addQueryString="true" visible="false"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Complessi}" url="archivi-ComplessoArchivistico">
+        <cmp:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="archivi.models.ComplessoArchivistico"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="archivi.controllers.*" fullTextSearch="true"
+                          JQueryUI="true" onlyRoots="true"
+                          autocompleteController="archivi.controllers.ajax.AutoComplete">
+<glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per il Complesso}"/>
+<glz:DataGridColumn columnName="livelloDiDescrizione_s" headerText="{i18n:Livello di descrizione}" renderCell="archivi.views.renderer.CellLivelloDiDescrizione"/>
+<glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}" renderCell="archivi.views.renderer.CellDenominazione"/>
+<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Estremo cronologico testuale}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="archivi.views.renderer.CellSelectEditDraftDelete"/>
+        </cmp:DataGridSolr>
+        <cmp:DataGridFilter id="filter" dataGridAjaxId="dataGrid" fieldNumber="1" />
+        <cmp:AddButton label="Complessi" acl="*,new" type="fondo" routeUrl="archiviMVCAdd" editableRegion="actions"
+                       recordClassName="archivi.models.ComplessoArchivistico" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateListDetail" name="listDetail" label="{i18n:Lista Fondo}"
+               url="archivi#listFondo">
+        <cmp:PageTitle value="" tag="h3" id="fondoTitle" cssClass="titleFondo"/>
+        <cmp:DataGridSolr id="dataGridDetail" enableSorting="true" filterByInstitute="true" recordClassName="archivi.models.ComplessoArchivistico"
+                          cssClass="table table-bordered table-striped" ignoreTypeFilter="true"
+                          controllerName="archivi.controllers.*" fullTextSearch="true"
+                          JQueryUI="true" parent="{php:__Request::get('id')}"
+                          autocompleteController="archivi.controllers.ajax.AutoComplete">
+<glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per il Complesso}"/>
+<glz:DataGridColumn columnName="livelloDiDescrizione_s" headerText="{i18n:Livello di descrizione}" renderCell="archivi.views.renderer.CellLivelloDiDescrizione"/>
+<glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}" renderCell="archivi.views.renderer.CellDenominazione"/>
+<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Estremo cronologico testuale}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="archivi.views.renderer.CellSelectEditDraftDelete"/>
+        </cmp:DataGridSolr>
+        <cmp:DataGridFilter id="filter" dataGridAjaxId="dataGridDetail" fieldNumber="1" parent="{php:__Request::get('id')}"/>
+    </mvc:State>
+
+    <mvc:State id="hierarchy" name="hierarchy" label="{i18n:Gerarchia}" url="archivi-ComplessoArchivistico/hierarchy">
+      <glz:Panel cssClass="col-md-12 gerarchia no-padding allHierarchy" >
+          <cmp:Tree id="treeview" startId="0" title="" controllerName="archivi.controllers.Gerarchia"/>
+      </glz:Panel>
+      <glz:JSscript folder="userModules/archivi/js/tree" editableRegion="tail"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+        <glz:JSscript folder="userModules/archivi/js/tree" editableRegion="tail"/>
+        
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.ComplessoArchivistico"/>
+			<glz:Hidden id="instituteKey" />
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
+
+            <glz:Hidden id="isTemplate"/>
+            <glz:Input id="templateTitle" label="{i18n:Titolo template}"/>
+            <glz:Link cssClass="tree openTree fa fa-list" enabled="true"/>
+            <glz:JSTabGroup id="ComplessoArchivistico" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+
+            <glz:Panel cssClass="col-md-4 gerarchia no-padding" text="Gerarchia: " enabled="true">
+                <cmp:Tree id="treeview" startId="0" title="" controllerName="archivi.controllers.Gerarchia"/>
+            </glz:Panel>
+
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input id="acronimoSistema" readOnly="true" label="Acronimo di sistema" required="true"/>
+      <glz:Input id="identificativo" readOnly="true" label="Identificativo per il Complesso"/>
+      <glz:Input id="codiceIdentificativoSistema" readOnly="true" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="altriCodiciIdentificativi" label="Altri codici identificativi" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="codice" label="Codice"/>
+        <glz:Input id="qualifica" label="Qualifica"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="codice" label="Codice"/>
+      </glz:Fieldset>
+      <glz:List id="livelloDiDescrizione" value="Fondo" label="Livello di descrizione" required="1" emptyValue=" - ">
+        <glz:ListItem value="Complesso di fondi" key="complesso-di-fondi"/>
+        <glz:ListItem value="Superfondo" key="superfondo"/>
+        <glz:ListItem value="Fondo" key="fondo"/>
+        <glz:ListItem value="Sub-fondo" key="sub-fondo"/>
+        <glz:ListItem value="Sezione" key="sezione"/>
+        <glz:ListItem value="Serie" key="serie"/>
+        <glz:ListItem value="Sottoserie" key="sottoserie"/>
+        <glz:ListItem value="Sottosottoserie" key="sottosottoserie"/>
+        <glz:ListItem value="Collezione / raccolta" key="collezione-raccolta"/>
+      </glz:List>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamenti" label="Collegamenti">
+      <glz:Input id="parent" label="Livello superiore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.Model;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="denominazioneComplesso" label="Denominazione">
+      <glz:Input id="denominazione" label="Denominazione" required="true"/>
+      <glz:Fieldset id="altraDenominazione" label="Altra Denominazione" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="altreDenominazioni_denominazione" label="Denominazione"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologia" label="Estremi cronologici" data="type=repeatQualifica;noEmptyMessage=true">
+      <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input id="qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+      <glz:Input id="qualificaDataAggiunta" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA_AGGIUNTA"/>
+      <glz:Input id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="descrizioneFisicaComplesso" label="Descrizione fisica del complesso">
+      <glz:Fieldset id="consistenza" label="Consistenza" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="tipologia" label="Tipologia" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##code##:##VA_ARCHIVE_DESC_FISICA_TIPO_SUPPORTO##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_DESC_FISICA_TIPO_SUPPORTO"/>
+        <glz:Input id="quantita" label="Quantità"/>
+      </glz:Fieldset>
+      <glz:Input id="metriLineari" label="Metri lineari"/>
+      <glz:Input id="consistenzaTotale" label="Consistenza totale"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabContestoProvenienza" label="Contesto, contenuto e struttura" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="produttori" label="Soggetti Produttori" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="soggettoProduttore" label="Soggetto produttore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+      <glz:Fieldset id="cronologiaProduttore" label="Estremi cronologici di produzione" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+        <glz:Input id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="conservatore" label="Soggetto conservatore">
+      <glz:Input id="soggettoConservatore" label="Soggetto conservatore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+      <glz:Fieldset id="cronologiaConservatore" label="Estremi cronologici di conservazione" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+        <glz:Input id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="strumentiRicerca" label="Strumenti di ricerca" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="linkStrumentiRicerca" label="Strumenti di ricerca" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaStrumentoRicerca;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Input id="descrizioneContenuto" label="Descrizione del contentuto" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Input id="storiaArchivistica" label="Storia archivistica" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Input id="criteriOrdinamento" label="Criteri di ordinamento, di numerazione e altre informazioni utili" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCondizioniAccessoUtilizzazione" label="Condizioni di accesso e di utilizzazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input id="condizioniAccesso" label="Condizioni di accesso" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabDocumentazioneCollegataComplementare" label="Documentazione collegata e complementare" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="documentazioneArchivioCollegata" label="Documentazione d'archivio collegata" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="denominazione" label="Denominazione"/>
+      <glz:Input id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="localizzazioneSegnatura" label="Localizzazione segnatura"/>
+      <glz:Input id="url" label="URL" data="type=url"/>
+      <glz:Input id="dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data inserimento"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabRiferimentiFonti" label="Riferimenti e fonti" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="riferimentiBibliografici" label="Riferimenti bibliografici" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="linkRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+      <glz:Input id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="fontiArchivistiche" label="Fonti archivistiche" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="linkFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiWeb" label="Riferimenti web" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+      <glz:Input id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+      <glz:Input id="url" label="URL" data="type=url"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCompilazione" label="Compilazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input id="linguaDescrizioneRecord" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+    <glz:Fieldset id="compilazione" label="Compilazione" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="redattore" label="Redattore"/>
+      <glz:Input id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+      <glz:Input id="noteRedazionali" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+    </glz:Fieldset>
+    <glz:Input id="osservazioni" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabMediaCollegati" label="Visibilità" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:List id="visibility" label="Visibilità FE">
+      <glz:ListItem value="Visibile con dettaglio (RD)" key="rd"/>
+      <glz:ListItem value="Visibile (R)" key="r"/>
+      <glz:ListItem value="Non visibile" key="0"/>
+    </glz:List>
+  </glz:Panel>
+</glz:JSTab>
+
+
+                <glz:JSTab id="history" label="{i18n:Storico}" cssClassTab="pull-right"
+                           routeUrl="archivihistory"/>
+                <glz:JSTab id="edit" label="{i18n:Scheda}" cssClassTab="fake-active pull-right"/>
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+                <glz:HtmlButton label="{i18n:Valida CAT-SAN}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=validate" acl="*,publish" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="show,showDraft" label="{i18n:Show}" draw="false">
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.ComplessoArchivistico"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+
+            <glz:JSTabGroup id="ComplessoArchivistico" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input readOnly="true" id="acronimoSistema" label="Acronimo di sistema" required="true"/>
+      <glz:Input readOnly="true" id="identificativo" label="Identificativo per il Complesso"/>
+      <glz:Input readOnly="true" id="codiceIdentificativoSistema" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="altriCodiciIdentificativi" label="Altri codici identificativi" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="codice" label="Codice"/>
+        <glz:Input readOnly="true" id="qualifica" label="Qualifica"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="codice" label="Codice"/>
+      </glz:Fieldset>
+      <glz:List id="livelloDiDescrizione" value="Fondo" label="Livello di descrizione" required="1" emptyValue=" - ">
+        <glz:ListItem value="Complesso di fondi" key="complesso-di-fondi"/>
+        <glz:ListItem value="Superfondo" key="superfondo"/>
+        <glz:ListItem value="Fondo" key="fondo"/>
+        <glz:ListItem value="Sub-fondo" key="sub-fondo"/>
+        <glz:ListItem value="Sezione" key="sezione"/>
+        <glz:ListItem value="Serie" key="serie"/>
+        <glz:ListItem value="Sottoserie" key="sottoserie"/>
+        <glz:ListItem value="Sottosottoserie" key="sottosottoserie"/>
+        <glz:ListItem value="Collezione / raccolta" key="collezione-raccolta"/>
+      </glz:List>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamenti" label="Collegamenti">
+      <glz:Input readOnly="true" id="parent" label="Livello superiore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.Model;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="denominazioneComplesso" label="Denominazione">
+      <glz:Input readOnly="true" id="denominazione" label="Denominazione" required="true"/>
+      <glz:Fieldset id="altraDenominazione" label="Altra Denominazione" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="altreDenominazioni_denominazione" label="Denominazione"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologia" label="Estremi cronologici" data="readOnly=true;type=repeatQualifica;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input readOnly="true" id="qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+      <glz:Input readOnly="true" id="qualificaDataAggiunta" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA_AGGIUNTA"/>
+      <glz:Input readOnly="true" id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="descrizioneFisicaComplesso" label="Descrizione fisica del complesso">
+      <glz:Fieldset id="consistenza" label="Consistenza" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="tipologia" label="Tipologia" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##code##:##VA_ARCHIVE_DESC_FISICA_TIPO_SUPPORTO##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_DESC_FISICA_TIPO_SUPPORTO"/>
+        <glz:Input readOnly="true" id="quantita" label="Quantità"/>
+      </glz:Fieldset>
+      <glz:Input readOnly="true" id="metriLineari" label="Metri lineari"/>
+      <glz:Input readOnly="true" id="consistenzaTotale" label="Consistenza totale"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabContestoProvenienza" label="Contesto, contenuto e struttura" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="produttori" label="Soggetti Produttori" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="soggettoProduttore" label="Soggetto produttore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+      <glz:Fieldset id="cronologiaProduttore" label="Estremi cronologici di produzione" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+        <glz:Input readOnly="true" id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="conservatore" label="Soggetto conservatore">
+      <glz:Input readOnly="true" id="soggettoConservatore" label="Soggetto conservatore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+      <glz:Fieldset id="cronologiaConservatore" label="Estremi cronologici di conservazione" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+        <glz:Input readOnly="true" id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="strumentiRicerca" label="Strumenti di ricerca" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="linkStrumentiRicerca" label="Strumenti di ricerca" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaStrumentoRicerca;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Input readOnly="true" id="descrizioneContenuto" label="Descrizione del contentuto" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Input readOnly="true" id="storiaArchivistica" label="Storia archivistica" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Input readOnly="true" id="criteriOrdinamento" label="Criteri di ordinamento, di numerazione e altre informazioni utili" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCondizioniAccessoUtilizzazione" label="Condizioni di accesso e di utilizzazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input readOnly="true" id="condizioniAccesso" label="Condizioni di accesso" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabDocumentazioneCollegataComplementare" label="Documentazione collegata e complementare" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="documentazioneArchivioCollegata" label="Documentazione d'archivio collegata" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="denominazione" label="Denominazione"/>
+      <glz:Input readOnly="true" id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="localizzazioneSegnatura" label="Localizzazione segnatura"/>
+      <glz:Input readOnly="true" id="url" label="URL" data="type=url"/>
+      <glz:Input readOnly="true" id="dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data inserimento"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabRiferimentiFonti" label="Riferimenti e fonti" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="riferimentiBibliografici" label="Riferimenti bibliografici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="linkRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+      <glz:Input readOnly="true" id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="fontiArchivistiche" label="Fonti archivistiche" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="linkFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiWeb" label="Riferimenti web" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+      <glz:Input readOnly="true" id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+      <glz:Input readOnly="true" id="url" label="URL" data="type=url"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCompilazione" label="Compilazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input readOnly="true" id="linguaDescrizioneRecord" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+    <glz:Fieldset id="compilazione" label="Compilazione" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="redattore" label="Redattore"/>
+      <glz:Input readOnly="true" id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-complessoarchivistico&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+      <glz:Input readOnly="true" id="noteRedazionali" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+    </glz:Fieldset>
+    <glz:Input readOnly="true" id="osservazioni" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabMediaCollegati" label="Visibilità" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:List id="visibility" label="Visibilità FE">
+      <glz:ListItem value="Visibile con dettaglio (RD)" key="rd"/>
+      <glz:ListItem value="Visibile (R)" key="r"/>
+      <glz:ListItem value="Non visibile" key="0"/>
+    </glz:List>
+  </glz:Panel>
+</glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="archivi.controllers.*"/>
+    </mvc:State>
+
+    <mvc:State name="toggleFEVisibility">
+        <glz:Hidden controllerName="archivi.controllers.ToggleFEVisibility"/>
+    </mvc:State>
+
+    <mvc:State id="stateHistory" name="history" label="{i18n:Storico}" url="linkHistory">
+      <glz:JSTabGroup id="innerTabs">
+        <glz:JSTab id="historyTab" label="{i18n:Storico}" cssClassTab="pull-right">
+          <cms:FormEdit addValidationJs="false" controllerName="archivi.controllers.*">
+            <boards:ShowHistory id="history" model="archivi.models.ComplessoArchivistico"/>
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-glizycms-history" data="action=add" />
+            </cms:FormButtonsPanel>
+          </cms:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+      </glz:JSTabGroup>
+    </mvc:State>
+</mvc:Page>

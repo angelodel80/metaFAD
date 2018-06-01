@@ -1,0 +1,21 @@
+.panel-group {
+	.panel {
+		border-radius: 0;
+		box-shadow: none;
+
+		& > .panel-heading {
+			border-radius: 0;
+			background: #fff;
+			border-bottom: 0;
+
+			h4 {
+				width: 100%;
+				font-weight: bold;
+			}
+		}
+
+		.panel-body {
+			border-top: 1px solid #ddd;
+		}
+	}
+}

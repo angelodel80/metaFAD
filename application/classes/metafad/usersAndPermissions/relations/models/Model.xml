@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="user_roles_institutes_tbl" model:usePrefix="true">
+
+    <model:Query name="institutesOfUser" type="function" arguments="userId,term">
+    <![CDATA[
+        $iterator->join('t1', 'institutes_tbl', 't2', $iterator->expr()->eq('institute_id', 'user_roles_institutes_FK_instituteId'))
+                 ->where('user_roles_institutes_FK_userId', $userId)
+                 ->groupBy('institute_id');
+    ]]>
+    </model:Query>
+
+    <model:Query name="getPermissions" type="function" arguments="userId,instituteId">
+    <![CDATA[
+        $iterator->join('t1', 'roles_tbl', 't2', $iterator->expr()->eq('role_id', 'user_roles_institutes_FK_roleId'))
+                 ->where('user_roles_institutes_FK_userId', $userId)
+                 ->where('user_roles_institutes_FK_instituteId', $instituteId);
+    ]]>
+    </model:Query>
+</model:Model>

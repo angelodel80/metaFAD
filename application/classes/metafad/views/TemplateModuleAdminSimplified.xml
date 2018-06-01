@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:c="metafad.modules.iccd.views.components.*"
+    xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:iccd="metafad.modules.thesaurus.views.components.*"
+    id="Page"
+    controllerName="##page_controller_name##"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:templateDefine name="dataGridId" defaultValue="dataGrid" />
+    <glz:templateDefine name="model" required="true" />
+    <glz:templateDefine name="grid_fields" required="true" />
+    <glz:templateDefine name="form_fields" required="true" />
+    <glz:templateDefine name="filterByInstitute" defaultValue="true" />
+    <glz:templateDefine name="setLastSearch" defaultValue="false" />
+    <glz:templateDefine name="custom_states" required="false" defaultValue="" />
+    <glz:templateDefine name="extra_components" required="false" defaultValue="" />
+    <glz:templateDefine name="primary_key" required="false" defaultValue="document_id" />
+    <glz:templateDefine name="page_controller_name" required="false" defaultValue="" />
+    <glz:templateDefine name="controller_name" required="false" defaultValue="org.glizycms.contents.controllers.moduleEdit.*" />
+    <glz:templateDefine name="documentRenderCell" required="false" defaultValue="metafad.common.views.renderer.CellEditDraftDeleteNormalize" />
+    <glz:templateDefine name="button_tab_visible" required="false" defaultValue="true" />
+    <glz:templateDefine name="templateEnabled" required="false" defaultValue="false" />
+    <glz:templateDefine name="show_external_id" required="false" defaultValue="true" />
+    <glz:templateDefine name="autocompleteController" required="false" defaultValue="" />
+ 
+    <glz:Import src="_common.xml" />
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs" cssClassCurrent="active" addQueryString="true" visible="true" editableRegion="contentTabs" />
+
+    <mvc:State name="index">
+        <glz:Modifier target="tabs" attribute="visible" value="false" />
+        <com:DataGridSolr id="##dataGridId##" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="##setLastSearch##" recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true">
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" />
+            ##grid_fields##
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##documentRenderCell##" />
+        </com:DataGridSolr>
+
+        <cmp:AddButton id="dataGridAddButton" acl="*,new" templateEnabled="false" label="" routeUrl="actionsMVCAdd" editableRegion="actions" recordClassName="##model##" cssClass="dataGridAddButton" dataGridAjaxId="##dataGridId##" />
+    </mvc:State>
+
+    <mvc:State name="edit,editDraft" label="{i18n:Scheda}" url="linkEdit">
+        ##extra_components##
+        <glz:JSscript folder="metafad/views/js/previewPopup" />
+        <c:FormEdit id="editForm" newCode="true" controllerName="##controller_name##">
+            <glz:Hidden id="__id" />
+            <glz:Hidden id="__model" value="##model##" />
+			<glz:Hidden id="instituteKey" />
+            ##form_fields##
+            <cms:FormButtonsPanel id="formButtons">
+                <cmp:PreviousTabButton visible="##button_tab_visible##"/>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,publish" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,publish" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft"/>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft"/>
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" />
+                <glz:HtmlButton label="{i18n:Anteprima}" type="button" cssClass="btn btn-flat js-glizycms-preview" data="action=preview" />
+                <glz:HtmlButton label="{i18n:Valida}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=validate" acl="*,publish"/>
+                <cmp:NextTabButton visible="##button_tab_visible##"/>
+            </cms:FormButtonsPanel>
+        </c:FormEdit>
+    </mvc:State>
+ 
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="##controller_name##" />
+    </mvc:State>
+    
+    <mvc:State name="normalize">
+        <glz:Hidden controllerName="metafad.gestioneDati.boards.controllers.Normalize" />
+    </mvc:State>
+
+    ##custom_states##
+</mvc:Page>

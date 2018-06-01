@@ -1,0 +1,71 @@
+{
+  "id": "Antroponimi",
+  "tabs": [{
+    "id": "tabAntroponimi",
+    "label": "Antroponimi",
+    "fields": [{
+      "id": "intestazione",
+      "type": "Input",
+      "label": "Intestazione",
+      "gridField": true,
+      "attributes": {
+        "readOnly": "true"
+      },
+      "model": {
+        "type": "string",
+        "index": "true"
+      },
+      "solr": {
+        "field": "intestazione_s"
+      },
+      "option": "{\"strip_tags\":false}"
+    }, {
+      "id": "cognome",
+      "type": "OpenDictionary",
+      "dictionaryId": "VA_ARCHIVE_VOCI_PERSONA_COGNOME",
+      "label": "Cognome"
+    }, {
+      "id": "nome",
+      "type": "OpenDictionary",
+      "dictionaryId": "VA_ARCHIVE_VOCI_PERSONA_NOME",
+      "label": "Nome"
+    }, {
+      "id": "qualificazione",
+      "type": "OpenDictionary",
+      "dictionaryId": "VA_ARCHIVE_VOCI_PERSONA_QUALIFICA",
+      "label": "Qualificazione"
+    }, {
+      "id": "dateAttivita",
+      "type": "Input",
+      "label": "Date di attività"
+    }, {
+      "id": "dataNascita",
+      "attributes": {
+        "cssClass": "js-archive-dateTextBox form-control"
+      },
+      "type": "Input",
+      "label": "Data di nascita"
+    }, {
+      "id": "dataMorte",
+      "attributes": {
+        "cssClass": "js-archive-dateTextBox form-control"
+      },
+      "type": "Input",
+      "label": "Data di morte"
+    }, {
+        "id": "externalID",
+        "type": "Hidden",
+        "label": "ID importazione",
+        "attributes": {
+          "readOnly": "true"
+        },
+        "model": {
+          "type": "string",
+          "index": "true"
+        },
+        "solr": {
+          "field": "externalID_s"
+        }
+      }]
+  }]
+}

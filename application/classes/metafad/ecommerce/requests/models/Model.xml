@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="ecommrequests_tbl"
+        model:connection="3">
+
+        <model:Query name="filterInstitute" type="function">
+        <![CDATA[
+          if(__Session::get('usersAndPermissions.instituteKey') != '*')
+          {
+            $iterator->where('instituteKey',__Session::get('usersAndPermissions.instituteKey'));
+          }
+      	]]>
+      	</model:Query>
+
+        <model:Query name="getCurrentUserRequests" type="function">
+        <![CDATA[
+            $user = org_glizy_ObjectValues::get('org.glizy', 'user');
+            $iterator->where('request_operator_id', $user->getId())
+                     ->where('request_state','toRead');
+        ]]>
+        </model:Query>
+
+</model:Model>

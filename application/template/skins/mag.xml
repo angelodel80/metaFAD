@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<metadigit xmlns="http://www.iccu.sbn.it/metaAG1.pdf" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:niso="http://www.niso.org/pdfs/DataDict.pdf" xmlns:xlink="http://www.w3.org/TR/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.1" xsi:schemaLocation="http://www.iccu.sbn.it/metaAG1.pdf http://www.iccu.sbn.it/opencms/opencms/documenti/metadigit.xsd">
+  <gen tal:attributes="creation php: (Component.gen['GEN_creation']) ? Component.gen['GEN_creation'] : NULL ;last_update php: (Component.gen['GEN_lastUpdate']) ? Component.gen['GEN_lastUpdate'] : NULL ;" >
+    <stprog tal:condition="php: Component.gen['GEN_stprog']" tal:content="Component/gen/GEN_stprog"></stprog>
+    <collection tal:condition="php: Component.gen['GEN_collection']" tal:content="Component/gen/GEN_collection"></collection>
+    <agency tal:condition="php: Component.gen['GEN_agency']" tal:content="Component/gen/GEN_agency"></agency>
+    <access_rights tal:condition="php: Component.gen['GEN_access_rights'] !== NULL" tal:content="Component/gen/GEN_access_rights"></access_rights>
+    <completeness tal:condition="php: Component.gen['GEN_completeness'] !== NULL" tal:content="Component/gen/GEN_completeness"></completeness>
+
+    <tal:block tal:repeat="item Component/gen/img_group">
+      <img_group tal:attributes="ID item/GEN_img_group_ID">
+          <image_metrics tal:condition="php: item['GEN_img_group_image_metrics_samplingfrequencyunit'] OR item['GEN_img_group_image_metrics_samplingfrequencyplane'] OR item['GEN_img_group_image_metrics_xsamplingfrequency'] OR item['GEN_img_group_image_metrics_ysamplingfrequency'] OR item['GEN_img_group_image_metrics_photometricinterpretation'] OR item['GEN_img_group_image_metrics_bitpersample']">
+            <niso:samplingfrequencyunit tal:condition="php: item['GEN_img_group_image_metrics_samplingfrequencyunit']" tal:content="item/GEN_img_group_image_metrics_samplingfrequencyunit"></niso:samplingfrequencyunit>
+            <niso:samplingfrequencyplane tal:condition="php: item['GEN_img_group_image_metrics_samplingfrequencyplane']" tal:content="item/GEN_img_group_image_metrics_samplingfrequencyplane"></niso:samplingfrequencyplane>
+            <niso:xsamplingfrequency tal:condition="php: item['GEN_img_group_image_metrics_xsamplingfrequency']" tal:content="item/GEN_img_group_image_metrics_xsamplingfrequency"></niso:xsamplingfrequency>
+            <niso:ysamplingfrequency tal:condition="php: item['GEN_img_group_image_metrics_ysamplingfrequency']" tal:content="item/GEN_img_group_image_metrics_ysamplingfrequency"></niso:ysamplingfrequency>
+            <niso:photometricinterpretation tal:condition="php: item['GEN_img_group_image_metrics_photometricinterpretation']" tal:content="item/GEN_img_group_image_metrics_photometricinterpretation"></niso:photometricinterpretation>
+            <niso:bitpersample tal:condition="php: item['GEN_img_group_image_metrics_bitpersample']" tal:content="item/GEN_img_group_image_metrics_bitpersample"></niso:bitpersample>
+          </image_metrics>
+          <ppi tal:condition="php: item['GEN_img_group_ppi']" tal:content="item/GEN_img_group_ppi"></ppi>
+          <dpi tal:condition="php: item['GEN_img_group_dpi']" tal:content="item/GEN_img_group_dpi"></dpi>
+          <format>
+            <niso:name tal:condition="php: item['GEN_img_group_format_name']" tal:content="item/GEN_img_group_format_name"></niso:name>
+            <niso:mime tal:condition="php: item['GEN_img_group_format_mime']" tal:content="item/GEN_img_group_format_mime"></niso:mime>
+            <niso:compression tal:condition="php: item['GEN_img_group_format_compression']" tal:content="item/GEN_img_group_format_compression"></niso:compression>
+          </format>
+          <scanning tal:condition="php: item['GEN_img_group_scanning_sourcetype'] OR item['GEN_img_group_scanning_scanningagency'] OR item['GEN_img_group_scanning_devicesource'] OR item['GEN_img_group_scanning_scanningsystem_scanner_manufacturer'] OR item['GEN_img_group_scanning_scanningsystem_scanner_model'] OR item['GEN_img_group_scanning_scanningsystem_capture_software']">
+            <niso:sourcetype tal:condition="php: item['GEN_img_group_scanning_sourcetype']" tal:content="item/GEN_img_group_scanning_sourcetype"></niso:sourcetype>
+            <niso:scanningagency tal:condition="php: item['GEN_img_group_scanning_scanningagency']" tal:content="item/GEN_img_group_scanning_scanningagency"></niso:scanningagency>
+            <niso:devicesource tal:condition="php: item['GEN_img_group_scanning_devicesource']" tal:content="item/GEN_img_group_scanning_devicesource"></niso:devicesource>
+            <niso:scanningsystem>
+              <niso:scanner_manufacturer tal:condition="php: item['GEN_img_group_scanning_scanningsystem_scanner_manufacturer']" tal:content="item/GEN_img_group_scanning_scanningsystem_scanner_manufacturer"></niso:scanner_manufacturer>
+              <niso:scanner_model tal:condition="php: item['GEN_img_group_scanning_scanningsystem_scanner_model']" tal:content="item/GEN_img_group_scanning_scanningsystem_scanner_model"></niso:scanner_model>
+              <niso:capture_software  tal:condition="php: item['GEN_img_group_scanning_scanningsystem_capture_software']" tal:content="item/GEN_img_group_scanning_scanningsystem_capture_software"></niso:capture_software>
+            </niso:scanningsystem>
+          </scanning>
+        </img_group>
+    </tal:block>
+  </gen>
+  <bib tal:attributes="level php: (Component.gen['BIB_dc_level']) ? Component.gen['BIB_dc_level'] : NULL">
+    <dc:identifier tal:condition="php: Component.gen['BIB_dc_identifier']"  tal:content="item/BIB_dc_identifier_value" tal:repeat="item Component/gen/BIB_dc_identifier"></dc:identifier>
+    <dc:title tal:condition="php: Component.gen['BIB_dc_title']"  tal:content="item/BIB_dc_title_value" tal:repeat="item Component/gen/BIB_dc_title" tal:attributes="lang php: (item.BIB_dc_title_lang)?:NULL"></dc:title>
+    <dc:creator tal:condition="php: Component.gen['BIB_dc_creator']"  tal:content="item/BIB_dc_creator_value" tal:repeat="item Component/gen/BIB_dc_creator" tal:attributes="lang php: (item.BIB_dc_creator_lang)?:NULL"></dc:creator>
+    <dc:publisher tal:condition="php: Component.gen['BIB_dc_publisher']"  tal:content="item/BIB_dc_publisher_value" tal:repeat="item Component/gen/BIB_dc_publisher" tal:attributes="lang php: (item.BIB_dc_publisher_lang)?:NULL"></dc:publisher>
+    <dc:subject tal:condition="php: Component.gen['BIB_dc_subject']"  tal:content="item/BIB_dc_subject_value" tal:repeat="item Component/gen/BIB_dc_subject" tal:attributes="lang php: (item.BIB_dc_subject_lang)?:NULL"></dc:subject>
+    <dc:description tal:condition="php: Component.gen['BIB_dc_description']"  tal:content="item/BIB_dc_description_value" tal:repeat="item Component/gen/BIB_dc_description" tal:attributes="lang php: (item.BIB_dc_description_lang)?:NULL"></dc:description>
+    <dc:contributor tal:condition="php: Component.gen['BIB_dc_contributor']"  tal:content="item/BIB_dc_contributor_value" tal:repeat="item Component/gen/BIB_dc_contributor" tal:attributes="lang php: (item.BIB_dc_contributor_lang)?:NULL"></dc:contributor>
+    <dc:date tal:condition="php: Component.gen['BIB_dc_date']"  tal:content="item/BIB_dc_date_value" tal:repeat="item Component/gen/BIB_dc_date"></dc:date>
+    <dc:type tal:condition="php: Component.gen['BIB_dc_type']"  tal:content="item/BIB_dc_type_value" tal:repeat="item Component/gen/BIB_dc_type"></dc:type>
+    <dc:format tal:condition="php: Component.gen['BIB_dc_format']"  tal:content="item/BIB_dc_format_value" tal:repeat="item Component/gen/BIB_dc_format"></dc:format>
+    <dc:source tal:condition="php: Component.gen['BIB_dc_source']"  tal:content="item/BIB_dc_source_value" tal:repeat="item Component/gen/BIB_dc_source"></dc:source>
+    <dc:language tal:condition="php: Component.gen['BIB_dc_language']"  tal:content="item/BIB_dc_language_value" tal:repeat="item Component/gen/BIB_dc_language"></dc:language>
+    <dc:relation tal:condition="php: Component.gen['BIB_dc_relation']"  tal:content="php: (item.BIB_dc_relation_value.text) ? item.BIB_dc_relation_value.text : item.BIB_dc_relation_value" tal:repeat="item Component/gen/BIB_dc_relation"></dc:relation>
+    <dc:coverage tal:condition="php: Component.gen['BIB_dc_coverage']"  tal:content="item/BIB_dc_coverage_value" tal:repeat="item Component/gen/BIB_dc_coverage"></dc:coverage>
+    <dc:rights tal:condition="php: Component.gen['BIB_dc_rights']"  tal:content="item/BIB_dc_rights_value" tal:repeat="item Component/gen/BIB_dc_rights"></dc:rights>
+    <holdings tal:condition="php: Component.gen['BIB_holdings']" tal:repeat="item Component/gen/BIB_holdings" tal:attributes="ID php: (item.BIB_holdings_ID) ?: NULL">
+      <library tal:condition="php: item.BIB_holdings_library" tal:content="item/BIB_holdings_library"></library>
+      <inventory_number tal:condition="php: item.BIB_holdings_inventory_number" tal:content="item/BIB_holdings_inventory_number"></inventory_number>
+      <shelfmark tal:condition="php: item.BIB_holdings_shelfmark" tal:repeat="item2 item/BIB_holdings_shelfmark" tal:content="item2/BIB_holdings_shelfmark_value"></shelfmark>
+    </holdings>
+    <local_bib tal:condition="php: Component.gen['BIB_local_bib_geo_coord'] OR Component.gen['BIB_local_bib_not_date']">
+      <geo_coord tal:condition="php: Component.gen['BIB_local_bib_geo_coord']" tal:repeat="item Component/gen/BIB_local_bib_geo_coord" tal:content="php: item.{'BIB_local_bib_geo_coord-element'}"/>
+      <not_date tal:condition="php: Component.gen['BIB_local_bib_not_date']" tal:repeat="item Component/gen/BIB_local_bib_not_date" tal:content="php: item.{'BIB_local_bib_not_date-element'}"/>
+    </local_bib>
+    <piece tal:condition="php: Component.gen['BIB_piece_year'] OR Component.gen['BIB_piece_issue'] OR Component.gen['BIB_piece_stpiece_per'] OR Component.gen['BIB_piece_part_number'] OR Component.gen['BIB_piece_part_name'] OR Component.gen['BIB_piece_stpiece_vol']">
+      <piece_year tal:condition="php: Component.gen['BIB_piece_year']" tal:content="Component/gen/BIB_piece_year"/>
+      <piece_issue tal:condition="php: Component.gen['BIB_piece_issue']" tal:content="Component/gen/BIB_piece_issue"/>
+      <piece_stpiece_per tal:condition="php: Component.gen['BIB_piece_stpiece_per']" tal:content="Component/gen/BIB_piece_stpiece_per"/>
+      <piece_part_number tal:condition="php: Component.gen['BIB_piece_part_number']" tal:content="Component/gen/BIB_piece_part_number"/>
+      <piece_part_name tal:condition="php: Component.gen['BIB_piece_part_name']" tal:content="Component/gen/BIB_piece_part_name"/>
+      <piece_stpiece_vol tal:condition="php: Component.gen['BIB_piece_stpiece_vol']" tal:content="Component/gen/BIB_piece_stpiece_vol"/>
+    </piece>
+  </bib>
+
+  <tal:block tal:condition="php: Component.struData">
+    <stru tal:repeat="stru Component/struData">
+      <sequence_number tal:content="php: repeat.stru.number"></sequence_number>
+      <nomenclature tal:content="repeat/stru/key"></nomenclature>
+      <element tal:condition="stru/alias" tal:repeat="alias php: stru['alias']">
+        <resource>img</resource>
+        <start tal:attributes="sequence_number php: alias"/>
+        <stop tal:attributes="sequence_number php: alias"/>
+      </element>
+      <element tal:condition="stru/normal">
+        <resource>img</resource>
+        <start tal:attributes="sequence_number php: current(stru['normal'])"/>
+        <stop tal:attributes="sequence_number php: end(stru['normal'])"/>
+      </element>
+    </stru>
+  </tal:block>
+
+  <tal:block tal:repeat="item Component/images">
+    <img tal:attributes="imggroupID php: (item.imggroupID) ? item.imggroupID : NULL">
+      <sequence_number tal:condition="php: item.sequence_number" tal:content="item/sequence_number"></sequence_number>
+      <nomenclature tal:condition="php: item.title" tal:content="item/title"></nomenclature>
+      <usage tal:condition="php: item.usage" tal:repeat="usage item/usage" tal:content="usage/usage_value"></usage>
+      <side tal:condition="php: item.side" tal:content="item/side"></side>
+      <scale tal:condition="php: item.scale !== null" tal:content="item/scale"></scale>
+      <file tal:condition="php: !Component.oai" Location="URL" tal:attributes="xlink:href php: './Immagini/' . ((item.imggroupID) ? item.imggroupID . '/' : item.usage[0].usage_value . '/') . item.nomenclature . '.jpg'"/>
+      <file tal:condition="php: Component.oai" Location="URL" tal:attributes="xlink:href item/file"/>
+      <md5 tal:condition="php: item.md5" tal:content="item/md5"></md5>
+      <filesize tal:condition="php: item.filesize" tal:content="item/filesize"></filesize>
+      <image_dimensions tal:condition="php: item.imagelength OR item.imagewidth OR item.source_xdimension OR item.source_ydimension">
+        <niso:imagelength tal:condition="php: item.imagelength" tal:content="item/imagelength"></niso:imagelength>
+        <niso:imagewidth tal:condition="php: item.imagewidth" tal:content="item/imagewidth"></niso:imagewidth>
+        <niso:source_xdimension tal:condition="php: item.source_xdimension" tal:content="item/source_xdimension"></niso:source_xdimension>
+        <niso:source_ydimension tal:condition="php: item.source_ydimension" tal:content="item/source_ydimension"></niso:source_ydimension>
+      </image_dimensions>
+      <image_metrics tal:condition="php: item.samplingfrequencyunit OR item.samplingfrequencyplane OR item.xsamplingfrequency OR item.ysamplingfrequency OR item.bitpersample OR item.photometricinterpretation">
+        <niso:samplingfrequencyunit tal:condition="php: item.samplingfrequencyunit" tal:content="item/samplingfrequencyunit"></niso:samplingfrequencyunit>
+        <niso:samplingfrequencyplane tal:condition="php: item.samplingfrequencyplane" tal:content="item/samplingfrequencyplane"></niso:samplingfrequencyplane>
+        <niso:xsamplingfrequency tal:condition="php: item.xsamplingfrequency" tal:content="item/xsamplingfrequency"></niso:xsamplingfrequency>
+        <niso:ysamplingfrequency tal:condition="php: item.ysamplingfrequency" tal:content="item/ysamplingfrequency"></niso:ysamplingfrequency>
+        <niso:bitpersample tal:condition="php: item.bitpersample" tal:content="item/bitpersample"></niso:bitpersample>
+        <niso:photometricinterpretation tal:condition="php: item.photometricinterpretation" tal:content="item/photometricinterpretation"></niso:photometricinterpretation>
+      </image_metrics>
+      <ppi tal:condition="php: item.ppi" tal:content="item/ppi"></ppi>
+      <dpi tal:condition="php: item.dpi" tal:content="item/dpi"></dpi>
+      <format tal:condition="php: item.name OR item.mime OR item.compression">
+        <name tal:condition="php: item.name" tal:content="item/name"></name>
+        <mime tal:condition="php: item.mime" tal:content="item/mime"></mime>
+        <compression tal:condition="php: item.compression" tal:content="item/compression"></compression>
+      </format>
+      <scanning tal:condition="php: item.sourcetype OR item.scanningagency OR item.devicesource OR item.manufacturer OR item.model OR item.software">
+        <niso:sourcetype tal:condition="php: item.sourcetype" tal:content="item/sourcetype"></niso:sourcetype>
+        <niso:scanningagency tal:condition="php: item.scanningagency" tal:content="item/scanningagency"></niso:scanningagency>
+        <niso:devicesource tal:condition="php: item.devicesource" tal:content="item/devicesource"></niso:devicesource>
+        <niso:scanningsystem tal:condition="php: item.manufacturer OR item.model OR item.software">
+          <niso:manufacturer tal:condition="php: item.manufacturer" tal:content="item/manufacturer"></niso:manufacturer>
+          <niso:model tal:condition="php: item.model" tal:content="item/model"></niso:model>
+          <niso:software tal:condition="php: item.software" tal:content="item/software"></niso:software>
+        </niso:scanningsystem>
+      </scanning>
+      <datetimecreated tal:condition="php: item.datetimecreated" tal:content="item/datetimecreated"></datetimecreated>
+      <target tal:condition="php: item.target" tal:repeat="target item/target">
+        <niso:targetType tal:condition="target/targetType" tal:content="target/targetType"></niso:targetType>
+        <niso:targetID tal:condition="target/targetID" tal:content="target/targetID"></niso:targetID>
+        <niso:imageData tal:condition="target/imageData" tal:content="target/imageData"></niso:imageData>
+        <niso:performanceData tal:condition="target/performanceData" tal:content="target/performanceData"></niso:performanceData>
+        <niso:profiles tal:condition="target/profiles" tal:content="target/profiles"></niso:profiles>
+      </target>
+      <span tal:omit-tag="" tal:condition="php: item.altimg">
+        <tal:block tal:repeat="altimg item/altimg">
+          <altimg tal:attributes="imggroupID php: (altimg.altimg_imggroupID) ? altimg.altimg_imggroupID : NULL">
+            <usage tal:condition="altimg/altimg_usage" tal:repeat="usage altimg/altimg_usage" tal:content="usage/altimg_usage_value"></usage>
+            <file Location="URL" tal:attributes="xlink:href php: './Immagini/' . ( (altimg.altimg_imggroupID) ? altimg.altimg_imggroupID . '/' : altimg.altimg_usage[0].altimg_usage_value . '/' ) . item.nomenclature . '.jpg'"/>
+            <md5 tal:condition="altimg/altimg_md5" tal:content="altimg/altimg_md5"></md5>
+            <filesize tal:condition="altimg/altimg_filesize" tal:content="altimg/altimg_filesize"></filesize>
+            <image_dimensions>
+              <niso:imagelength tal:condition="php: altimg.altimg_imagelength" tal:content="altimg/altimg_imagelength"></niso:imagelength>
+              <niso:imagewidth tal:condition="php: altimg.altimg_imagewidth" tal:content="altimg/altimg_imagewidth"></niso:imagewidth>
+              <niso:source_xdimension tal:condition="php: altimg.altimg_source_xdimension" tal:content="altimg/altimg_source_xdimension"></niso:source_xdimension>
+              <niso:source_ydimension tal:condition="php: altimg.altimg_source_ydimension" tal:content="altimg/altimg_source_ydimension"></niso:source_ydimension>
+            </image_dimensions>
+            <image_metrics tal:condition="php: altimg.altimg_samplingfrequencyunit OR altimg.altimg_samplingfrequencyplane OR altimg.altimg_xsamplingfrequency OR altimg.altimg_ysamplingfrequency OR altimg.altimg_bitpersample OR altimg.altimg_photometricinterpretation">
+              <niso:samplingfrequencyunit tal:condition="php: altimg.altimg_samplingfrequencyunit" tal:content="altimg/altimg_samplingfrequencyunit"></niso:samplingfrequencyunit>
+              <niso:samplingfrequencyplane tal:condition="php: altimg.altimg_samplingfrequencyplane" tal:content="altimg/altimg_samplingfrequencyplane"></niso:samplingfrequencyplane>
+              <niso:xsamplingfrequency tal:condition="php: altimg.altimg_xsamplingfrequency" tal:content="altimg/altimg_xsamplingfrequency"></niso:xsamplingfrequency>
+              <niso:ysamplingfrequency tal:condition="php: altimg.altimg_ysamplingfrequency" tal:content="altimg/altimg_ysamplingfrequency"></niso:ysamplingfrequency>
+              <niso:bitpersample tal:condition="php: altimg.altimg_bitpersample" tal:content="altimg/altimg_bitpersample"></niso:bitpersample>
+              <niso:photometricinterpretation tal:condition="php: altimg.altimg_photometricinterpretation" tal:content="altimg/altimg_photometricinterpretation"></niso:photometricinterpretation>
+            </image_metrics>
+            <ppi tal:condition="php: item.ppi" tal:content="item/ppi"></ppi>
+            <dpi tal:condition="php: item.dpi" tal:content="item/dpi"></dpi>
+            <format tal:condition="php: item.name OR item.mime OR item.compression">
+              <name tal:condition="php: item.name" tal:content="item/name"></name>
+              <mime tal:condition="php: item.mime" tal:content="item/mime"></mime>
+              <compression tal:condition="php: item.compression" tal:content="item/compression"></compression>
+            </format>
+            <scanning tal:condition="php: item.sourcetype OR item.scanningagency OR item.devicesource OR item.manufacturer OR item.model OR item.software">
+              <niso:sourcetype tal:condition="php: item.sourcetype" tal:content="item/sourcetype"></niso:sourcetype>
+              <niso:scanningagency tal:condition="php: item.scanningagency" tal:content="item/scanningagency"></niso:scanningagency>
+              <niso:devicesource tal:condition="php: item.devicesource" tal:content="item/devicesource"></niso:devicesource>
+              <niso:scanningsystem tal:condition="php: item.manufacturer OR item.model OR item.software">
+                <niso:manufacturer tal:condition="php: item.manufacturer" tal:content="item/manufacturer"></niso:manufacturer>
+                <niso:model tal:condition="php: item.model" tal:content="item/model"></niso:model>
+                <niso:software tal:condition="php: item.software" tal:content="item/software"></niso:software>
+              </niso:scanningsystem>
+            </scanning>
+            <datetimecreated tal:condition="php: item.datetimecreated" tal:content="item/datetimecreated"></datetimecreated>
+          </altimg>
+        </tal:block>
+      </span>
+        <note tal:condition="php: item.note" tal:content="item/note"></note>
+      </img>
+    </tal:block>
+</metadigit>

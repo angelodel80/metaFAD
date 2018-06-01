@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="logs_tbl" model:usePrefix="true">
+
+    <model:Query name="report" type="function">
+    <![CDATA[
+        $expr = $iterator->expr();
+
+        $iterator->join("t1", $this->tablePrefix."users_tbl", "t2", $expr->eq("t1.log_FK_user_id", "t2.user_id"))
+            ->where('log_group', 'audiction')
+            ->limit(0, 10)
+            ->orderBy('log_date', 'DESC');
+    ]]>
+    </model:Query>
+
+    <model:Query name="userFromId" type="function" arguments="id">
+        <![CDATA[
+        $expr = $iterator->expr();
+
+        $iterator->join("t1", $this->tablePrefix."users_tbl", "t2", $expr->eq("t1.log_FK_user_id", "t2.user_id"))
+            ->where('log_group', 'audiction')
+            ->where('log_FK_user_id', $id)
+            ->limit(0, 1);
+    ]]>
+    </model:Query>
+
+    <model:Query name="reportFromUserId" type="function" arguments="id">
+        <![CDATA[
+        $expr = $iterator->expr();
+        $document = org_glizy_objectFactory::createObject('org.glizy.dataAccessDoctrine.ActiveRecordDocument');
+
+
+        if($id) {
+        $iterator->join("t1", $this->tablePrefix."users_tbl", "t2", $expr->eq("t1.log_FK_user_id", "t2.user_id"))
+            ->where('log_group', 'audiction')
+            ->where('log_FK_user_id', $id)
+            ->limit(0, 10)
+            ->orderBy('log_date', 'DESC');
+        }
+        else {
+        $iterator->join("t1", $this->tablePrefix."users_tbl", "t2", $expr->eq("t1.log_FK_user_id", "t2.user_id"))
+            ->where('log_group', 'audiction')
+            ->where('log_FK_user_id', $document->getUserId())
+            ->limit(0, 10)
+            ->orderBy('log_date', 'DESC');
+        }
+    ]]>
+    </model:Query>
+
+
+</model:Model>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    controllerName="metafad.uploader.controllers.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml" />
+
+    <mvc:State name="index">
+      <cms:FormEdit id="editForm" enctype="multipart/form-data">
+        <glz:Input id="fileuploader" label="{i18n:GLZ_UPLOAD}" data="type=file;fieldsetid=medias;maxfiles=1;acceptedfiles=.zip;maxfilesize=2048" />
+        <glz:Fieldset id="medias" label="File caricato su server" data="type=repeat;collapsable=false;noAddRowButton=true">
+            <glz:Hidden id="__uploadFilename" />
+            <glz:Hidden id="__originalFileName" />
+        </glz:Fieldset>
+        <glz:List id="format" label="{i18n:Formato}" size="90" required="true">
+            <glz:ListItem key="sbn" value="SBN" />
+            <glz:ListItem key="sbnaut" value="SBN (AUT)" />
+        </glz:List>
+        <cms:FormButtonsPanel id="formButtons">
+  				<glz:HtmlButton label="{i18n:Upload}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=upload" />
+  			</cms:FormButtonsPanel>
+      </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="upload">
+    </mvc:State>
+</mvc:Page>

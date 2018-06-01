@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.users.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          defaultAction="editPersonal"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="editPersonal" label="{i18n:Scheda}" draw="false">
+      <glz:DataDictionary id="usergroupsDP" recordClassName="org.glizycms.groupManager.models.UserGroup" field="usergroup_id,usergroup_name" />
+        <cms:FormEdit id="editForm" newCode="true"
+                      controllerName="metafad.usersAndPermissions.users.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="org.glizy.models.User"/>
+            <glz:Input id="user_firstName" label="{i18n:Nome}" required="true"/>
+            <glz:Input id="user_lastName" label="{i18n:Cognome}" required="true"/>
+            <glz:Input id="user_email" label="{i18n:Email}" type="email" required="true"/>
+            <glz:Input id="user_loginId" label="{i18n:Nome utente}" required="true"/>
+            <glz:Input id="user_password" label="{i18n:Password}" type="password" required="true"/>
+            <glz:List id="user_FK_usergroup_id" label="{i18n:GLZ_USER_GROUP}" dataProvider="{usergroupsDP}" emptyValue="-" required="true" readOnly="true"/>
+            <glz:Checkbox id="user_isActive" label="{i18n:Attivo}" type="checkbox" readOnly="true"/>
+            <glz:Fieldset data="type=repeat;collapsable=false;repeatMin=0" id="instituteAndRole"
+                          label="{i18n:Istituto e Ruolo}" required="false" >
+                <com:Container cssClass="userInstitute col-lg-5 col-md-5 col-sm-12">
+                    <glz:Input
+                    data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.usersAndPermissions.institutes.models.proxy.InstitutesProxy;return_object=true"
+                    id="institute" label="" required="true" readOnly="true"/>
+                </com:Container>
+                <com:Container cssClass="userRole col-lg-6 col-md-6 col-sm-12">
+                <glz:Input
+                    data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.usersAndPermissions.roles.models.proxy.RolesContentProxy;return_object=true"
+                    id="roles" label="" required="true" readOnly="true"/>
+                </com:Container>
+            </glz:Fieldset>
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClosePersonal" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" cssClass="btn btn-flat js-glizycms-cancel" routeUrl="link"
+                                data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+</mvc:Page>

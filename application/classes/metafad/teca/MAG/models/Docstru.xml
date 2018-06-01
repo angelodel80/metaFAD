@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="documents_stru_tbl"
+    model:usePrefix="false">
+
+    <model:Query name="publications" type="function">
+      <![CDATA[
+          $iterator
+          ->where('docstru_parentId', 0)
+          ->orderBy('docstru_title','ASC');
+      ]]>
+    </model:Query>
+
+    <model:Query name="joinDocstru" type="function" arguments="id">
+      <![CDATA[
+          $iterator->join('t1', 'documents_detail_tbl', 't2', 't1.docstru_FK_document_id = t2.document_detail_FK_document_id')
+                   ->where('docstru_FK_document_id', $id);
+      ]]>
+    </model:Query>
+</model:Model>

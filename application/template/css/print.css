@@ -1,0 +1,44 @@
+body {
+	width: 100%;
+	margin: 0;
+	float: none;
+	background: #fff url(none);
+	font-size:16px;
+    font-family:Arial, sans-serif;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-family:Arial, sans-serif;
+	color: #000;
+}
+h1 { font-size: 40px; }
+h2 { font-size: 30px; }
+h3 { font-size: 25px; }
+h4 { font-size: 20px; font-variant: small-caps; }
+h5 { font-size: 18px; }
+h6 { font-size: 16px; font-style: italic; }
+
+a:link, a:visited {
+	color: #000;
+	text-decoration: none; }
+
+a:link:after, a:visited:after {
+	content: " (" attr(href) ") ";
+    display:none!important;
+}
+
+/* custom */
+
+.main-sidebar, .content-header, .phpdebugbar, .tab-content, .nav, .formButtons, .select2-container {
+    display:none!important;
+}
+
+.ui-dialog-content ui-widget-content {
+    height:auto!important;
+    min-height:auto!important;
+    max-height:auto!important;
+    border:1px solid yellow!important;
+}
+
+.form-horizontal.row-fluid.stickyForm {
+    position:relative!important;
+}

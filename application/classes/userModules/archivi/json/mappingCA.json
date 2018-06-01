@@ -1,0 +1,45 @@
+{
+  "archivi.models.ComplessoArchivistico" : {
+    "livello_descrizione" : ["livelloDiDescrizione"],
+    "denominazione" : ["denominazione","altraDenominazione"],
+    "crono_denominazione" : ["cronologia"],
+    "cronologia_principale:estremo_remoto" : ["cronologia.estremoRemoto_data"],
+    "cronologia_principale:estremo_recente" : ["cronologia.estremoRecente_data"],
+    "cronologia_principale:estremo_remoto_sec" : ["cronologia.estremoRemoto_secolo","cronologia.estremoRemoto_specifica"],
+    "cronologia_principale:estremo_recente_sec" : ["cronologia.estremoRecente_secolo","cronologia.estremoRecente_specifica"],
+    "cronologia_datazione_ECT" : ["cronologia.estremoCronologicoTestuale"],
+    "denominazione_all_intestazione" : ["denominazione","cronologia.estremoCronologicoTestuale"],
+    "descrizione" : ["descrizioneContenuto"],
+    "descrizione_all" : ["descrizioneContenuto","storiaArchivistica","criteriOrdinamento"],
+    "produttore" : ["link:soggettoProduttore"],
+    "conservatore" : ["link:soggettoConservatore"],
+    "strumenti" : ["link:strumentiRicerca"]
+  },
+  "archivi.models.ProduttoreConservatore" : {
+    "en:tipologia" : ["tipologiaChoice"],
+    "tipologiaEnte" : ["tipologiaEnte"],
+    "condizione_giuridica" : ["condizioneGiuridica"],
+    "en:denominazione" : ["ente_famiglia_denominazione","denominazionePrincipalePersona"],
+    "en:cronologia_principale:estremo_remoto" : ["cronologiaEnte.Ente_remoto_data","cronologiaPersona.estremoRemoto_data","cronologiaFamiglia.estremoRemoto_data"],
+    "en:cronologia_principale:estremo_recente" : ["cronologiaEnte.Ente_recente_data","cronologiaPersona.estremoRecente_data","cronologiaFamiglia.estremoRecente_data"],
+    "en:cronologia_principale:estremo_remoto_sec" : ["cronologiaEnte.Ente_remoto_secolo","cronologiaPersona.estremoRemoto_secolo","cronologiaFamiglia.estremoRemoto_secolo","cronologiaEnte.Ente_remoto_specifica","cronologiaPersona.estremoRemoto_specifica","cronologiaFamiglia.estremoRemoto_specifica"],
+    "en:cronologia_principale:estremo_recente_sec" : ["cronologiaEnte.Ente_recente_secolo","cronologiaPersona.estremoRecente_secolo","cronologiaFamiglia.estremoRecente_secolo","cronologiaEnte.Ente_recente_specifica","cronologiaPersona.estremoRecente_specifica","cronologiaFamiglia.estremoRecente_specifica"],
+    "en:cronologia_datazione_ECT" : ["cronologiaEnte.estremoCronologicoTestuale","cronologiaPersona.estremoCronologicoTestuale","cronologiaFamiglia.estremoCronologicoTestuale"],
+    "en:denominazione_all_intestazione" : ["ente_famiglia_denominazione","denominazionePrincipalePersona"],
+    "en:luogo" : ["luogoEnte","luogoPersona","luogoFamiglia"],
+    "en:luogo_crono" : ["luogoEnte.estremoCronologicoTestuale","luogoPersona.estremoCronologicoTestuale","luogoFamiglia.estremoCronologicoTestuale"],
+    "en:luogo_qualifica" : ["luogoEnte.luogoEnte_qualificaLuogo","luogoPersona.luogoPersona_qualificaLuogo","luogoFamiglia.luogoFamiglia_qualificaLuogo"],
+    "en:luogo_all_intestazione" : ["luogoEnte","luogoPersona","luogoFamiglia"],
+    "en:descrizione_produttore" : ["storiaBiografiaStrutturaAmministrativa"],
+    "en:descrizione_conservatore" : ["cenniStoriciIstituzionali","sog_cons_patrimonio","sog_cons_note"],
+    "en:descrizione_all" : ["storiaBiografiaStrutturaAmministrativa","cenniStoriciIstituzionali","sog_cons_patrimonio","sog_cons_note"]
+  },
+  "archivi.models.SchedaStrumentoRicerca" : {
+    "st:tipologia" : ["tipologiaScelta"],
+    "st:titolo" : ["titoloNormalizzato","titoloOriginaleStrumento"],
+    "st:redazione" : ["modalitaRedazioneScelta"],
+    "st:edito" : ["edito"],
+    "st:autore" : ["autoreStrumentoRicerca"],
+    "st:crono" : ["cronologiaRedazione.estremoCronologicoTestuale"]
+  }
+}

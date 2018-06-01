@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="thesaurusdetails_tbl" model:usePrefix="true">
+
+    <model:Query name="deleteTerms">
+    <![CDATA[
+        DELETE FROM ##TABLE_NAME##
+        WHERE thesaurusdetails_FK_thesaurus_id = :dictionaryId
+    ]]>
+    </model:Query>
+
+    <model:Query name="deleteTermsByKey">
+    <![CDATA[
+        DELETE FROM ##TABLE_NAME##
+        WHERE thesaurusdetails_FK_thesaurus_id = :id AND thesaurusdetails_key = :key 
+    ]]>
+    </model:Query>
+</model:Model>
+

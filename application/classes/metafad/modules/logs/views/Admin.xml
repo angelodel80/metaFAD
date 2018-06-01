@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:s="metafad.modules.logs.views.components.*"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml" />
+    <mvc:State name="index">
+        <cms:FormEdit></cms:FormEdit>
+        <s:SearchLog id="filters" setRequest="true" cssClass="form-horizontal clearfix" addValidationJs="false">
+            <glz:Input id="filterDescription" label="{i18n:Ricerca}" value="{filters}" cssClass="long" />
+            <glz:List id="filterLevel" value="{filters}" >
+                    <glz:ListItem id="logLevel0" key="" value="Tutti" />
+                    <glz:ListItem id="logLevel2" key="2" value="Operazioni" />
+                    <glz:ListItem id="logLevel4" key="4" value="Azioni" />
+                    <glz:ListItem id="logLevel16" key="16" value="Errori" />
+            </glz:List>
+            <glz:Date id="dateFrom" label="Dal" value="{filters}" cssClass="short" />
+            <glz:Date id="dateTo"   label="al" defaultNow="true" cssClass="short" />
+            <glz:HtmlButton id="updateFilter" label="{i18n:Cerca}" value="SEARCH" target="{filters}" cssClass="btn btn-primary" />
+            <glz:HtmlButton id="updateFilterReset" label="{i18n:Nuova Ricerca}" value="RESET" target="{filters}" cssClass="btn" />
+        </s:SearchLog>
+
+        <glz:DataProvider id="dp" recordClassName="org.glizy.models.Log" query="report" />
+
+        <!-- Grid di visualizzazione -->
+        <glz:DataGrid id="dataGrid" dataProvider="{dp}" tableCssClass="table table-striped table-bordered datagrid" cssClass="odd,even" paginate="{paginate}" filters="{filters}" orderStyle="BLACK" orderDirection="DESC">
+            <glz:DataGridColumn columnName="log_id" visible="false" key="true"/>
+            <glz:DataGridColumn columnName="log_date" headerText="{i18n:Data}"/>
+            <glz:DataGridColumn columnName="user_firstName" headerText="{i18n:Operatore}" renderCell="metafad.modules.logs.views.renderers.CellUser" />
+            <glz:DataGridColumn columnName="log_level" headerText="{i18n:Livello}" renderCell="metafad.modules.logs.views.renderers.CellLevel"/>
+            <glz:DataGridColumn columnName="log_message" headerText="{i18n:Messaggio}" renderCell="metafad.modules.logs.views.renderers.CellMessage"/>
+            <glz:DataGridColumn columnName="log_group" headerText="{i18n:Gruppo}" visible="false" />
+        </glz:DataGrid>
+
+        <!-- Paginazione -->
+        <glz:PaginateResult id="paginate" showDisabledLinks="true" pageLength="30" cssClass="pagination" />
+    </mvc:State>
+</mvc:Page>

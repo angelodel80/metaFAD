@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+		xmlns:glz="http://www.glizy.org/dtd/1.0/"
+		xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+		model:tableName="metafad.teca.MAG.models.Publication" model:usePrefix="true" model:type="document">
+
+		<model:Define>
+			<!-- system -->
+			<model:Field name="title" type="string" length="255" />
+			<model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+			<model:Field name="docstru_id" type="int" index="true" />
+			<model:Field name="docstru_type" type="string" index="true" />
+			<model:Field name="docstru_parentId" type="int" index="true" />
+			<model:Field name="docstru_rootId" type="int" index="true" />
+
+			<model:Field name="imggroupID" type="string" />
+			<model:Field name="sequence_number" type="int" />
+			<model:Field name="usage" type="int" />
+			<model:Field name="side" type="string" />
+			<model:Field name="file_href" type="string" />
+			<model:Field name="md5" type="string" />
+			<model:Field name="filesize" type="int" />
+			<model:Field name="imagelength" type="int" />
+			<model:Field name="imagewidth" type="int" />
+	  		<model:Field name="datetimecreated" type="datetime" validator="datetime,notnull" index="true" />
+
+			<model:Field name="altimg" type="object" readFormat="false" />
+		</model:Define>
+</model:Model>

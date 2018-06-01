@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="relations_tbl" model:usePrefix="true">
+
+
+    <model:Query name="getType" arguments="id">
+        <![CDATA[
+            SELECT document_type
+            FROM documents_tbl
+            WHERE document_id = :id
+    	]]>
+    </model:Query>
+
+    <model:Query name="getRelations" type="function">
+      <![CDATA[
+          $iterator->where('relation_FK_document_id',__Request::get('id'))
+                   ->where('relation_roz',false);
+    	]]>
+    </model:Query>
+
+    <model:Query name="getRelationsRoz" type="function">
+      <![CDATA[
+          $el = org_glizy_objectFactory::createModelIterator('metafad.gestioneDati.boards.models.Relations')
+                   ->where('relation_FK_document_id',__Request::get('id'))
+                   ->where('relation_roz',true)
+                   ->first()
+                   ->relation_FK_related_document_id;
+          $iterator->where('relation_FK_related_document_id',$el)
+                   ->where('relation_roz',true);
+    	]]>
+    </model:Query>
+
+    <model:Query name="getInverseRelations" type="function">
+      <![CDATA[
+          $iterator->where('relation_FK_related_document_id',__Request::get('id'))
+                   ->where('relation_roz',false);
+    	]]>
+    </model:Query>
+
+</model:Model>

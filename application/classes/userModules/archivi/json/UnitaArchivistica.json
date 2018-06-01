@@ -1,0 +1,769 @@
+{
+  "id": "UnitaArchivistica",
+  "tabs": [
+    {
+      "id": "tabIdentificazione",
+      "label": "Identificazione",
+      "fields": [
+        {
+          "id": "codici",
+          "type": "Fieldset",
+          "label": "Codici",
+          "children": [
+            {
+              "id": "acronimoSistema",
+              "type": "Input",
+              "label": "Acronimo di sistema",
+              "required": "true",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "acronimoSistema_s"
+              }
+            },
+            {
+              "id": "identificativo",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Identificativo per l'Unità archivistica",
+              "gridField": true,
+              "solr": {
+                "field": "identificativo_s"
+              }
+            },
+            {
+              "id": "codiceIdentificativoSistema",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Codice identificativo di sistema"
+            },
+            {
+              "id": "altriCodiciIdentificativi",
+              "type": "Repeater",
+              "label": "Altri codici identificativi",
+              "children": [
+                {
+                  "id": "altriCodici_codice",
+                  "type": "Input",
+                  "label": "Codice"
+                },
+                {
+                  "id": "altriCodici_qualifica",
+                  "type": "Input",
+                  "label": "Qualifica"
+                }
+              ]
+            },
+            {
+              "id": "codiceIdentificativoPrecedente",
+              "type": "Repeater",
+              "label": "Codice identificativo precedente",
+              "children": [
+                {
+                  "id": "codiciPrecedenti_codice",
+                  "type": "Input",
+                  "label": "Codice"
+                }
+              ]
+            },
+            {
+              "id": "livelloDiDescrizione",
+              "type": "ClosedList",
+              "label": "Livello di descrizione",
+              "gridField" : true,
+              "gridAttributes": {
+                "renderCell": "archivi.views.renderer.CellLivelloDiDescrizione"
+              },
+              "isSectionType": true,
+              "required": true,
+              "valueIds": [
+                "unita",
+                "sottounita",
+                "sottosottounita"
+              ],
+              "values": [
+                "Unità",
+                "Sottounità",
+                "Sottosottounità"
+              ],
+              "solr": {
+                "field": "livelloDiDescrizione_s"
+              }
+            },
+            {
+              "id": "externalID",
+              "type": "Hidden",
+              "label": "ID importazione",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "externalID_s"
+              }
+            }
+          ]
+        },
+        {
+          "id": "collegamenti",
+          "type": "Fieldset",
+          "label": "Collegamenti",
+          "children": [
+            {
+              "id": "parent",
+              "type": "Link",
+              "label": "Livello superiore",
+              "linkTo": "Model",
+              "required": "true",
+              "model": {
+                "type": "array_id",
+                "index": "true"
+              },
+              "solr": {
+                "field": "parent_i",
+                "searchExpr": "@parent[!]->id"
+              }
+            }
+          ]
+        },
+        {
+          "id": "numerazioneDescrizione",
+          "type": "Fieldset",
+          "label": "Numerazione della Descrizione",
+          "children": [
+            {
+              "id": "ordinamentoProvvisorio",
+              "type": "Input",
+              "label": "Numero di ordinamento provvisorio"
+            },
+            {
+              "id": "ordinamentoDefinitivo",
+              "type": "Input",
+              "label": "Numero di ordinamento definitivo"
+            }
+          ]
+        },
+        {
+          "id": "segnature",
+          "type": "Fieldset",
+          "label": "Segnature",
+          "children": [
+            {
+              "id": "segnaturaAttuale",
+              "type": "Input",
+              "label": "Segnatura attuale"
+            },
+            {
+              "id": "segnaturaPrecedente",
+              "type": "Repeater",
+              "label": "Segnatura precedente",
+              "children": [
+                {
+                  "id": "segnatura",
+                  "type": "Input",
+                  "label": "Segnatura Precedente"
+                },
+                {
+                  "id": "qualifica",
+                  "type": "Input",
+                  "label": "Qualifica"
+                }
+              ]
+            },
+            {
+              "id": "codiceDiClassificazione",
+              "type": "Fieldset",
+              "label": "Codice di classificazione",
+              "children": [
+                {
+                  "id": "codiceDiClassificazione",
+                  "type": "Input",
+                  "label": "Codice"
+                },
+                {
+                  "id": "qualificaClassificazione",
+                  "type": "Input",
+                  "label": "Qualifica"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "denominazioneUnita",
+          "type": "Fieldset",
+          "label": "Denominazione (dell'unità descritta)",
+          "children": [
+            {
+              "id": "denominazione",
+              "type": "Input",
+              "label": "Titolo originale",
+              "gridField": true,
+              "gridAttributes": {
+                "renderCell": "archivi.views.renderer.CellDenominazione"
+              },
+              "solr": {
+                "field": "denominazione_s",
+                "searchExpr": "@denominazione|titoloAttribuito"
+              },
+              "attributes": {
+                "data": "type=FormEditMandatory",
+                "cssClass": "form-control denominazioneUnita-onlyOne-mandatory"
+              }
+            },
+            {
+              "id": "integrazioneTitolo",
+              "type": "Input",
+              "label": "Integrazione al titolo"
+            },
+            {
+              "id": "titoloAttribuito",
+              "type": "Input",
+              "label": "Titolo attribuito",
+              "attributes": {
+                "data": "type=FormEditMandatory",
+                "cssClass": "form-control denominazioneUnita-onlyOne-mandatory"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cronologia",
+          "attributes": {
+            "cssClass": "js-archive-cronologia-root"
+          },
+          "type": "Repeater",
+          "overrideType": "repeatQualifica",
+          "label": "Estremi cronologici",
+          "children": [
+            {
+              "id": "estremoCronologicoTestuale",
+              "type": "Input",
+              "label": "Estremo cronologico testuale",
+              "gridField": true,
+              "solr": {
+                "field": "cronologia_s",
+                "searchExpr": "@cronologia->estremoCronologicoTestuale"
+              },
+              "attributes": {
+                "readOnly": "true",
+                "cssClass": "js-archive-cronologia-concatText form-control"
+              }
+            },
+            {
+              "id": "estremoRemoto",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo remoto",
+              "children": [
+                {
+                  "id": "estremoRemoto_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRemoto_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRemoto_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRemoto_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "estremoRecente",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo recente",
+              "children": [
+                {
+                  "id": "estremoRecente_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRecente_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRecente_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRecente_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control select2-container"
+                  }
+                },
+                {
+                  "id": "estremoRecente_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "qualificaData",
+              "type": "ClosedDictionary",
+              "label": "Qualifica della data",
+              "dictionaryId": "VC_ARCHIVE_QUALIFICA_DATA",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-qualifica-data form-control"
+              }
+            },
+            {
+              "id": "qualificaDataAggiunta",
+              "type": "ClosedDictionary",
+              "label": "Qualifica della data",
+              "dictionaryId": "VC_ARCHIVE_QUALIFICA_DATA_AGGIUNTA",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-qualifica-data form-control"
+              }
+            },
+            {
+              "id": "notaDatazione",
+              "type": "RichText",
+              "label": "Nota alla datazione"
+            }
+          ]
+        },
+        {
+          "id": "descrizioneFisica",
+          "type": "Fieldset",
+          "label": "Descrizione fisica",
+          "children": [
+            {
+              "id": "descrizioneFisica_tipologia",
+              "type": "OpenDictionary",
+              "label": "Tipologia",
+              "dictionaryId": "VA_ARCHIVE_DESC_FISICA_TIPOLOGIA"
+            },
+            {
+              "id": "descrizioneFisica_supporto",
+              "type": "OpenDictionary",
+              "label": "Supporto",
+              "dictionaryId": "VA_ARCHIVE_DESC_FISICA_SUPPORTO"
+            },
+            {
+              "id": "descrizioneFisica_consistenza",
+              "type": "Repeater",
+              "label": "Consistenza",
+              "children": [
+                {
+                  "id": "consistenza_tipologia",
+                  "type": "OpenDictionary",
+                  "label": "Tipologia",
+                  "dictionaryId": "VA_ARCHIVE_DESC_FISICA_TIPO_SUPPORTO"
+                },
+                {
+                  "id": "consistenza_supporto",
+                  "type": "OpenDictionary",
+                  "label": "Supporto",
+                  "dictionaryId": "VA_ARCHIVE_DESC_FISICA_SUPPORTO"
+                },
+                {
+                  "id": "consistenza_quantita",
+                  "type": "Input",
+                  "label": "Quantità"
+                }
+              ]
+            },
+            {
+              "id": "integrazioneDescrizione",
+              "type": "RichText",
+              "label": "Integrazione alla descrizione"
+            },
+            {
+              "id": "visualizzazioneConsistenza",
+              "type": "RichText",
+              "label": "Visualizzazione della consistenza"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabContestoProvenienza",
+      "label": "Contesto, contenuto e struttura",
+      "fields": [
+        {
+          "id": "descrizioneContenuto",
+          "type": "RichText",
+          "label": "Descrizione del contentuto"
+        },
+        {
+          "id": "criteriOrdinamento",
+          "type": "RichText",
+          "label": "Criteri di ordinamento"
+        }
+      ]
+    },
+    {
+      "id": "tabCondizioniAccessoRiproduzione",
+      "label": "Condizioni di accesso e di riproduzione",
+      "fields": [
+        {
+          "id": "condizioniAccessoRiproduzione",
+          "type": "RichText",
+          "label": "Condizioni di accesso e riproduzione"
+        }
+      ]
+    },
+    {
+      "id": "tabVociIndice",
+      "label": "Voci di indice",
+      "fields": [
+        {
+          "id": "antroponimi",
+          "type": "Repeater",
+          "label": "Antroponimi",
+          "children": [
+            {
+              "id": "intestazione",
+              "type": "ModalPage",
+              "label": "intestazione",
+              "pageId": "archivi-Antroponimi_popup",
+              "controller": "archivi_controllers_popup_ajax_FindTerm",
+              "model": "archivi.models.Antroponimi"
+            }
+          ]
+        },
+        {
+          "id": "enti",
+          "type": "Repeater",
+          "label": "Enti",
+          "children": [
+            {
+              "id": "intestazione",
+              "type": "ModalPage",
+              "label": "intestazione",
+              "pageId": "archivi-Enti_popup",
+              "controller": "archivi_controllers_popup_ajax_FindTerm",
+              "model": "archivi.models.Enti"
+            }
+          ]
+        },
+        {
+          "id": "toponimi",
+          "type": "Repeater",
+          "label": "Toponimi",
+          "children": [
+            {
+              "id": "intestazione",
+              "type": "ModalPage",
+              "label": "intestazione",
+              "pageId": "archivi-Toponimi_popup",
+              "controller": "archivi_controllers_popup_ajax_FindTerm",
+              "model": "archivi.models.Toponimi"
+            }
+          ]
+        },
+        {
+          "id": "descrittori",
+          "type": "Repeater",
+          "label": "Descrittori",
+          "children": [
+            {
+              "id": "voce",
+              "type": "OpenDictionary",
+              "label": "Voce",
+              "dictionaryId": "VA_ARCHIVE_VOCI_INDICE_DESCRITTORI"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabDocumentazioneCollegataComplementare",
+      "label": "Documentazione collegata e complementare",
+      "fields": [
+        {
+          "id": "documentazioneArchivioCollegata",
+          "type": "Repeater",
+          "label": "Documentazione d'archivio collegata",
+          "children": [
+            {
+              "id": "doc_denominazione",
+              "type": "Input",
+              "label": "Denominazione"
+            },
+            {
+              "id": "doc_descrizione",
+              "type": "RichText",
+              "label": "Descrizione"
+            },
+            {
+              "id": "doc_localizzazioneSegnatura",
+              "type": "Input",
+              "label": "Localizzazione segnatura"
+            },
+            {
+              "id": "doc_url",
+              "type": "Url",
+              "label": "URL"
+            },
+            {
+              "id": "doc_dataInserimento",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control"
+              },
+              "type": "Input",
+              "label": "Data inserimento"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabRiferimentiFonti",
+      "label": "Riferimenti e fonti",
+      "fields": [
+        {
+          "id": "riferimentiBibliografici",
+          "type": "Repeater",
+          "label": "Riferimenti bibliografici",
+          "children": [
+            {
+              "id": "linkRiferimentiBibliografici",
+              "type": "Link",
+              "label": "Riferimenti bibliografici",
+              "linkTo": "SchedaBibliografica"
+            },
+            {
+              "id": "indicazioniSpecifiche",
+              "type": "Input",
+              "label": "Indicazioni specifiche"
+            }
+          ]
+        },
+        {
+          "id": "fontiArchivistiche",
+          "type": "Repeater",
+          "label": "Fonti archivistiche",
+          "children": [
+            {
+              "id": "linkFontiArchivistiche",
+              "type": "Link",
+              "label": "Fonti archivistiche",
+              "linkTo": "FonteArchivistica"
+            }
+          ]
+        },
+        {
+          "id": "riferimentiWeb",
+          "type": "Repeater",
+          "label": "Riferimenti web",
+          "children": [
+            {
+              "id": "rif_denominazioneSitoWeb",
+              "type": "Input",
+              "label": "Denominazione sito o pagina web"
+            },
+            {
+              "id": "rif_descrizione",
+              "type": "RichText",
+              "label": "Descrizione"
+            },
+            {
+              "id": "rif_dataInserimento",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control"
+              },
+              "type": "Input",
+              "label": "Data di inserimento"
+            },
+            {
+              "id": "rif_url",
+              "type": "Url",
+              "label": "URL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabCompilazione",
+      "label": "Compilazione",
+      "fields": [
+        {
+          "id": "linguaDescrizioneRecord",
+          "label": "Lingua di descrizione del record",
+          "type": "ClosedDictionary",
+          "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+        },
+        {
+          "id": "compilazione",
+          "type": "Repeater",
+          "label": "Compilazione",
+          "children": [
+            {
+              "id": "redattore",
+              "type": "Input",
+              "label": "Redattore"
+            },
+            {
+              "id": "azione",
+              "type": "ClosedDictionary",
+              "label": "Azione",
+              "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+            },
+            {
+              "id": "noteRedazionali",
+              "type": "RichText",
+              "label": "Note redazionali"
+            },
+            {
+              "id": "data",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+              },
+              "type": "Input",
+              "label": "Data"
+            }
+          ]
+        },
+        {
+          "id": "osservazioni",
+          "type": "RichText",
+          "label": "Osservazioni"
+        }
+      ]
+    },
+    {
+      "id": "tabMediaCollegati",
+      "label": "Media Collegati ed Ecommerce",
+      "fields": [
+        {
+          "id": "ecommerceLicenses",
+          "type": "Input",
+          "label": "Opzioni ecommerce",
+          "attributes": {
+            "data": "type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true"
+          }
+        },
+        {
+          "id": "visibility",
+          "type": "ClosedList",
+          "label": "Visibilità FE",
+          "noEmptyValue": true,
+          "valueIds": [
+            "rdv",
+            "rd",
+            "r",
+            "0"
+          ],
+          "values": [
+            "Completa (RDV)",
+            "Visibile in ricerca e dettaglio, no viewer (RD)",
+            "Visibile in ricerca, no dettaglio e viewer (R)",
+            "Non visibile"
+          ],
+          "solr": {
+            "field": "visibility_s"
+          }
+        },
+        {
+          "id": "linkedStruMag",
+          "type": "Input",
+          "label": "Metadato strutturale collegato",
+          "attributes": {
+            "data": "type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true"
+          },
+          "model": {
+            "type": "array_id",
+            "index": "true"
+          }
+        },
+        {
+          "id": "mediaCollegati",
+          "type": "Media",
+          "label": "Media Collegati"
+        },
+        {
+          "id": "linkedMediaEcommerce",
+          "type": "Input",
+          "label": "Ecommerce",
+          "attributes": {
+            "data": "type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true",
+            "cssClassLabel": "col-sm-12 control-label",
+            "cssClass": "js-ecommerce"
+          }
+        }
+      ]
+    }
+  ]
+}

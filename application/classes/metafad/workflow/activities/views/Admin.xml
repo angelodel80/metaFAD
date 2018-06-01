@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.workflow.activities.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.workflow.activities#list">
+        <com:DataGridAjax id="dataGrid" recordClassName="metafad.workflow.activities.models.Model"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.workflow.activities.controllers.*" fullTextSearch="false"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="title" headerText="{i18n:Titolo}"
+                                renderCell="org.glizycms.contents.views.renderer.DocumentTitle"/>
+            <glz:DataGridColumn columnName="type" headerText="{i18n:Tipo}"
+                                renderCell="org.glizycms.contents.views.renderer.DocumentTitle"/>
+            <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="org.glizycms.contents.views.renderer.CellEditDelete"/>
+        </com:DataGridAjax>
+        <cmp:AddButton label="" acl="*,new" routeUrl="metafad.workflow.activities" editableRegion="actions"
+                       recordClassName="metafad.workflow.activities.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit" label="{i18n:Scheda}" draw="false">
+        <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.workflow.activities.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.workflow.activities.models.Model"/>
+            <com:Container cssClass="col-sm-12">
+            <com:Container cssClass="col-sm-8">
+                <glz:Input id="title" label="{i18n:Titolo}" size="90" required="true"/>
+            </com:Container>
+            </com:Container>
+            <com:Container cssClass="col-sm-12">
+            <com:Container cssClass="col-sm-8">
+                <glz:Input id="lock" label="{i18n:Bloccante}" type="checkbox" />
+            </com:Container>
+            </com:Container>
+            <com:Container cssClass="col-sm-12">
+            <com:Container cssClass="col-sm-8">
+                <glz:List id="type" label="{i18n:Tipo}" required="true">
+                    <glz:ListItem value="Manuale" key="Manuale"/>
+                    <glz:ListItem value="Sistema" key="Sistema"/>
+                    <glz:ListItem value="Utente" key="Utente"/>
+                </glz:List>
+            </com:Container>
+            </com:Container>
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                                cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.workflow.activities.controllers.Delete"/>
+    </mvc:State>
+
+</mvc:Page>

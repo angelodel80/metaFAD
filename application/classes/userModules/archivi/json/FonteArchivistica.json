@@ -1,0 +1,187 @@
+{
+  "id": "FontiArchivistiche",
+  "tabs": [
+    {
+      "id": "tabIdentificazione",
+      "label": "Identificazione",
+      "fields": [
+        {
+          "id": "codici",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Codici"
+          },
+          "children": [
+            {
+              "id": "acronimoSistema",
+              "type": "Input",
+              "label": "Acronimo di Sistema",
+              "solr": {
+                "field": "acronimoSistema_s"
+              }
+            },
+            {
+              "id": "identificativo",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Identificativo per la Fonte",
+              "gridField": true,
+              "solr": {
+                "field": "identificativo_s"
+              }
+            },
+            {
+              "id": "codiceIdentificativoSistema",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Codice identificativo di Sistema"
+            },
+            {
+              "id": "codiceIdentificativoPrecedente",
+              "type": "Repeater",
+              "label": "Codice identificativo precedente",
+              "children": [
+                {
+                  "id": "codice",
+                  "type": "Input",
+                  "label": "Codice"
+                }
+              ]
+            },
+            {
+              "id": "externalID",
+              "type": "Hidden",
+              "label": "ID importazione",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "externalID_s"
+              }
+            }
+          ]
+        },
+        {
+          "id": "localizzazioneSegnatura",
+          "type": "Input",
+          "label": "Localizzazione segnatura",
+          "model": {
+            "type": "string"
+          }
+        },
+        {
+          "id": "titoloBreve",
+          "type": "Input",
+          "label": "Titolo Breve"
+        },
+        {
+          "id": "titolo",
+          "type": "Input",
+          "label": "Titolo",
+          "required": "true",
+          "gridField": true,
+          "solr": {
+            "field": "denominazione_s"
+          }
+        },
+        {
+          "id": "descrizione",
+          "type": "RichText",
+          "label": "Descrizione"
+        }
+      ]
+    },
+    {
+      "id": "tabRiferimentiWeb",
+      "label": "Riferimenti Web",
+      "fields": [
+        {
+          "id": "riferimentiWeb",
+          "type": "Repeater",
+          "label": "Riferimenti web",
+          "children": [
+            {
+              "id": "denominazioneSitoWeb",
+              "type": "Input",
+              "label": "Denominazione sito o pagina web"
+            },
+            {
+              "id": "descrizione",
+              "type": "RichText",
+              "label": "Descrizione"
+            },
+            {
+              "id": "dataInserimento",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control"
+              },
+              "type": "Input",
+              "label": "Data di inserimento"
+            },
+            {
+              "id": "url",
+              "type": "Url",
+              "label": "URL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabCompilazione",
+      "label": "Compilazione",
+      "fields": [
+        {
+          "id": "linguaDescrizioneRecord",
+          "label": "Lingua di descrizione del record",
+          "type": "ClosedDictionary",
+          "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+        },
+        {
+          "id": "compilazione",
+          "type": "Repeater",
+          "label": "Compilazione",
+          "children": [
+            {
+              "id": "redattore",
+              "type": "Input",
+              "label": "Redattore"
+            },
+            {
+              "id": "azione",
+              "type": "ClosedDictionary",
+              "label": "Azione",
+              "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+            },
+            {
+              "id": "noteRedazionali",
+              "type": "RichText",
+              "label": "Note redazionali"
+            },
+            {
+              "id": "data",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+              },
+              "type": "Input",
+              "label": "Data"
+            }
+          ]
+        },
+        {
+          "id": "osservazioni",
+          "type": "RichText",
+          "label": "Osservazioni"
+        }
+      ]
+    }
+  ]
+}

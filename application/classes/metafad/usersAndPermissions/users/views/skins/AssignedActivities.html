@@ -1,0 +1,214 @@
+<div class="box box-solid box-bigheader">
+    <div tal:repeat="item Component/records">
+        <div tal:condition="php:item.activity AND !item.activity.lock" class="row activitiesInstance">
+            <div class="col-md-5">
+                <h4 tal:content="item/activity/title"/>
+
+                <p class="relatedProcess" tal:content="item/processTitle"></p>
+                <span tal:condition="item/boardType">Scheda </span><span tal:content="item/boardType"></span>
+                <span tal:condition="item/startingBoardId">, da </span><span tal:content="item/startingBoardId"></span>
+                <span tal:condition="item/endingBoardId"> a </span><span tal:content="item/endingBoardId"></span>
+            </div>
+            <div class="rightControls">
+                <div class="activitiesInstanceWidgetAccessory">
+                    <input tal:attributes="value item/percentage | '0'" class="knob" data-width="45" data-height="45"
+                           data-readOnly="true" data-displayInput="false" data-thickness="0.3"
+                           data-fgColor="#f39c12"/><label for="knob"
+                                                          tal:content="string: ${item/percentage | '0'}%"></label>
+
+                    <div class="activityInstanceDeadlineDate" tal:condition="item/deadlineDate">
+                        <div class="month" tal:content="php: substr(item.deadlineDate, 3, 2)"></div>
+                        <div class="day" tal:content="php: substr(item.deadlineDate, 0, 2)"></div>
+                    </div>
+                    <div class="activityInstanceNotesButton" tal:condition="item/notes">
+                        <i class="fa fa-comment-o"></i>
+                        <label for="notes" tal:content="php: count(item.notes)" data-toggle="popover"
+                               data-placement="bottom" tal:attributes="popoverNoteId item/activity/id"></label>
+                    </div>
+                    <div tal:attributes="popverNoteContentId item/activity/id" style="display:none">
+                        <div class="notes" tal:condition="item/notes" tal:repeat="note item/notes">
+                            <div class="noteItem">
+                                <div class="noteInfo">
+                                    <span tal:content="note/created_by"></span>
+                                    <span tal:content="note/created_at"></span>
+                                </div>
+                                <span class="note" tal:content="note/detail"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('label[for=notes]').popover({
+                                html: true,
+                                content: function () {
+                                    return $('div[popverNoteContentId=' + $(this).attr('popoverNoteId') + ']').html()
+                                }
+                            });
+                        });
+                    </script>
+
+                </div>
+                <div class="activitiesInstanceWidgetButtons">
+
+
+                    <div id="newNoteBtn" class="addNoteButton" data-toggle="popover" data-placement="bottom"
+                         tal:attributes="instanceActivityId item/document_id">Aggiungi una nota
+                    </div>
+                    <div id="newNote" class="newNote" tal:attributes="instanceActivityId item/document_id">
+                        <textarea name="newNote" title="newNote" class="form-control " wrap="off"
+                                  placeholder="Testo della nota"
+                                  tal:attributes="instanceActivityId item/document_id; processId item/processId"
+                                  style="resize:none"></textarea>
+
+                        <div class="buttons">
+                            <input class="btn btn-flat btn-info" value="Invia" type="button"
+                                   data-action="addNote"></input>
+                        </div>
+                    </div>
+
+
+
+                    <span class="toggleComplete"
+                          tal:attributes="instanceActivityId item/document_id; processId item/processId">Segna come completato</span>
+
+
+                    <div id="updatePercentageBtn" class="updatePercentageButton" data-toggle="popover"
+                         data-placement="bottom"
+                         tal:attributes="instanceActivityId item/document_id">Aggiorna stato
+                    </div>
+                    <div id="updatePercentage" class="updatePercentage"
+                         tal:attributes="instanceActivityId item/document_id">
+                        <textarea name="updatePercentage" title="updatePercentage" class="form-control " wrap="off"
+                                  placeholder="Percentuale"
+                                  tal:attributes="instanceActivityId item/document_id; processId item/processId"
+                                  style="resize:none"></textarea>
+
+                        <div class="buttons">
+                            <input class="btn btn-flat btn-info" value="Conferma" type="button"
+                                   data-action="updatePercentage"></input>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div tal:condition="php:item.activity AND item.activity.lock" class="row activitiesInstance lock">
+                <div class="col-md-5">
+                    <h4 tal:content="item/activity/title"/>
+
+                    <p class="relatedProcess" tal:content="item/processTitle"></p>
+                    <span tal:condition="item/boardType">Scheda </span><span tal:content="item/boardType"></span>
+                    <span tal:condition="item/startingBoardId">, da </span><span
+                        tal:content="item/startingBoardId"></span>
+                    <span tal:condition="item/endingBoardId"> a </span><span tal:content="item/endingBoardId"></span>
+                </div>
+                <div class="rightControls">
+                    <div class="activitiesInstanceWidgetAccessory">
+                        <input value="20" class="knob" data-width="45" data-height="45" data-readOnly="true"
+                               data-displayInput="false" data-thickness="0.3" data-fgColor="#f39c12"/><label
+                            for="knob">20%</label>
+                    </div>
+                    <div class="activitiesInstanceWidgetButtons">
+                        <span>Aggiungi nota</span>
+                        <span class="middle">Segna come completato</span>
+                        <span>Aggiorna stato</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="addNoteJSButton" class="btn btn-flat btn-info js-glizycms-save" value="Invia" type="button"
+       data-action="addNote" style="display: none"></input>
+<input id="toggleCompleteJSButton" class="js-glizycms-save" value="Segna come completato"
+       type="button"
+       data-action="toggleComplete"
+       style="display: none"></input>
+<input id="updatePercentageJSButton" class="btn btn-flat btn-info js-glizycms-save" value="Invia" type="button"
+       data-action="updatePercentage" style="display: none"></input>
+<script type="text/javascript">
+    $(function () {
+        function getMonthByNumber(month) {
+            switch (month) {
+                case '01':
+                    return 'Gennaio';
+                    break;
+                case '02':
+                    return 'Febbraio';
+                    break;
+                case '03':
+                    return 'Marzo';
+                    break;
+                case '04':
+                    return 'Aprile';
+                    break;
+                case '05':
+                    return 'Maggio';
+                    break;
+                case '06':
+                    return 'Giugno';
+                    break;
+                case '07':
+                    return 'Luglio';
+                    break;
+                case '08':
+                    return 'Agosto';
+                    break;
+                case '09':
+                    return 'Settembre';
+                    break;
+                case '10':
+                    return 'Ottobre';
+                    break;
+                case '11':
+                    return 'Novembre';
+                    break;
+                case '12':
+                    return 'Dicembre';
+                    break;
+            }
+        }
+
+        $('.toggleComplete').each(function () {
+            $(this).click(function () {
+                $('#processId').val($(this).attr('processId'));
+                $('#instanceActivityId').val($(this).attr('instanceActivityId'));
+                $('#toggleCompleteJSButton').click();
+            });
+        });
+
+        $('.activityInstanceDeadlineDate .month').each(function () {
+            $(this).html(getMonthByNumber($(this).html()));
+        });
+
+        $('.addNoteButton').popover({
+            html: true,
+            content: function () {
+                return $('.newNote[instanceActivityId=' + $(this).attr('instanceActivityId') + ']').html()
+            }
+        });
+
+        $('.updatePercentageButton').popover({
+            html: true,
+            content: function () {
+                return $('.updatePercentage[instanceActivityId=' + $(this).attr('instanceActivityId') + ']').html()
+            }
+        });
+
+        $('body').on('change', '.activitiesInstanceWidgetButtons .popover-content textarea', function () {
+            $('#newNoteValue').val($(this).val());
+            $('#updatePercentageValue').val($(this).val());
+            $('#instanceActivityId').val($(this).attr('instanceActivityId'));
+            $('#processId').val($(this).attr('processId'));
+        });
+
+        $('body').on('click', '.activitiesInstanceWidgetButtons .popover-content input[data-action=updatePercentage]', function () {
+            $('#updatePercentageJSButton').click();
+        });
+
+        $('body').on('click', '.activitiesInstanceWidgetButtons .popover-content input[data-action=addNote]', function () {
+            $('#addNoteJSButton').click();
+        });
+    });
+
+</script>

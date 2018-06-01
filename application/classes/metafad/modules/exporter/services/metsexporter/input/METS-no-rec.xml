@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<envelope:envelope xsi:schemaLocation="http://san.beniculturali.it/envelope-san/ http://san.beniculturali.it/tracciato/envelope-san.xsd" xmlns:mets="http://san.mibac.it/mets-san/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:metsrights="http://san.mibac.it/metsrights-lite/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:envelope="http://san.beniculturali.it/envelope-san/">
+    <envelope:header CREATED="2015-12-09T17:20:51.475+01:00">
+        <envelope:source></envelope:source>
+    </envelope:header>
+    <envelope:recordList>
+    </envelope:recordList>
+</envelope:envelope>

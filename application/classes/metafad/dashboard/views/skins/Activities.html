@@ -1,0 +1,21 @@
+<div tal:condition="Component/total" class="box box-solid box-bigheader">
+	<div class="box-header with-border">
+	   <div class="box-tools">
+		   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-caret-down"></i></button>
+		</div>
+		<i class="fa fa-history"></i>
+		<h3 class="box-title">Ultime attività</h3>
+	</div>
+	<div id="chat-box" class="box-body chat">
+		<div class="item" tal:repeat="item Component/records">
+			<img class="online" alt="user image" src="application/template/img/avatar.png" />
+			<p class="message">
+				<a class="name" href="#">
+					<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <span tal:content="item/log_date" /></small>
+					<span tal:content="structure item/user_firstName" />
+				</a>
+				<span tal:content="structure item/log_message" />
+			</p>
+		</div>
+	</div>
+</div>

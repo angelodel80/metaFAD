@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:iccd="metafad.modules.thesaurus.views.components.*"
+          xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          xmlns:ss="metafad.gestioneDati.schedeSemplificate.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+      <com:DataGridAjax id="dataGridForms" recordClassName="metafad.gestioneDati.schedeSemplificate.models.Model"
+                        cssClass="table table-bordered table-striped"
+                        fullTextSearch="true"
+                        JQueryUI="true">
+        <glz:DataGridColumn columnName="name" headerText="{i18n:Nome}"/>
+        <glz:DataGridColumn columnName="form" headerText="{i18n:Scheda originale}" renderCell="metafad.gestioneDati.schedeSemplificate.views.renderer.CellForm"/>
+        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDeleteSS" />
+      </com:DataGridAjax>
+      <iccd:AddButton label="" acl="*,edit" routeUrl="actionsMVCAdd" editableRegion="actions" add="Aggiungi scheda" recordClassName="metafad.gestioneDati.schedeSemplificate.models.Model" dataGridAjaxId="dataGridForms"/>
+    </mvc:State>
+
+    <mvc:State name="edit">
+      <glz:JSscript folder="metafad/gestioneDati/schedeSemplificate/js"/>
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.gestioneDati.schedeSemplificate.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.gestioneDati.schedeSemplificate.models.Model"/>
+        <glz:Hidden id="oldName"/>
+        <glz:Input id="name" label="{i18n:Nome}" required="true"/>
+        <glz:Input id="form" label="{i18n:Scheda originale}" required="true" data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.gestioneDati.schedeSemplificate.models.proxy.ModulesSimpleProxy;return_object=true;"/>
+        <!-- <glz:Input id="document_detail_status" label="{i18n:Pubblicata}" type="checkbox"/> -->
+        <glz:Hidden id="fieldJson"/>
+
+        <ss:FieldsList id="fieldList" moduleName=""/>
+
+        <cms:FormButtonsPanel>
+          <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-save" data="type=save" acl="*,edit" />
+          <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-save" data="type=saveClose" acl="*,edit" />
+          <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info hide js-glizycms-save js-glizycms-saveNotClose" data="action=save" acl="*,edit" />
+          <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat hide js-glizycms-save js-glizycms-saveClose" data="action=saveClose" acl="*,edit" />
+        </cms:FormButtonsPanel>
+      </c:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.gestioneDati.schedeSemplificate.controllers.*" />
+    </mvc:State>
+</mvc:Page>

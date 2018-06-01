@@ -1,0 +1,69 @@
+{
+  "externalID": {
+    "xpath": "./control/recordId/text()"
+  },
+  "__model": {
+    "type": "constant",
+    "value": "archivi.models.Enti"
+  },
+  "intestazione": {
+    "xpath": ".",
+    "type": "composite",
+    "struct": {
+      "denominazioneEnte": {
+        "xpath": ["./cpfDescription/identity/nameEntry/part[@localType='prime']", "./cpfDescription/identity/nameEntry/part[@localType='ord']"],
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_AddToDictionary",
+          "params": {
+            "dictionaryId": "VA_ARCHIVE_VOCI_ENTE_DENOMINAZIONE"
+          }
+        }
+      },
+      "dateEsistenza": {
+        "xpath": ["./cpfDescription/description/existDates/dateRange/fromDate/@standardDate", "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"],
+        "joiner": {
+          "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+          "params": {
+            "separator": " - "
+          }
+        },
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_Implode",
+          "params": {
+            "separator": " ; "
+          }
+        }
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_IntestazioneFromStdClass",
+      "params": {
+        "tipo": "ENTE"
+      }
+    }
+  },
+  "denominazioneEnte": {
+    "xpath": ["./cpfDescription/identity/nameEntry/part[@localType='prime']", "./cpfDescription/identity/nameEntry/part[@localType='ord']"],
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_AddToDictionary",
+      "params": {
+        "dictionaryId": "VA_ARCHIVE_VOCI_ENTE_DENOMINAZIONE"
+      }
+    }
+  },
+  "dateEsistenza": {
+    "xpath": ["./cpfDescription/description/existDates/dateRange/fromDate/@standardDate", "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"],
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_Implode",
+      "params": {
+        "separator": " ; "
+      }
+    },
+    "joiner": {
+      "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+      "params": {
+        "separator": " - "
+      }
+    }
+  }
+}

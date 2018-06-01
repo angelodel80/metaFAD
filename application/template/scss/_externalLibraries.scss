@@ -1,0 +1,14 @@
+/* Bootstrap DataTimePicker (http://eonasdan.github.io/bootstrap-datetimepicker/#minimum-setup) */
+.datetimepicker {
+    .icon-arrow-left:before,
+    .icon-arrow-right:before {
+      font-family: FontAwesome;
+      font-style: normal;
+    }
+    .icon-arrow-left:before {
+      content: '\f060';
+    }
+    .icon-arrow-right:before {
+      content: '\f061';
+    }
+  }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.institutes.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.usersAndPermissions.institutes#list">
+        <com:DataGridAjax id="dataGrid" recordClassName="metafad.usersAndPermissions.institutes.models.Model"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.usersAndPermissions.institutes.controllers.*" fullTextSearch="false"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="institute_name" headerText="{i18n:Nome istituto}"/>
+            <glz:DataGridColumn columnName="institute_isActive" headerText="{i18n:Attivo}" cssClass="center"
+                                renderCell="metafad.usersAndPermissions.institutes.views.renderer.CellInstitutesActive"/>
+            <glz:DataGridColumn columnName="institute_id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.usersAndPermissions.institutes.views.renderer.CellEditDelete"/>
+        </com:DataGridAjax>
+        <cmp:AddButton label="" acl="*,new" routeUrl="metafad.usersAndPermissions.institutes" editableRegion="actions"
+                       recordClassName="metafad.usersAndPermissions.institutes.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit" label="{i18n:Scheda}" draw="false">
+        <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.usersAndPermissions.institutes.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.usersAndPermissions.institutes.models.Model"/>
+            <glz:Input id="institute_name" label="{i18n:Nome istituto}" required="true"/>
+            <glz:Input data="type=selectfrom;add_new_values=false;proxy=metafad.usersAndPermissions.users.models.proxy.UsersProxy;return_object=true"
+                    id="institute_resp" label="{i18n:Responsabile richieste}" />
+            <glz:Checkbox id="institute_isActive" label="{i18n:Attivo}" type="checkbox"/>
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                                cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.usersAndPermissions.institutes.controllers.Delete"/>
+    </mvc:State>
+
+</mvc:Page>

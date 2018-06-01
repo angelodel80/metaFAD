@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<glz:Routing>
+    <glz:Route method="GET" value="rest/dam/{value=instance}/bytestream/edit/{value=downloadMode}/{value=mediaId}/{value=name}/{value=parameter}" controller="metafad.teca.DAM.rest.controllers.Download"/>
+    <glz:Route method="GET" value="rest/dam/{value=instance}/get/{value=mediaId}/{value=bytestreamName}" controller="metafad.teca.DAM.rest.controllers.Download"/>
+    <glz:Route method="GET" value="rest/dam/{value=instance}/resize-stream/{value=mediaId}/{value=bytestreamName}/{value=newBytestreamName}" controller="metafad.teca.DAM.rest.controllers.Resize"/>
+    <glz:Route method="GET" value="rest/dam/{value=instance}/resize/{value=mediaId}/{value=bytestreamName}" controller="metafad.teca.DAM.rest.controllers.Resize"/>
+
+    <glz:Route method="POST" value="rest/dam/{value=instance}/upload" controller="metafad.teca.DAM.rest.controllers.Upload"/>
+
+    <glz:Route name="damForward" value="rest/dam/.*" controller="metafad.teca.DAM.rest.controllers.Forward"/>
+</glz:Routing>

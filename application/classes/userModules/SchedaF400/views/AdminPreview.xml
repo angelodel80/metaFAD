@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:print="metafad.print.views.components.*"
+    src="metafad.views.TemplateModuleAdminPreview">
+
+    <glz:template name="model" value="SchedaF400.models.Model"/>
+    <glz:template name="form_fields">
+        
+<glz:Fieldset id="CD" label="{i18n:CD}" required="true">
+  <print:Input id="TSK" label="{i18n:TSK}" required="true" maxLength="4" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <print:Input id="LIR" label="{i18n:LIR}" required="true" maxLength="1" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="NCT" label="{i18n:NCT}" required="true">
+    <print:Input id="NCTR" label="{i18n:NCTR}" required="true" maxLength="2"/>
+    <print:Input id="NCTN" label="{i18n:NCTN}" required="true" maxLength="8"/>
+    <print:Input id="NCTS" label="{i18n:NCTS}" maxLength="2"/>
+</glz:Fieldset>
+  <print:Input id="ESC" label="{i18n:ESC}" required="true" maxLength="25"/>
+  <print:Input id="ECP" label="{i18n:ECP}" required="true" maxLength="25"/>
+</glz:Fieldset>
+<glz:Fieldset id="OG" label="{i18n:OG}" required="true">
+  <print:Input id="AMB" label="{i18n:AMB}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <print:Input id="CTG" label="{i18n:CTG}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_CTG_F##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+  <glz:Fieldset id="OGT" label="{i18n:OGT}" required="true">
+    <print:Input id="OGTD" label="{i18n:OGTD}" required="true" maxLength="150" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_OGTD_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="OGTT" label="{i18n:OGTT}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_OGTT_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="OGTW" label="{i18n:OGTW}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_OGTW_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="OGTP" label="{i18n:OGTP}" maxLength="100"/>
+    <print:Input id="OGTV" label="{i18n:OGTV}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="QNT" label="{i18n:QNT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="QNTN" label="{i18n:QNTN}" maxLength="10" data="type=FormEditMandatory" cssClass="form-control QNT-alternative-mandatory"/>
+    <print:Input id="QNTI" label="{i18n:QNTI}" maxLength="10" data="type=FormEditMandatory" cssClass="form-control QNT-alternative-mandatory"/>
+    <print:Input id="QNTS" label="{i18n:QNTS}" maxLength="3" cssClass="form-control QNT-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="QNTO" label="{i18n:QNTO}" maxLength="4"/>
+    <print:Input id="QNTE" label="{i18n:QNTE}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="OGC" label="{i18n:OGC}" required="true">
+    <print:Input id="OGCT" label="{i18n:OGCT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="OGCN" label="{i18n:OGCN}" maxLength="10"/>
+    <glz:Fieldset id="OGCD" label="{i18n:OGCD}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="OGCD-element" label="{i18n:OGCD}" maxLength="100"/>
+</glz:Fieldset>
+    <print:Input id="OGCS" label="{i18n:OGCS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="OGM" label="{i18n:OGM}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="OGM-element" label="{i18n:OGM}" maxLength="250" data="type=selectfrom;field=OGM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <print:Input id="OGR" label="{i18n:OGR}" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+<glz:Fieldset id="RV" label="{i18n:RV}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="RVE" label="{i18n:RVE}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="RVEL" label="{i18n:RVEL}" required="true" maxLength="25"/>
+    <print:Input id="RVEZ" label="{i18n:RVEZ}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="RSE" label="{i18n:RSE}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="RSER" label="{i18n:RSER}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="RSES" label="{i18n:RSES}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="RSET" label="{i18n:RSET}" required="true" maxLength="4" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="RSED" label="{i18n:RSED}" maxLength="100"/>
+    <print:Input id="RSEC" label="{i18n:RSEC}" required="true" maxLength="40" data="type=selectfrom;multiple=false;add_new_values=true;return_object=true;proxy=metafad.modules.iccd.models.proxy.IccdFormProxy" cssClass="form-control -mandatory"/>
+</glz:Fieldset>
+  <print:Input id="REZ" label="{i18n:REZ}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <glz:Fieldset id="RSP" label="{i18n:RSP}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="RSP-element" label="{i18n:RSP}" maxLength="50"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AC" label="{i18n:AC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="ACC" label="{i18n:ACC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ACCE" label="{i18n:ACCE}" required="true" maxLength="250"/>
+    <print:Input id="ACCC" label="{i18n:ACCC}" required="true" maxLength="150"/>
+    <print:Input id="ACCP" label="{i18n:ACCP}" maxLength="250"/>
+    <print:Input id="ACCS" label="{i18n:ACCS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="ACCW" label="{i18n:ACCW}" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ACS" label="{i18n:ACS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ACSE" label="{i18n:ACSE}" required="true" maxLength="250"/>
+    <print:Input id="ACSC" label="{i18n:ACSC}" required="true" maxLength="150"/>
+    <print:Input id="ACSP" label="{i18n:ACSP}" maxLength="250"/>
+    <print:Input id="ACSS" label="{i18n:ACSS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="ACSW" label="{i18n:ACSW}" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="MOD" label="{i18n:MOD}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="MODI" label="{i18n:MODI}" required="true" maxLength="25"/>
+    <print:Input id="MODD" label="{i18n:MODD}" required="true" maxLength="150"/>
+    <print:Input id="MODN" label="{i18n:MODN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="RF" label="{i18n:RF}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="RFI" label="{i18n:RFI}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="RFID" label="{i18n:RFID}" required="true" maxLength="16"/>
+    <print:Input id="RFIA" label="{i18n:RFIA}" maxLength="10"/>
+    <print:Input id="RFIS" label="{i18n:RFIS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="LC" label="{i18n:LC}" required="true">
+  <glz:Fieldset id="PVC" label="{i18n:PVC}" required="true">
+    <print:Input id="PVCS" label="{i18n:PVCS}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PVCR" label="{i18n:PVCR}" maxLength="25" cssClass="form-control PVC-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PVCP" label="{i18n:PVCP}" maxLength="2" cssClass="form-control PVC-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PVCC" label="{i18n:PVCC}" maxLength="100" cssClass="form-control PVC-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PVCL" label="{i18n:PVCL}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PVCE" label="{i18n:PVCE}" maxLength="500" data="type=FormEditMandatory" cssClass="form-control PVC-alternative-mandatory"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PVL" label="{i18n:PVL}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="PVLT" label="{i18n:PVLT}" required="true" maxLength="250"/>
+    <print:Input id="PVLR" label="{i18n:PVLR}" maxLength="100"/>
+    <print:Input id="PVLS" label="{i18n:PVLS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="PVE" label="{i18n:PVE}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="PVG" label="{i18n:PVG}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="PVG-element" label="{i18n:PVG}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="LDC" label="{i18n:LDC}" required="true">
+    <print:Input id="LDCT" label="{i18n:LDCT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_Contenitore fisico##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="LDCQ" label="{i18n:LDCQ}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_Contenitore fisico##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="LDCN" label="{i18n:LDCN}" maxLength="250"/>
+    <print:Input id="LDCF" label="{i18n:LDCF}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_LDCF_PRCF##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="LDCK" label="{i18n:LDCK}" maxLength="25"/>
+    <print:Input id="LDCC" label="{i18n:LDCC}" maxLength="250"/>
+    <print:Input id="LDCU" label="{i18n:LDCU}" required="true" maxLength="250"/>
+    <print:Input id="LDCM" label="{i18n:LDCM}" maxLength="250"/>
+    <print:Input id="LDCG" label="{i18n:LDCG}" maxLength="25"/>
+    <print:Input id="LDCS" label="{i18n:LDCS}" maxLength="500"/>
+    <print:Input id="LDCD" label="{i18n:LDCD}" maxLength="100"/>
+</glz:Fieldset>
+  <print:Input id="LCN" label="{i18n:LCN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <glz:Fieldset id="ACB" label="{i18n:ACB}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="ACBA" label="{i18n:ACBA}" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ACBS" label="{i18n:ACBS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="LA" label="{i18n:LA}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+  <print:Input id="TLC" label="{i18n:TLC}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="PRV" label="{i18n:PRV}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" cssClass="GFEFieldset ui-sortable LA-alternative-mandatory">
+    <print:Input id="PRVS" label="{i18n:PRVS}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRVR" label="{i18n:PRVR}" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRVP" label="{i18n:PRVP}" required="true" maxLength="2" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRVC" label="{i18n:PRVC}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRVL" label="{i18n:PRVL}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRT" label="{i18n:PRT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" cssClass="GFEFieldset ui-sortable LA-alternative-mandatory">
+    <print:Input id="PRTK" label="{i18n:PRTK}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRTS" label="{i18n:PRTS}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PRTR" label="{i18n:PRTR}" maxLength="250"/>
+    <print:Input id="PRTL" label="{i18n:PRTL}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRL" label="{i18n:PRL}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="PRLT" label="{i18n:PRLT}" required="true" maxLength="250"/>
+    <print:Input id="PRLR" label="{i18n:PRLR}" maxLength="100"/>
+    <print:Input id="PRLS" label="{i18n:PRLS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="PRE" label="{i18n:PRE}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="PRG" label="{i18n:PRG}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="PRG-element" label="{i18n:PRG}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRC" label="{i18n:PRC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="PRCT" label="{i18n:PRCT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_Contenitore fisico##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="PRCQ" label="{i18n:PRCQ}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_Contenitore fisico##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="PRCN" label="{i18n:PRCN}" maxLength="250"/>
+    <print:Input id="PRCF" label="{i18n:PRCF}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_LDCF_PRCF##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="PRCK" label="{i18n:PRCK}" maxLength="25"/>
+    <print:Input id="PRCC" label="{i18n:PRCC}" maxLength="250"/>
+    <print:Input id="PRCU" label="{i18n:PRCU}" required="true" maxLength="250"/>
+    <print:Input id="PRCM" label="{i18n:PRCM}" maxLength="250"/>
+    <print:Input id="PRCG" label="{i18n:PRCG}" maxLength="25"/>
+    <print:Input id="PRCS" label="{i18n:PRCS}" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRD" label="{i18n:PRD}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="PRDI" label="{i18n:PRDI}" maxLength="100"/>
+    <print:Input id="PRDU" label="{i18n:PRDU}" maxLength="100"/>
+</glz:Fieldset>
+  <print:Input id="LAN" label="{i18n:LAN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+<glz:Fieldset id="UB" label="{i18n:UB}" required="true">
+  <glz:Fieldset id="UBF" label="{i18n:UBF}" required="true">
+    <print:Input id="UBFP" label="{i18n:UBFP}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+    <print:Input id="UBFS" label="{i18n:UBFS}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+    <print:Input id="UBFT" label="{i18n:UBFT}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+    <print:Input id="UBFQ" label="{i18n:UBFQ}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+    <print:Input id="UBFU" label="{i18n:UBFU}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+    <print:Input id="UBFC" label="{i18n:UBFC}" maxLength="150" data="type=FormEditMandatory" cssClass="form-control UBF-alternative-mandatory"/>
+</glz:Fieldset>
+  <glz:Fieldset id="INP" label="{i18n:INP}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="INPC" label="{i18n:INPC}" required="true" maxLength="25"/>
+    <print:Input id="INPE" label="{i18n:INPE}" required="true" maxLength="250"/>
+    <print:Input id="INPR" label="{i18n:INPR}" required="true" maxLength="10"/>
+    <print:Input id="INPD" label="{i18n:INPD}" required="true" maxLength="150" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_Categoria-Descrizione_SEC##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="INPP" label="{i18n:INPP}" required="true" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="INPM" label="{i18n:INPM}" required="true" maxLength="500"/>
+    <glz:Fieldset id="INPO" label="{i18n:INPO}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="INPO-element" label="{i18n:INPO}" maxLength="500"/>
+</glz:Fieldset>
+    <print:Input id="INPA" label="{i18n:INPA}" required="true" maxLength="50"/>
+    <print:Input id="INPZ" label="{i18n:INPZ}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="INPS" label="{i18n:INPS}" required="true" maxLength="15" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="INPU" label="{i18n:INPU}" required="true" maxLength="3" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="INPV" label="{i18n:INPV}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="INV" label="{i18n:INV}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="INVN" label="{i18n:INVN}" required="true" maxLength="500"/>
+    <print:Input id="INVD" label="{i18n:INVD}" required="true" maxLength="100"/>
+    <print:Input id="INVG" label="{i18n:INVG}" maxLength="25"/>
+    <print:Input id="INVA" label="{i18n:INVA}" maxLength="500"/>
+    <print:Input id="INVC" label="{i18n:INVC}" maxLength="500"/>
+    <print:Input id="INVP" label="{i18n:INVP}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="INVS" label="{i18n:INVS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="STI" label="{i18n:STI}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="STIS" label="{i18n:STIS}" required="true" maxLength="50"/>
+    <print:Input id="STID" label="{i18n:STID}" maxLength="100"/>
+    <print:Input id="STIM" label="{i18n:STIM}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_STIM##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="STIR" label="{i18n:STIR}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="COL" label="{i18n:COL}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="COLD" label="{i18n:COLD}" maxLength="500"/>
+    <print:Input id="COLN" label="{i18n:COLN}" maxLength="100"/>
+    <print:Input id="COLA" label="{i18n:COLA}" maxLength="100"/>
+    <print:Input id="COLU" label="{i18n:COLU}" maxLength="100"/>
+    <print:Input id="COLM" label="{i18n:COLM}" maxLength="500"/>
+    <print:Input id="COLI" label="{i18n:COLI}" maxLength="100"/>
+    <print:Input id="COLV" label="{i18n:COLV}" maxLength="50"/>
+    <print:Input id="COLS" label="{i18n:COLS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AU" label="{i18n:AU}" required="true">
+  <glz:Fieldset id="AUT" label="{i18n:AUT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <print:Input id="__AUT" label="{i18n:AUT}" data="type=modalPage;pageid=AUT400_popup;controller=AUT400_controllers_ajax_FindTerm"/>
+    <print:Input id="AUTK" label="{i18n:AUTK}" maxLength="8"/>
+    <print:Input id="AUTJ" label="{i18n:AUTJ}" required="true" maxLength="25"/>
+    <print:Input id="AUTH" label="{i18n:AUTH}" required="true" maxLength="8" disabled="true"/>
+    <print:Input id="AUTN" label="{i18n:AUTN}" required="true" maxLength="250" disabled="true"/>
+    <print:Input id="AUTP" label="{i18n:AUTP}" required="true" maxLength="2" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}" disabled="true"/>
+    <print:Input id="AUTA" label="{i18n:AUTA}" required="true" maxLength="100" disabled="true"/>
+    <glz:Fieldset id="AUTI" label="{i18n:AUTI}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AUTI-element" label="{i18n:AUTI}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="AUTS" label="{i18n:AUTS}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_AUTS_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="AUTR" label="{i18n:AUTR}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_AUTR_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="AUTW" label="{i18n:AUTW}" maxLength="250"/>
+    <print:Input id="AUTY" label="{i18n:AUTY}" maxLength="500"/>
+    <glz:Fieldset id="AUTM" label="{i18n:AUTM}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="AUTM-element" label="{i18n:AUTM}" maxLength="250" data="type=FormEditSelectMandatory;field=AUTM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="AUTZ" label="{i18n:AUTZ}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ATB" label="{i18n:ATB}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ATBD" label="{i18n:ATBD}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ATBD_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="ATBR" label="{i18n:ATBR}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ATBR_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Fieldset id="ATBM" label="{i18n:ATBM}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ATBM-element" label="{i18n:ATBM}" maxLength="250" data="type=FormEditSelectMandatory;field=ATBM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="ATBE" label="{i18n:ATBE}" maxLength="250"/>
+    <print:Input id="ATBS" label="{i18n:ATBS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AAT" label="{i18n:AAT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="AATN" label="{i18n:AATN}" required="true" maxLength="250"/>
+    <print:Input id="AATA" label="{i18n:AATA}" maxLength="100"/>
+    <glz:Fieldset id="AATM" label="{i18n:AATM}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AATM-element" label="{i18n:AATM}" maxLength="250" data="type=FormEditSelectMandatory;field=AATM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="AATY" label="{i18n:AATY}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="NMC" label="{i18n:NMC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="NMCN" label="{i18n:NMCN}" required="true" maxLength="250"/>
+    <print:Input id="NMCA" label="{i18n:NMCA}" maxLength="100"/>
+    <print:Input id="NMCY" label="{i18n:NMCY}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="SG" label="{i18n:SG}" required="true">
+  <glz:Fieldset id="SGT" label="{i18n:SGT}" required="true">
+    <glz:Fieldset id="SGTI" label="{i18n:SGTI}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="SGTI-element" label="{i18n:SGTI}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="SGTD" label="{i18n:SGTD}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="SGL" label="{i18n:SGL}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <print:Input id="SGLT" label="{i18n:SGLT}" maxLength="250" data="type=FormEditMandatory" cssClass="form-control SGL-alternative-mandatory"/>
+    <print:Input id="SGLL" label="{i18n:SGLL}" maxLength="250"/>
+    <print:Input id="SGLA" label="{i18n:SGLA}" maxLength="250" data="type=FormEditMandatory" cssClass="form-control SGL-alternative-mandatory"/>
+    <print:Input id="SGLS" label="{i18n:SGLS}" required="true" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="SGS" label="{i18n:SGS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="SGSI" label="{i18n:SGSI}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="CLF" label="{i18n:CLF}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="CLFS" label="{i18n:CLFS}" maxLength="250"/>
+    <print:Input id="CLFT" label="{i18n:CLFT}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="THS" label="{i18n:THS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="THSD" label="{i18n:THSD}" maxLength="250"/>
+    <print:Input id="THST" label="{i18n:THST}" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="DT" label="{i18n:DT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+  <glz:Fieldset id="DTZ" label="{i18n:DTZ}" required="true">
+    <print:Input id="DTZG" label="{i18n:DTZG}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="DTZS" label="{i18n:DTZS}" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DTS" label="{i18n:DTS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="DTSI" label="{i18n:DTSI}" required="true" maxLength="50"/>
+    <print:Input id="DTSV" label="{i18n:DTSV}" maxLength="4" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="DTSF" label="{i18n:DTSF}" required="true" maxLength="50"/>
+    <print:Input id="DTSL" label="{i18n:DTSL}" maxLength="4" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DTM" label="{i18n:DTM}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <print:Input id="DTM-element" label="{i18n:DTM}" maxLength="250" data="type=FormEditSelectMandatory;field=DTM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+  <print:Input id="DTT" label="{i18n:DTT}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <glz:Fieldset id="ADT" label="{i18n:ADT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ADTT" label="{i18n:ADTT}" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ADTD" label="{i18n:ADTD}" required="true" maxLength="100"/>
+    <glz:Fieldset id="ADTM" label="{i18n:ADTM}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ADTM-element" label="{i18n:ADTM}" maxLength="250" data="type=selectfrom;field=ADTM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="ADTS" label="{i18n:ADTS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="LR" label="{i18n:LR}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="LRC" label="{i18n:LRC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="LRCS" label="{i18n:LRCS}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="LRCR" label="{i18n:LRCR}" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="LRCP" label="{i18n:LRCP}" maxLength="2" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="LRCC" label="{i18n:LRCC}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="LRCL" label="{i18n:LRCL}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="LRCE" label="{i18n:LRCE}" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="LRL" label="{i18n:LRL}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="LRLT" label="{i18n:LRLT}" required="true" maxLength="500"/>
+    <print:Input id="LRLR" label="{i18n:LRLR}" maxLength="100"/>
+    <print:Input id="LRLS" label="{i18n:LRLS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="LRE" label="{i18n:LRE}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="LRG" label="{i18n:LRG}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="LRG-element" label="{i18n:LRG}" maxLength="500"/>
+</glz:Fieldset>
+  <print:Input id="LRO" label="{i18n:LRO}" maxLength="250"/>
+  <print:Input id="LRD" label="{i18n:LRD}" maxLength="100"/>
+</glz:Fieldset>
+<glz:Fieldset id="PD" label="{i18n:PD}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="PDF" label="{i18n:PDF}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" required="true">
+    <print:Input id="PDFK" label="{i18n:PDFK}" maxLength="8"/>
+    <print:Input id="PDFJ" label="{i18n:PDFJ}" required="true" maxLength="25"/>
+    <print:Input id="PDFH" label="{i18n:PDFH}" required="true" maxLength="8"/>
+    <print:Input id="PDFN" label="{i18n:PDFN}" required="true" maxLength="250"/>
+    <print:Input id="PDFP" label="{i18n:PDFP}" required="true" maxLength="1" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="PDFA" label="{i18n:PDFA}" required="true" maxLength="70"/>
+    <glz:Fieldset id="PDFI" label="{i18n:PDFI}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="PDFI-element" label="{i18n:PDFI}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="PDFR" label="{i18n:PDFR}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="PDFR-element" label="{i18n:PDFR}" maxLength="250" data="type=FormEditSelectMandatory;field=PDFR;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_PDFR_F##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <print:Input id="PDFL" label="{i18n:PDFL}" maxLength="250"/>
+    <print:Input id="PDFC" label="{i18n:PDFC}" maxLength="250"/>
+    <print:Input id="PDFD" label="{i18n:PDFD}" required="true" maxLength="25"/>
+    <glz:Fieldset id="PDFM" label="{i18n:PDFM}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="PDFM-element" label="{i18n:PDFM}" maxLength="250" data="type=FormEditSelectMandatory;field=PDFM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="PDFW" label="{i18n:PDFW}" maxLength="250"/>
+    <print:Input id="PDFS" label="{i18n:PDFS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="EDI" label="{i18n:EDI}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="EDIT" label="{i18n:EDIT}" maxLength="250"/>
+    <print:Input id="EDIP" label="{i18n:EDIP}" maxLength="250"/>
+    <print:Input id="EDIA" label="{i18n:EDIA}" maxLength="250"/>
+    <print:Input id="EDIS" label="{i18n:EDIS}" maxLength="250"/>
+    <print:Input id="EDIR" label="{i18n:EDIR}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="SFI" label="{i18n:SFI}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="SFIT" label="{i18n:SFIT}" maxLength="250"/>
+    <print:Input id="SFIP" label="{i18n:SFIP}" maxLength="250"/>
+    <print:Input id="SFIS" label="{i18n:SFIS}" maxLength="250"/>
+    <print:Input id="SFIN" label="{i18n:SFIN}" maxLength="15"/>
+</glz:Fieldset>
+  <glz:Fieldset id="SSI" label="{i18n:SSI}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="SSIT" label="{i18n:SSIT}" maxLength="250"/>
+    <print:Input id="SSIP" label="{i18n:SSIP}" maxLength="250"/>
+    <print:Input id="SSIS" label="{i18n:SSIS}" maxLength="250"/>
+    <print:Input id="SSIN" label="{i18n:SSIN}" maxLength="15"/>
+</glz:Fieldset>
+  <print:Input id="TRT" label="{i18n:TRT}" maxLength="15"/>
+  <glz:Fieldset id="STT" label="{i18n:STT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="STTA" label="{i18n:STTA}" maxLength="50"/>
+    <print:Input id="STTS" label="{i18n:STTS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="MT" label="{i18n:MT}" required="true">
+  <print:Input id="MTX" label="{i18n:MTX}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_MTX_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+  <glz:Fieldset id="MTC" label="{i18n:MTC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <print:Input id="MTCP" label="{i18n:MTCP}" maxLength="250"/>
+    <print:Input id="MTCM" label="{i18n:MTCM}" maxLength="250" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_MTCM_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Fieldset id="MTCT" label="{i18n:MTCT}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="MTCT-element" label="{i18n:MTCT}" maxLength="250" data="type=FormEditSelectMandatory;field=MTCT;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_MTCT_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <print:Input id="MTCS" label="{i18n:MTCS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="MIS" label="{i18n:MIS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" cssClass="GFEFieldset ui-sortable MT-alternative-mandatory">
+    <print:Input id="MISP" label="{i18n:MISP}" maxLength="250"/>
+    <print:Input id="MISZ" label="{i18n:MISZ}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="MISS" label="{i18n:MISS}" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_MISS##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="MISU" label="{i18n:MISU}" required="true" maxLength="15" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="MISM" label="{i18n:MISM}" required="true" maxLength="15"/>
+    <print:Input id="MISV" label="{i18n:MISV}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="MNR" label="{i18n:MNR}" maxLength="3" cssClass="form-control MT-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <print:Input id="FRM" label="{i18n:FRM}" maxLength="100" cssClass="form-control MT-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FRM_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+  <glz:Fieldset id="FVC" label="{i18n:FVC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="FVCF" label="{i18n:FVCF}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FVCF_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FVCP" label="{i18n:FVCP}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FVCP_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FVCC" label="{i18n:FVCC}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FVCC_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FVCU" label="{i18n:FVCU}" required="true" maxLength="25"/>
+    <glz:Fieldset id="FVCM" label="{i18n:FVCM}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="FVCM-element" label="{i18n:FVCM}" maxLength="25"/>
+</glz:Fieldset>
+    <print:Input id="FVCV" label="{i18n:FVCV}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="FVM" label="{i18n:FVM}" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FVM_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+  <print:Input id="MTS" label="{i18n:MTS}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <print:Input id="FIL" label="{i18n:FIL}" maxLength="250"/>
+</glz:Fieldset>
+<glz:Fieldset id="CO" label="{i18n:CO}" required="true">
+  <glz:Fieldset id="STC" label="{i18n:STC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <print:Input id="STCP" label="{i18n:STCP}" maxLength="250"/>
+    <print:Input id="STCC" label="{i18n:STCC}" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="STCS" label="{i18n:STCS}" maxLength="500" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_STCS_F_FF400##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="STCN" label="{i18n:STCN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="STD" label="{i18n:STD}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <print:Input id="STP" label="{i18n:STP}" maxLength="500" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_STP_F_FF400##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+  <glz:Fieldset id="RST" label="{i18n:RST}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="RSTP" label="{i18n:RSTP}" maxLength="250"/>
+    <print:Input id="RSTI" label="{i18n:RSTI}" required="true" maxLength="500" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_RSTI_F_FF400##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="RSTD" label="{i18n:RSTD}" required="true" maxLength="100"/>
+    <print:Input id="RSTT" label="{i18n:RSTT}" maxLength="10000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <glz:Fieldset id="RSTE" label="{i18n:RSTE}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="RSTE-element" label="{i18n:RSTE}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="RSTR" label="{i18n:RSTR}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="RSTR-element" label="{i18n:RSTR}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="RSTN" label="{i18n:RSTN}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="RSTN-element" label="{i18n:RSTN}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="RSTO" label="{i18n:RSTO}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="DA" label="{i18n:DA}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <print:Input id="DES" label="{i18n:DES}" maxLength="10000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <glz:Fieldset id="ISE" label="{i18n:ISE}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ISER" label="{i18n:ISER}" maxLength="250"/>
+    <print:Input id="ISEP" label="{i18n:ISEP}" required="true" maxLength="250"/>
+    <print:Input id="ISED" label="{i18n:ISED}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ISEE" label="{i18n:ISEE}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ISEZ" label="{i18n:ISEZ}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="ISEQ" label="{i18n:ISEQ}" maxLength="10"/>
+    <print:Input id="ISES" label="{i18n:ISES}" maxLength="100"/>
+    <glz:Fieldset id="ISEC" label="{i18n:ISEC}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISEC-element" label="{i18n:ISEC}" maxLength="100" data="type=selectfrom;field=ISEC;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ISEC##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <glz:Fieldset id="ISEL" label="{i18n:ISEL}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISEL-element" label="{i18n:ISEL}" maxLength="100" data="type=selectfrom;field=ISEL;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ISEL##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <glz:Fieldset id="ISEF" label="{i18n:ISEF}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISEF-element" label="{i18n:ISEF}" maxLength="100" data="type=selectfrom;field=ISEF;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ISEF##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <glz:Fieldset id="ISET" label="{i18n:ISET}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISET-element" label="{i18n:ISET}" maxLength="100" data="type=selectfrom;field=ISET;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ISET##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <glz:Fieldset id="ISEM" label="{i18n:ISEM}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISEM-element" label="{i18n:ISEM}" maxLength="250" data="type=selectfrom;field=ISEM;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ISEM##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+    <print:Input id="ISEI" label="{i18n:ISEI}" maxLength="10000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="ISEB" label="{i18n:ISEB}" maxLength="10000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="ISEA" label="{i18n:ISEA}" maxLength="250"/>
+    <print:Input id="ISEO" label="{i18n:ISEO}" maxLength="250"/>
+    <print:Input id="ISEN" label="{i18n:ISEN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="NRL" label="{i18n:NRL}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <print:Input id="NSC" label="{i18n:NSC}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+<glz:Fieldset id="RO" label="{i18n:RO}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="ROF" label="{i18n:ROF}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ROFF" label="{i18n:ROFF}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ROFF_F##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="ROFO" label="{i18n:ROFO}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ROFO_F##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="ROFS" label="{i18n:ROFS}" maxLength="250"/>
+    <print:Input id="ROFT" label="{i18n:ROFT}" maxLength="250"/>
+    <print:Input id="ROFD" label="{i18n:ROFD}" maxLength="100"/>
+    <glz:Fieldset id="ROFM" label="{i18n:ROFM}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ROFM-element" label="{i18n:ROFM}" maxLength="250" data="type=selectfrom;field=ROFM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+</glz:Fieldset>
+    <print:Input id="ROFC" label="{i18n:ROFC}" maxLength="500"/>
+    <print:Input id="ROFI" label="{i18n:ROFI}" maxLength="250"/>
+    <print:Input id="ROFX" label="{i18n:ROFX}" maxLength="40"/>
+    <print:Input id="ROFP" label="{i18n:ROFP}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="CRF" label="{i18n:CRF}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="CRFT" label="{i18n:CRFT}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="CRFN" label="{i18n:CRFN}" maxLength="250"/>
+    <print:Input id="CRFP" label="{i18n:CRFP}" maxLength="1" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="CRFC" label="{i18n:CRFC}" maxLength="500"/>
+    <print:Input id="CRFX" label="{i18n:CRFX}" maxLength="8"/>
+    <print:Input id="CRFS" label="{i18n:CRFS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="TU" label="{i18n:TU}" required="true">
+  <glz:Fieldset id="CDG" label="{i18n:CDG}" required="true">
+    <print:Input id="CDGG" label="{i18n:CDGG}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <glz:Fieldset id="CDGS" label="{i18n:CDGS}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="CDGS-element" label="{i18n:CDGS}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="CDGI" label="{i18n:CDGI}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="CDGI-element" label="{i18n:CDGI}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="CDGN" label="{i18n:CDGN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ACQ" label="{i18n:ACQ}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ACQT" label="{i18n:ACQT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ACQT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Fieldset id="ACQN" label="{i18n:ACQN}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ACQN-element" label="{i18n:ACQN}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="ACQD" label="{i18n:ACQD}" required="true" maxLength="100"/>
+    <print:Input id="ACQL" label="{i18n:ACQL}" maxLength="500"/>
+    <print:Input id="ACQE" label="{i18n:ACQE}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ALN" label="{i18n:ALN}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="ALNT" label="{i18n:ALNT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_ALNT_4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="ALND" label="{i18n:ALND}" maxLength="100"/>
+    <print:Input id="ALNN" label="{i18n:ALNN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <print:Input id="BPT" label="{i18n:BPT}" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+  <glz:Fieldset id="NVC" label="{i18n:NVC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Fieldset id="NVCA" label="{i18n:NVCA}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="NVCA-element" label="{i18n:NVCA}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="NVCT" label="{i18n:NVCT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_NVCT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="NVCE" label="{i18n:NVCE}" maxLength="10"/>
+    <print:Input id="NVCD" label="{i18n:NVCD}" maxLength="10"/>
+    <print:Input id="NVCI" label="{i18n:NVCI}" maxLength="10"/>
+    <print:Input id="NVCW" label="{i18n:NVCW}" maxLength="500"/>
+    <print:Input id="NVCN" label="{i18n:NVCN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ESP" label="{i18n:ESP}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ESPT" label="{i18n:ESPT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ESPU" label="{i18n:ESPU}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ESPD" label="{i18n:ESPD}" required="true" maxLength="10"/>
+    <print:Input id="ESPN" label="{i18n:ESPN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="CPR" label="{i18n:CPR}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="CPRN" label="{i18n:CPRN}" maxLength="250"/>
+    <print:Input id="CPRI" label="{i18n:CPRI}" maxLength="250"/>
+    <print:Input id="CPRD" label="{i18n:CPRD}" maxLength="50"/>
+    <print:Input id="CPRS" label="{i18n:CPRS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="DO" label="{i18n:DO}" required="true">
+  <glz:Fieldset id="FTA" label="{i18n:FTA}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <print:Input id="FTAN" label="{i18n:FTAN}" required="true" maxLength="25"/>
+    <print:Input id="FTAX" label="{i18n:FTAX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-3 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-9">
+<print:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;IMAGE&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="FTA-image" required="false" />
+</glz:Panel>
+</glz:Panel>    <print:Input id="FTAP" label="{i18n:FTAP}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FTAP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FTAF" label="{i18n:FTAF}" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FTAF##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FTAM" label="{i18n:FTAM}" maxLength="500"/>
+    <print:Input id="FTAA" label="{i18n:FTAA}" maxLength="250"/>
+    <print:Input id="FTAD" label="{i18n:FTAD}" maxLength="100"/>
+    <print:Input id="FTAE" label="{i18n:FTAE}" maxLength="250"/>
+    <print:Input id="FTAC" label="{i18n:FTAC}" maxLength="500"/>
+    <print:Input id="FTAR" label="{i18n:FTAR}" maxLength="250"/>
+    <print:Input id="FTAK" label="{i18n:FTAK}" maxLength="250"/>
+    <print:Input id="FTAW" label="{i18n:FTAW}" maxLength="500"/>
+    <print:Input id="FTAY" label="{i18n:FTAY}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="FTAT" label="{i18n:FTAT}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="FTAS" label="{i18n:FTAS}" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DRA" label="{i18n:DRA}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="DRAN" label="{i18n:DRAN}" required="true" maxLength="25"/>
+    <print:Input id="DRAX" label="{i18n:DRAX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-3 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-9">
+<print:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;IMAGE&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="DRA-image" required="false" />
+</glz:Panel>
+</glz:Panel>    <print:Input id="DRAT" label="{i18n:DRAT}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_DRAT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="DRAF" label="{i18n:DRAF}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_DRAF##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="DRAM" label="{i18n:DRAM}" maxLength="500"/>
+    <print:Input id="DRAP" label="{i18n:DRAP}" maxLength="250"/>
+    <print:Input id="DRAS" label="{i18n:DRAS}" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_DRAS##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="DRAA" label="{i18n:DRAA}" maxLength="250"/>
+    <print:Input id="DRAD" label="{i18n:DRAD}" maxLength="100"/>
+    <print:Input id="DRAE" label="{i18n:DRAE}" maxLength="250"/>
+    <print:Input id="DRAC" label="{i18n:DRAC}" maxLength="500"/>
+    <print:Input id="DRAK" label="{i18n:DRAK}" maxLength="250"/>
+    <print:Input id="DRAW" label="{i18n:DRAW}" maxLength="500"/>
+    <print:Input id="DRAY" label="{i18n:DRAY}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="DRAO" label="{i18n:DRAO}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="VDC" label="{i18n:VDC}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="VDCN" label="{i18n:VDCN}" required="true" maxLength="25"/>
+    <print:Input id="VDCX" label="{i18n:VDCX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-3 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-9">
+<print:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;VIDEO&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="VDC-image" required="false" />
+</glz:Panel>
+</glz:Panel>    <print:Input id="VDCP" label="{i18n:VDCP}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_VDCP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="VDCA" label="{i18n:VDCA}" maxLength="500"/>
+    <print:Input id="VDCS" label="{i18n:VDCS}" maxLength="250"/>
+    <print:Input id="VDCR" label="{i18n:VDCR}" maxLength="250"/>
+    <print:Input id="VDCD" label="{i18n:VDCD}" maxLength="100"/>
+    <print:Input id="VDCE" label="{i18n:VDCE}" maxLength="250"/>
+    <print:Input id="VDCC" label="{i18n:VDCC}" maxLength="500"/>
+    <print:Input id="VDCK" label="{i18n:VDCK}" maxLength="250"/>
+    <print:Input id="VDCW" label="{i18n:VDCW}" maxLength="500"/>
+    <print:Input id="VDCY" label="{i18n:VDCY}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="VDCT" label="{i18n:VDCT}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="REG" label="{i18n:REG}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="REGN" label="{i18n:REGN}" required="true" maxLength="25"/>
+    <print:Input id="REGX" label="{i18n:REGX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-3 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-9">
+<print:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;AUDIO&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="REG-image" required="false" />
+</glz:Panel>
+</glz:Panel>    <print:Input id="REGP" label="{i18n:REGP}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_REGP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="REGZ" label="{i18n:REGZ}" maxLength="500"/>
+    <print:Input id="REGS" label="{i18n:REGS}" maxLength="250"/>
+    <print:Input id="REGA" label="{i18n:REGA}" maxLength="250"/>
+    <print:Input id="REGD" label="{i18n:REGD}" maxLength="100"/>
+    <print:Input id="REGE" label="{i18n:REGE}" maxLength="250"/>
+    <print:Input id="REGC" label="{i18n:REGC}" maxLength="500"/>
+    <print:Input id="REGK" label="{i18n:REGK}" maxLength="250"/>
+    <print:Input id="REGW" label="{i18n:REGW}" maxLength="500"/>
+    <print:Input id="REGY" label="{i18n:REGY}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="REGT" label="{i18n:REGT}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FNT" label="{i18n:FNT}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="FNTI" label="{i18n:FNTI}" required="true" maxLength="25"/>
+    <print:Input id="FNTX" label="{i18n:FNTX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-3 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-9">
+<print:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;OFFICE&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="FNT-image" required="false" />
+</glz:Panel>
+</glz:Panel>    <print:Input id="FNTP" label="{i18n:FNTP}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FNTP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FNTR" label="{i18n:FNTR}" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_FNTR##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="FNTT" label="{i18n:FNTT}" maxLength="500"/>
+    <print:Input id="FNTA" label="{i18n:FNTA}" maxLength="250"/>
+    <print:Input id="FNTD" label="{i18n:FNTD}" maxLength="100"/>
+    <print:Input id="FNTE" label="{i18n:FNTE}" maxLength="250"/>
+    <print:Input id="FNTN" label="{i18n:FNTN}" maxLength="500"/>
+    <print:Input id="FNTS" label="{i18n:FNTS}" maxLength="500"/>
+    <print:Input id="FNTF" label="{i18n:FNTF}" maxLength="25"/>
+    <print:Input id="FNTK" label="{i18n:FNTK}" maxLength="250"/>
+    <print:Input id="FNTW" label="{i18n:FNTW}" maxLength="500"/>
+    <print:Input id="FNTY" label="{i18n:FNTY}" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="FNTO" label="{i18n:FNTO}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="BIB" label="{i18n:BIB}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" required="true">
+    <print:Input id="__BIB" label="{i18n:BIB}" data="type=modalPage;pageid=BIB400_popup;controller=BIB400_controllers_ajax_FindTerm"/>
+    <print:Input id="BIBR" label="{i18n:BIBR}" maxLength="100" disabled="true"/>
+    <print:Input id="BIBK" label="{i18n:BIBK}" maxLength="8"/>
+    <print:Input id="BIBJ" label="{i18n:BIBJ}" required="true" maxLength="25"/>
+    <print:Input id="BIBH" label="{i18n:BIBH}" required="true" maxLength="8" disabled="true"/>
+    <print:Input id="BIBX" label="{i18n:BIBX}" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="BIBF" label="{i18n:BIBF}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_BIBF_BIB##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm" disabled="true"/>
+    <print:Input id="BIBM" label="{i18n:BIBM}" required="true" maxLength="1000" disabled="true" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="BIBW" label="{i18n:BIBW}" maxLength="500" disabled="true"/>
+    <print:Input id="BIBY" label="{i18n:BIBY}" maxLength="1000" disabled="true" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <print:Input id="BIBN" label="{i18n:BIBN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="MS" label="{i18n:MS}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="MST" label="{i18n:MST}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="MSTI" label="{i18n:MSTI}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="MSTT" label="{i18n:MSTT}" required="true" maxLength="500"/>
+    <glz:Fieldset id="MSTE" label="{i18n:MSTE}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="MSTE-element" label="{i18n:MSTE}" maxLength="500"/>
+</glz:Fieldset>
+    <glz:Fieldset id="MSTL" label="{i18n:MSTL}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="MSTL-element" label="{i18n:MSTL}" maxLength="500"/>
+</glz:Fieldset>
+    <print:Input id="MSTS" label="{i18n:MSTS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRM" label="{i18n:PRM}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="PRMT" label="{i18n:PRMT}" maxLength="500"/>
+    <print:Input id="PRML" label="{i18n:PRML}" maxLength="500"/>
+    <print:Input id="PRME" label="{i18n:PRME}" maxLength="250"/>
+    <print:Input id="PRMR" label="{i18n:PRMR}" maxLength="150" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##,##code##:##VA_PRMR_F4.00##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="PRMS" label="{i18n:PRMS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AD" label="{i18n:AD}" required="true">
+  <glz:Fieldset id="ADS" label="{i18n:ADS}" required="true">
+    <print:Input id="ADSP" label="{i18n:ADSP}" required="true" maxLength="1" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ADSM" label="{i18n:ADSM}" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaF400##}"/>
+    <print:Input id="ADSD" label="{i18n:ADSD}" maxLength="10"/>
+    <print:Input id="ADSN" label="{i18n:ADSN}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="CM" label="{i18n:CM}" required="true">
+  <glz:Fieldset id="CMP" label="{i18n:CMP}" required="true">
+    <print:Input id="CMPD" label="{i18n:CMPD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="CMPN" label="{i18n:CMPN}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="CMPN-element" label="{i18n:CMPN}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="CMPS" label="{i18n:CMPS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="RSR" label="{i18n:RSR}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="RSR-element" label="{i18n:RSR}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FUR" label="{i18n:FUR}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <print:Input id="FUR-element" label="{i18n:FUR}" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="RVM" label="{i18n:RVM}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="RVMD" label="{i18n:RVMD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="RVME" label="{i18n:RVME}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="RVME-element" label="{i18n:RVME}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="RVMN" label="{i18n:RVMN}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="RVMN-element" label="{i18n:RVMN}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="RVMS" label="{i18n:RVMS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AGG" label="{i18n:AGG}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="AGGD" label="{i18n:AGGD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="AGGE" label="{i18n:AGGE}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGE-element" label="{i18n:AGGE}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGN" label="{i18n:AGGN}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGN-element" label="{i18n:AGGN}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGR" label="{i18n:AGGR}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGR-element" label="{i18n:AGGR}" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGF" label="{i18n:AGGF}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGF-element" label="{i18n:AGGF}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="AGGS" label="{i18n:AGGS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ISP" label="{i18n:ISP}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="ISPD" label="{i18n:ISPD}" required="true" maxLength="10"/>
+    <glz:Fieldset id="ISPN" label="{i18n:ISPN}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="ISPN-element" label="{i18n:ISPN}" maxLength="250"/>
+</glz:Fieldset>
+    <print:Input id="ISPS" label="{i18n:ISPS}" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AN" label="{i18n:AN}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <print:Input id="OSS" label="{i18n:OSS}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+  <print:Input id="RDP" label="{i18n:RDP}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+
+
+    </glz:template>
+</glz:include>

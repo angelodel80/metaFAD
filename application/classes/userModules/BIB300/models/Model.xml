@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="BIB300"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.modules.iccd.models.ActiveRecordDocumentAUT">
+
+    <model:Script parent="model">
+    <![CDATA[
+    public function getTitle()
+    {
+        return $this->BIBA ? $this->BIBA : null;
+    }
+
+    public function getSolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'BIB300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+			'BIBG' => 'BIBG_s,BIBG_t',
+			'BIBH' => 'BIBH_s,BIBH_t',
+
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getFESolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'BIB300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'feMapping' => ''
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeMappingAdvancedSearch()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'BIB300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'beMapping' => ''
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array(
+			'BIBG' => 'BIBG_t',
+			'BIBH' => 'BIBH_t',
+
+        );
+
+        return $searchFields;
+    }
+
+    public function getFindTermFields()
+    {
+        return array("BIBA","BIBH");
+    }
+
+    public function getRecordId()
+    {
+        $uniqueIccdIdProxy = org_glizy_ObjectFactory::createObject('metafad.gestioneDati.boards.models.proxy.UniqueIccdIdProxy');
+        return $uniqueIccdIdProxy->createUniqueIccdId($this);
+    }
+
+    ]]>
+    </model:Script>
+
+    <model:Define>
+<model:Field name="TSK" validator="notempty" type="string" length="5"/>
+<model:Field name="NCU" type="object" readFormat="false"/>
+<model:Field name="ESC" validator="notempty" type="string" length="25"/>
+<model:Field name="ECP" type="string" length="25"/>
+<model:Field name="BIBA" validator="notempty" index="true" type="string" length="250"/>
+<model:Field name="BIBC" type="string" length="70"/>
+<model:Field name="BIBF" validator="notempty" type="string" length="25"/>
+<model:Field name="BIBG" validator="notempty" index="true" type="string" length="500"/>
+<model:Field name="BIBT" type="string" length="250"/>
+<model:Field name="BIBL" type="string" length="50"/>
+<model:Field name="BIBZ" type="string" length="50"/>
+<model:Field name="BIBD" validator="notempty" type="string" length="10"/>
+<model:Field name="BIBE" type="string" length="70"/>
+<model:Field name="BIBS" type="string" length="25"/>
+<model:Field name="BIBV" type="string" length="25"/>
+<model:Field name="BIBP" type="string" length="25"/>
+<model:Field name="BIBH" validator="notempty" index="true" type="string" length="8"/>
+<model:Field name="CMPD" validator="notempty" type="string" length="4"/>
+<model:Field name="CMPN" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="RSR" type="object" readFormat="false"/>
+<model:Field name="FUR" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="AGG" type="object" readFormat="false"/>
+<model:Field name="AN" type="object" readFormat="false"/>
+
+    </model:Define>
+</model:Model>

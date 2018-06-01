@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:c="metafad.modules.iccd.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Popup.php">
+
+<glz:Import src="_common.xml"/>
+
+<mvc:State name="edit">
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.mets.controllers.media.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.teca.mets.models.Audio"/>
+
+        <glz:Input id="sequence_number" label="{i18n:Sequence number}" type="number" required="true"/>
+        <glz:Input id="nomenclature" label="{i18n:Nomenclature}" required="true"/>
+
+        <glz:Fieldset id="proxies" label="{i18n:Proxies}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+          <!-- <glz:Input id="audiogroupID" label="{i18n:Audio Group ID}"/> -->
+          <glz:Fieldset id="usage" label="{i18n:Usage}" data="type=repeat;collapsable=false;repeatMin=1">
+            <glz:List id="usage_value" label="{i18n:Usage}" emptyValue="">
+                <glz:ListItem key="1" value="1 (master)"/>
+                <glz:ListItem key="2" value="2 (alta risoluzione)"/>
+                <glz:ListItem key="3" value="3 (bassa risoluzione)"/>
+                <glz:ListItem key="4" value="4 (preview)"/>
+                <glz:ListItem key="a" value="a (no copyright)"/>
+                <glz:ListItem key="b" value="b (ha copyright)"/>
+            </glz:List>
+          </glz:Fieldset>
+          <glz:Input id="file" label="{i18n:File}" required="true"/>
+          <glz:Input id="md5" label="{i18n:Message Digest}" required="true"/>
+          <glz:List id="md5_algo" label="{i18n:Message Digest Algorithm}" emptyValue="" required="true">
+              <glz:ListItem key="1" value="Adler-32"/>
+              <glz:ListItem key="2" value="CRC32"/>
+              <glz:ListItem key="3" value="HAVAL"/>
+              <glz:ListItem key="4" value="MD5"/>
+              <glz:ListItem key="5" value="MNP"/>
+              <glz:ListItem key="6" value="SHA-1"/>
+              <glz:ListItem key="7" value="SHA-256"/>
+              <glz:ListItem key="8" value="SHA-384"/>
+              <glz:ListItem key="9" value="SHA512"/>
+              <glz:ListItem key="10" value="TIGER"/>
+              <glz:ListItem key="11" value="WHIRLPOOL"/>
+          </glz:List>
+          <glz:Input id="filesize" label="{i18n:Filesize}" required="true"/>
+          <glz:Fieldset id="audio_dimensions" label="{i18n:Audio Dimensions}" >
+            <glz:Input id="duration" label="{i18n:Duration}" type="time" required="true"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="audio_metrics" label="{i18n:Audio Metrics}" >
+            <glz:List id="samplingfrequency" label="{i18n:Sampling Frequency}" emptyValue="">
+                <glz:ListItem key="8" value="8"/>
+                <glz:ListItem key="11.025" value="11.025"/>
+                <glz:ListItem key="12" value="12"/>
+                <glz:ListItem key="16" value="16"/>
+                <glz:ListItem key="22.05" value="22.05"/>
+                <glz:ListItem key="24" value="24"/>
+                <glz:ListItem key="32" value="32"/>
+                <glz:ListItem key="44.1" value="44.1"/>
+                <glz:ListItem key="48" value="48"/>
+                <glz:ListItem key="96" value="96"/>
+            </glz:List>
+            <glz:List id="bitepersample" label="{i18n:Bit per Sample}" emptyValue="" required="true">
+                <glz:ListItem key="8" value="8"/>
+                <glz:ListItem key="16" value="16"/>
+                <glz:ListItem key="24" value="24"/>
+            </glz:List>
+            <glz:List id="bitrate" label="{i18n:BitRate}" emptyValue="">
+                <glz:ListItem key="24" value="24"/>
+                <glz:ListItem key="32" value="32"/>
+                <glz:ListItem key="48" value="48"/>
+                <glz:ListItem key="56" value="56"/>
+                <glz:ListItem key="64" value="64"/>
+                <glz:ListItem key="96" value="96"/>
+                <glz:ListItem key="128" value="128"/>
+                <glz:ListItem key="160" value="160"/>
+                <glz:ListItem key="192" value="192"/>
+                <glz:ListItem key="256" value="256"/>
+                <glz:ListItem key="320" value="320"/>
+                <glz:ListItem key="384" value="384"/>
+            </glz:List>
+          </glz:Fieldset>
+          <glz:Fieldset id="format" label="{i18n:Format}" required="true" emptyValue="">
+            <glz:Input id="name" label="{i18n:Format (Name)}"/>
+            <glz:Input id="format_ver" label="{i18n:Format (Version)}"/>
+            <glz:List id="mime" label="{i18n:Format (MIME)}" required="true" emptyValue="">
+                <glz:ListItem key="audio/wav" value="audio/wav"/>
+                <glz:ListItem key="audio/mpeg" value="audio/mpeg"/>
+                <glz:ListItem key="audio/mpg" value="audio/mpg"/>
+                <glz:ListItem key="audio/mp3" value="audio/mp3"/>
+                <glz:ListItem key="audio/x-mpeg" value="audio/x-mpeg"/>
+                <glz:ListItem key="audio/midi" value="audio/midi"/>
+                <glz:ListItem key="audio/x-realaudio" value="audio/x-realaudio"/>
+            </glz:List>
+            <glz:Fieldset id="compression_f" label="{i18n:Compression}">
+              <glz:List id="compression" label="{i18n:Compression codec name}" emptyValue="">
+                  <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+                  <glz:ListItem key="Linear PCM" value="Linear PCM"/>
+                  <glz:ListItem key="MPEG-1 layer 1" value="MPEG-1 layer 1"/>
+                  <glz:ListItem key="MPEG-1 layer 2" value="MPEG-1 layer 2"/>
+                  <glz:ListItem key="MPEG-1 layer 3" value="MPEG-1 layer 3"/>
+                  <glz:ListItem key="AC3" value="AC3"/>
+                  <glz:ListItem key="Dolby" value="Dolby"/>
+                  <glz:ListItem key="DTS" value="DTS"/>
+              </glz:List>
+              <glz:List id="compression_quality" label="{i18n:Compression codec quality}" emptyValue="">
+                  <glz:ListItem key="lossless" value="lossless"/>
+                  <glz:ListItem key="lossy" value="lossy"/>
+              </glz:List>
+            </glz:Fieldset>
+            <glz:Fieldset id="compression_f" label="{i18n:Channel configuration}">
+              <glz:List id="channel_configuration" label="{i18n:Num Channels}" emptyValue="">
+                  <glz:ListItem key="Mono" value="Mono"/>
+                  <glz:ListItem key="Dual mono" value="Dual mono"/>
+                  <glz:ListItem key="Joint stereo" value="Joint stereo"/>
+                  <glz:ListItem key="Stereo" value="Stereo"/>
+                  <glz:ListItem key="2 ch" value="2 ch"/>
+                  <glz:ListItem key="4 ch" value="4 ch"/>
+                  <glz:ListItem key="5.1 ch" value="5.1 ch"/>
+                  <glz:ListItem key="6.1 ch" value="6.1 ch"/>
+              </glz:List>
+              <glz:Input id="auralspace_arr" label="{i18n:Aural space arrangement }"/>
+            </glz:Fieldset>
+          </glz:Fieldset>
+          <glz:Fieldset id="transcription" label="{i18n:Source data}">
+            <glz:List id="kindofsource" label="{i18n:Kind of source}" emptyValue="" required="true">
+                <glz:ListItem key="Analog" value="Analog"/>
+                <glz:ListItem key="PhysDigital" value="PhysDigital"/>
+                <glz:ListItem key="FileDigital" value="FileDigital"/>
+            </glz:List>
+            <glz:Input id="sourcetype" label="{i18n:Source Type}"/>
+            <glz:Input id="transcriptionagency" label="{i18n:Transcription Agency}"/>
+            <!-- <glz:Input id="transcriptiondate" type="datetime" label="{i18n:Transcription Date}"/> -->
+            <glz:Input id="devicesource" label="{i18n:Device Source}"/>
+            <!-- <glz:Fieldset id="transcriptionchain" label="{i18n:Transcription Chain}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+              <glz:Fieldset id="device_description" required="true" label="{i18n:Device Description}">
+                <glz:Input id="type" required="true" label="{i18n:Type}"/>
+                <glz:Input id="unique_identifier" label="{i18n:Unique identifier}"/>
+                <glz:Input id="comments" label="{i18n:Comments}"/>
+              </glz:Fieldset>
+              <glz:Input id="device_manufacturer" required="true" label="{i18n:Device Manufacturer}"/>
+              <glz:Fieldset id="device_model" required="true" label="{i18n:Device Model}">
+                <glz:Input id="model" required="true" label="{i18n:Model}"/>
+                <glz:Input id="serial_number" label="{i18n:Serial number}"/>
+              </glz:Fieldset>
+              <glz:Input id="capture_software" label="{i18n:Capture Software}"/>
+              <glz:Input id="device_settings" label="{i18n:Device Device settings}"/>
+            </glz:Fieldset> -->
+            <!-- <glz:Fieldset id="transcriptionsummary" label="{i18n:Transcription Summary}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+              <glz:Input id="grouping" required="true" label="{i18n:Grouping}"/>
+              <glz:Input id="data_description" required="true" label="{i18n:Data description}"/>
+              <glz:Input id="data_unit" label="{i18n:Data unit}"/>
+              <glz:Input id="data_value" label="{i18n:Data value}"/>
+            </glz:Fieldset> -->
+            <!-- <glz:Fieldset id="transcriptiondata" label="{i18n:Transcription Data}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+              <glz:Input id="grouping" required="true" label="{i18n:Grouping}"/>
+              <glz:Input id="data_description" required="true" label="{i18n:Data description}"/>
+              <glz:Input id="data_unit" label="{i18n:Data unit}"/>
+              <glz:Fieldset id="interval" label="{i18n:Interval}">
+                <glz:Input id="start" required="true" label="{i18n:Start}"/>
+                <glz:Input id="stop" required="true" label="{i18n:Stop}"/>
+              </glz:Fieldset> -->
+              <!-- <glz:Fieldset id="data_value" label="{i18n:Data value}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="data_value-element" label="{i18n:Data value}"/>
+              </glz:Fieldset> -->
+            <!-- </glz:Fieldset> -->
+          </glz:Fieldset>
+          <glz:Input id="datetimecreated" type="datetime" label="{i18n:DateTime Created}"/>
+        </glz:Fieldset>
+        <glz:Input id="note" label="{i18n:Note}"/>
+
+        <glz:Panel cssClass="formButtons">
+            <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-primary js-glizycms-save"
+                            data="action=save" acl="*,edit" />
+            <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                            cssClass="btn js-glizycms-cancel button-margin" data="action=close"/>
+        </glz:Panel>
+    </c:FormEdit>
+    </mvc:State>
+</mvc:Page>

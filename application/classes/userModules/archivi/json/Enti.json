@@ -1,0 +1,47 @@
+{
+  "id": "Enti",
+  "tabs": [{
+    "id": "tabEnti",
+    "label": "Enti",
+    "fields": [{
+      "id": "intestazione",
+      "type": "Input",
+      "label": "Intestazione",
+      "gridField": true,
+      "attributes": {
+        "readOnly": "true"
+      },
+      "model": {
+        "type": "string",
+        "index": "true"
+      },
+      "solr": {
+        "field": "intestazione_s"
+      },
+      "option": "{\"strip_tags\":false}"
+    }, {
+      "id": "denominazioneEnte",
+      "type": "OpenDictionary",
+      "dictionaryId": "VA_ARCHIVE_VOCI_ENTE_DENOMINAZIONE",
+      "label": "Denominazione"
+    }, {
+      "id": "dateEsistenza",
+      "type": "Input",
+      "label": "Date di esistenza"
+    }, {
+      "id": "externalID",
+      "type": "Hidden",
+      "label": "ID importazione",
+      "attributes": {
+        "readOnly": "true"
+      },
+      "model": {
+        "type": "string",
+        "index": "true"
+      },
+      "solr": {
+        "field": "externalID_s"
+      }
+    }]
+  }]
+}

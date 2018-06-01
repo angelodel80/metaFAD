@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.teca.STRUMAG.views.components.*"
+          xmlns:mag="metafad.teca.MAG.views.components.*"
+          xmlns:gdb="metafad.gestioneDati.boards.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.teca.STRUMAG#list">
+        <mag:DataGridSolr id="dataGrid" recordClassName="metafad.teca.STRUMAG.models.Model"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.teca.STRUMAG.controllers.*" fullTextSearch="true"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="id" sortable="false" headerText="{i18n:Identificativo}" width="12"/>
+            <glz:DataGridColumn columnName="title_t" headerText="{i18n:Titolo}" width="40" renderCell="metafad.common.views.renderer.ShortField"/>
+            <glz:DataGridColumn columnName="update_at_s" headerText="{i18n:Data}" width="25"/>
+                  <glz:DataGridColumn columnName="document_detail_status" headerText="{i18n:Pubblicata}" width="15" cssClass="center" renderCell="metafad.common.views.renderer.CellDocPublished" />
+            <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" widht="8"
+                                renderCell="metafad.teca.STRUMAG.views.renderer.CellEditDeleteEcommerce"/>
+        </mag:DataGridSolr>
+        <cmp:AddButton acl="*,new" cssClass="dataGridAddButton" label="" routeUrl="teca-STRUMAG/edit/" editableRegion="actions"
+                       recordClassName="metafad.teca.STRUMAG.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+
+
+    <mvc:State name="edit,ecommerce">
+        <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.STRUMAG.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.teca.STRUMAG.models.Model"/>
+            <glz:Hidden id="MAG" />
+            <glz:Hidden id="state" />
+            <glz:Hidden id="title" />
+            <glz:Hidden id="physicalSTRU" />
+            <glz:Hidden id="logicalSTRU" />
+			<glz:Hidden id="instituteKey" />
+        </cms:FormEdit>
+        <cmp:AngularMagStrumag id="strumagSection" editableRegion="dam"/>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.teca.STRUMAG.controllers.Delete"/>
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,25 @@
+<div id="listChild" tal:attributes="data-parent-id Component/parentId">
+    <h4>Unità testuali</h4>
+    <ul style="padding: 0;">
+        <span tal:omit-tag="" tal:repeat="item Component/titles">
+            <li style="background-color: #F4F4F4; margin: 10px 0 10px 0; list-style: none;" tal:content="item/title"/>
+        </span>
+        <a id="addUnitaTestuale" class="btn btn-info btn-flat btn-add">Aggiungi unità testuale</a>
+    </ul>
+</div>
+<script type="text/javascript">
+$('#addUnitaTestuale').click(function () {
+    $.ajax({
+        url: Glizy.ajaxUrl + '&controllerName=metafad.tei.controllers.ajax.CreateNodeFromParent',
+        type: 'get',
+        dataType: 'json',
+        data: {
+            parentId: $('#listChild').data('parent-id'),
+            typeId: 'unita-testuale'
+        },
+        success: function (data, textStatus, jqXHR) {
+            window.location.href = data;
+        }
+    })
+});
+</script>

@@ -1,0 +1,166 @@
+{
+  "__model": {
+    "type": "constant",
+    "value": "metafad.tei.models.Manoscritto"
+  },
+  "pageId": {
+    "type": "constant",
+    "value": "tei-Manoscritto"
+  },
+  "sectionType": {
+    "type": "simple",
+    "xpath": "./@sectiontype"
+  },
+  "codice": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:repository/@key"
+  },
+  "denominazione": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:repository"
+  },
+  "paese": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:country"
+  },
+  "regione": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:region"
+  },
+  "comune": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:settlement"
+  },
+  "denominazione-fondo": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:collection"
+  },
+  "segnatura": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:idno"
+  },
+  "inventario": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:altIdentifier[@type='inventario']"
+  },
+  "cnms": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:altIdentifier[@type='CNMS']"
+  },
+  "sommario": {
+    "type": "simple",
+    "xpath": "./x:msContents/x:summary/x:title"
+  },
+  "fascicoliLegati": {
+    "type": "simple",
+    "xpath": "./@fascicoli"
+  },
+  "note-composito": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:p/x:note[@type='sez02']"
+  },
+  "note-palinsesto": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:p/x:note[@type='sez03']"
+  },
+  "materia-corpo-codice": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/@material"
+  },
+  "materia-guardia": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/@material"
+  },
+  "note-materia": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:note[@type='sez06']"
+  },
+  "note-carte": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:note[@type='sez08']"
+  },
+  "altezza": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure[@type='height']"
+  },
+  "larghezza": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure[@type='width']"
+  },
+  "unitaMisura": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure/@unit"
+  },
+  "carte-dimensioni": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:locus"
+  },
+  "dataDelManoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:origDate"
+  },
+  "carta-manoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:locus"
+  },
+  "dataDiEntrataDelMs": {
+    "type": "simple",
+    "xpath": "./x:history/x:acquisition/x:date"
+  },
+  "trascrizioneElementiStorici": {
+    "type": "simple",
+    "xpath": "./x:history/x:summary"
+  },
+  "antroponimi": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./x:history/x:summary/x:name",
+    "struct": {
+      "intestazione": {
+        "type": "composite",
+        "xpath": ".",
+        "struct": {
+          "intestazione": {
+            "type": "simple",
+            "xpath": "./text()"
+          },
+          "externalID": {
+            "type": "simple",
+            "xpath": "./@authfilenumber"
+          }
+        },
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_AntroponimoFromStdClass"
+        }
+      }
+    }
+  },
+  "semplici": {
+    "type": "simple",
+    "xpath": "./@noteinizialisempl"
+  },
+  "note-manoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:origDate"
+  },
+  "bibliografiaStampa": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='1Astampa']"
+  },
+  "bibliografiaNonStampa": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='2Nonastampa']"
+  },
+  "riproduzioni": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:surrogates/x:p"
+  },
+  "fonti": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='3Fonti']"
+  },
+  "osservazioni-bibliografia": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:note[@type='osservazioni']"
+  }
+}

@@ -1,0 +1,79 @@
+<div class="col-md-12">
+    <div class="activitiesInstance row" tal:repeat="item Component/records">
+        <div class="col-md-1">
+            <div class="graySquare" tal:content="repeat/item/index"></div>
+        </div>
+        <div class="col-md-11">
+            <div class="activity col-md-10">
+                <h3 tal:content="item/activity/title"></h3>
+
+                <div class="boardFromTo">
+                    <span tal:condition="item/boardType">Scheda </span><span tal:content="item/boardType"></span>
+                    <span tal:condition="item/startingBoardId">, da </span><span
+                        tal:content="item/startingBoardId"></span>
+                    <span tal:condition="item/endingBoardId"> a </span><span tal:content="item/endingBoardId"></span>
+                </div>
+                <div tal:condition="item/assignements">
+                    <span class="detailProcess">Assegnata:</span><span tal:repeat="assignement item/assignements"><span class="assignement" tal:condition="assignement" tal:content="assignement/text"></span></span>
+                </div>
+                <div class="notes" tal:condition="item/notes" tal:repeat="note item/notes" >
+                    <div class="noteItem">
+                        <div class="noteInfo">
+                            <span tal:content="note/created_by"></span>
+                            <span tal:content="note/created_at"></span>
+                        </div>
+                        <span class="note" tal:content="note/detail"></span>
+                    </div>
+                </div>
+                <div id="newNote" class="newNote" tal:attributes="instanceActivityId item/document_id">
+                    <textarea name="newNote" title="newNote" class="form-control " wrap="off"
+                              placeholder="Testo della nota" tal:attributes="instanceActivityId item/document_id"></textarea>
+
+                    <div class="buttons">
+                        <input class="cancelNewNoteBtn btn btn-flat" value="Annulla" type="button"
+                               tal:attributes="instanceActivityId item/document_id"></input>
+                        <input class="btn btn-flat btn-info js-glizycms-save" value="Invia" type="button"
+                               data-action="addNote"></input>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1" id="instanceDetailDate">
+                <div class="activityInstanceDeadlineDate" tal:condition="item/deadlineDate">
+                        <div class="month" tal:content="php: substr(item.deadlineDate, 3, 2)"></div>
+                        <div class="day" tal:content="php: substr(item.deadlineDate, 0, 2)"></div>
+                </div>
+            </div>
+            <div class="col-md-1" id="instanceDetailPercentage">
+                <input tal:attributes="value item/percentage | '0'" class="knob" data-width="45" data-height="45"
+                       data-readOnly="true" data-displayInput="false" data-thickness="0.3"
+                       data-fgColor="#f39c12"/>
+                       <label for="knob" tal:content="string: ${item/percentage | '0'}%"></label>
+            </div>
+        </div>
+        <span id="newNoteBtnProcessDetail" class="addNoteButton"
+              tal:attributes="instanceActivityId item/document_id">Aggiungi una nota</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('.addNoteButton').each(function () {
+            $(this).click(function () {
+                $('div[instanceActivityId=' + $(this).attr('instanceActivityId') + ']').show();
+            });
+        })
+
+        $('.cancelNewNoteBtn').each(function () {
+            $(this).click(function () {
+                $('div[instanceActivityId=' + $(this).attr('instanceActivityId') + '] textarea').val('');
+                $('div[instanceActivityId=' + $(this).attr('instanceActivityId') + ']').hide();
+            });
+        })
+        $('textarea').change(function () {
+            $('#newNoteValue').val($(this).val());
+            $('#instanceActivityId').val($(this).attr('instanceActivityId'));
+        });
+    });
+</script>
+

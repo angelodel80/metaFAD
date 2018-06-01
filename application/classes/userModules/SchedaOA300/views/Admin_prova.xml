@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:c="metafad.modules.iccd.views.components.*"
+	  src="metafad.views.TemplateModuleAdminSimple">
+
+
+    <glz:template name="model" value="SchedaOA300.models.Model_prova"/>
+    <glz:template name="show_external_id" value="false"/>
+    <glz:template name="controller_name" value="metafad.gestioneDati.boards.controllers.*"/>
+    <glz:template name="grid_fields">
+		<glz:DataGridColumn columnName="NCTN_s" headerText="{i18n:NCTN}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="OGTD_s" headerText="{i18n:OGTD}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="SGTI_s" headerText="{i18n:SGTI}" renderCell="metafad.common.views.renderer.ShortField"/>        <com:DataGridColumn columnName="digitale_i" width="20px" checkbox="true" sortable="false" searchable="false"
+                            headerText="{i18n:Digitale}" cssClass="center"
+                            renderCell="org.glizycms.core.application.renderer.CellIsChecked"/>
+        <glz:DataGridColumn columnName="isValid_i" width="20px" sortable="false" searchable="false"
+                            headerText="{i18n:Validata}" cssClass="center"
+                            renderCell="org.glizycms.core.application.renderer.CellIsChecked"/>
+        <glz:DataGridColumn columnName="document_detail_status" width="20px" sortable="false" searchable="false"
+                            headerText="{i18n:Pubblicata}" cssClass="center"
+                            renderCell="metafad.common.views.renderer.CellDocPublished"/>
+    </glz:template>
+
+    <glz:template name="extra_components">
+  <cmp:LinkedImages id="linkedImages" model="SchedaOA300"/>
+  <glz:JSscript folder="metafad/gestioneDati/showImages/js"/>
+</glz:template>
+
+    <glz:template name="form_fields"><glz:Hidden id="simpleForm" value="3056841"/>
+        <glz:Hidden id="isTemplate"/>
+        <glz:Hidden data="type=modalPagePreview;pageid=SchedaOA300_preview;" id="popupPreview"/>
+        <glz:Input id="templateTitle" label="{i18n:Titolo template}" required="true"/>
+        <glz:JSscript folder="metafad/modules/iccd/js"/>
+        <glz:JSscript folder="userModules/SchedaOA300/js"/>
+                  <glz:Link id="link-show-images" icon="fa fa-picture-o" label="Mostra immagini" editableRegion="actions" cssClass="link showImages"/>
+
+        
+
+        <glz:JSscript folder="metafad/gestioneDati/boards/js"/>
+
+        <glz:JSTabGroup id="innerTabs" showNav="true">
+<glz:JSTab dropdown="true" id="CD-tab" label="CD - CODICI">
+<glz:Fieldset id="CD" label="CD - CODICI" required="true">
+  <glz:Input id="TSK" label="TSK - Tipo Scheda" required="true" maxLength="4" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Input id="LIR" label="LIR - Livello ricerca" required="true" maxLength="5" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="NCT" label="NCT - CODICE UNIVOCO" required="true">
+    <glz:Input id="NCTR" label="NCTR - Codice regione" required="true" maxLength="2"/>
+    <glz:Input id="NCTN" label="NCTN - Numero catalogo generale" required="true" maxLength="8"/>
+    <glz:Input id="NCTS" label="NCTS - Suffisso numero catalogo generale" maxLength="2"/>
+</glz:Fieldset>
+  <glz:Input id="ESC" label="ESC - Ente schedatore" required="true" maxLength="25"/>
+  <glz:Input id="ECP" label="ECP - Ente competente" required="true" maxLength="25"/>
+  <glz:Input id="EPR" label="EPR - Ente proponente" maxLength="25"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="RV-tab" label="RV - RELAZIONI">
+<glz:Fieldset id="RV" label="RV - RELAZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="RVE" label="RVE - STRUTTURA COMPLESSA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="RVEL" label="RVEL - Livello" required="true" maxLength="25"/>
+    <glz:Input id="RVER" label="RVER - Codice bene radice" maxLength="25"/>
+    <glz:Fieldset id="RVES" label="RVES - Codice bene componente" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="RVES-element" label="RVES - Codice bene componente" maxLength="25"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="RSE" label="RSE - RELAZIONI DIRETTE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="RSER" label="RSER - Tipo relazione" required="true" maxLength="70" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="RSET" label="RSET - Tipo scheda" required="true" maxLength="10" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="RSEC" label="RSEC - Codice bene" required="true" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;return_object=true;proxy=metafad.modules.iccd.models.proxy.IccdFormProxy" cssClass="form-control -mandatory"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ROZ" label="ROZ - Altre relazioni" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="ROZ-element" label="ROZ - Altre relazioni" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;return_object=true;proxy=metafad.modules.iccd.models.proxy.IccdFormProxy"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AC-tab" label="AC - ALTRI CODICI">
+<glz:Fieldset id="AC" label="AC - ALTRI CODICI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="ACC" label="ACC - Altro codice bene" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="ACC-element" label="ACC - Altro codice bene" maxLength="25"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ACS" label="ACS - SCHEDE CORRELATE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ACSE" label="ACSE - Ente" required="true" maxLength="25"/>
+    <glz:Input id="ACSC" label="ACSC - Codice" required="true" maxLength="25"/>
+    <glz:Input id="ACSS" label="ACSS - Specifiche" maxLength="100"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="OG-tab" label="OG - OGGETTO">
+<glz:Fieldset id="OG" label="OG - OGGETTO" required="true">
+  <glz:Fieldset id="OGT" label="OGT - OGGETTO" required="true">
+    <glz:Input id="OGTD" label="OGTD - Definizione" required="true" maxLength="70" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_OGTD_OGTT_OA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="OGTT" label="OGTT - Tipologia" maxLength="70" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_OGTD_OGTT_OA##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="OGTV" label="OGTV - Identificazione" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="OGTN" label="OGTN - Denominazione/dedicazione" maxLength="100"/>
+    <glz:Input id="OGTP" label="OGTP - Posizione" maxLength="50"/>
+</glz:Fieldset>
+  <glz:Fieldset id="QNT" label="QNT - QUANTITA'" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="QNTN" label="QNTN - Numero" maxLength="3"/>
+    <glz:Input id="QNTS" label="QNTS - Quantita' non rilevata" maxLength="3" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="SGT" label="SGT - SOGGETTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Fieldset id="SGTI" label="SGTI - Identificazione" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="SGTI-element" label="SGTI - Identificazione" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="SGTT" label="SGTT - Titolo" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="SGTT-element" label="SGTT - Titolo" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="LC-tab" label="LC - LOCALIZZAZIONE GEOGRAFICO-AMMINISTRATIVA">
+<glz:Fieldset id="LC" label="LC - LOCALIZZAZIONE GEOGRAFICO-AMMINISTRATIVA" required="true">
+  <glz:Fieldset id="PVC" label="PVC - LOCALIZZAZIONE GEOGRAFICO-AMMINISTRATIVA ATTUALE" required="true">
+    <glz:Input id="PVCS" label="PVCS - Stato" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PVCR" label="PVCR - Regione" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PVCP" label="PVCP - Provincia" required="true" maxLength="3" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PVCC" label="PVCC - Comune" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PVCL" label="PVCL - Localita'" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PVCE" label="PVCE - Altra ripartizione amministrativa o localita' estera" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Input id="PVL" label="PVL - Altra localita'" maxLength="250"/>
+  <glz:Input id="PVE" label="PVE - Diocesi" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="LDC" label="LDC - COLLOCAZIONE SPECIFICA" required="true">
+    <glz:Input id="LDCT" label="LDCT - Tipologia" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_Contenitore fisico##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="LDCQ" label="LDCQ - Qualificazione" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_Contenitore fisico##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="LDCN" label="LDCN - Denominazione" maxLength="80"/>
+    <glz:Input id="LDCC" label="LDCC - Complesso monumentale di appartenenza" maxLength="80"/>
+    <glz:Input id="LDCU" label="LDCU - Denominazione spazio viabilistico" required="true" maxLength="250"/>
+    <glz:Input id="LDCM" label="LDCM - Denominazione raccolta" maxLength="70"/>
+    <glz:Input id="LDCS" label="LDCS - Specifiche" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="UB-tab" label="UB - UBICAZIONE E DATI PATRIMONIALI">
+<glz:Fieldset id="UB" label="UB - UBICAZIONE E DATI PATRIMONIALI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Input id="UBO" label="UBO - Ubicazione originaria" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="INV" label="INV - INVENTARIO DI MUSEO O SOPRINTENDENZA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="INVN" label="INVN - Numero" required="true" maxLength="100"/>
+    <glz:Input id="INVD" label="INVD - Data" required="true" maxLength="50"/>
+    <glz:Input id="INVC" label="INVC - Collocazione" maxLength="50"/>
+</glz:Fieldset>
+  <glz:Fieldset id="STI" label="STI - STIMA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="STIS" label="STIS - Stima" required="true" maxLength="25"/>
+    <glz:Input id="STID" label="STID - Data stima" required="true" maxLength="50"/>
+    <glz:Input id="STIM" label="STIM - Motivo della stima" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_STIM##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="LA-tab" label="LA - ALTRE LOCALIZZAZIONI GEOGRAFICO-AMMINISTRATIVE">
+<glz:Fieldset id="LA" label="LA - ALTRE LOCALIZZAZIONI GEOGRAFICO-AMMINISTRATIVE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+  <glz:Input id="TCL" label="TCL - Tipo di localizzazione" required="true" maxLength="40" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="PRV" label="PRV - LOCALIZZAZIONE GEOGRAFICO-AMMINISTRATIVA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" required="true">
+    <glz:Input id="PRVS" label="PRVS - Stato" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PRVR" label="PRVR - Regione" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PRVP" label="PRVP - Provincia" required="true" maxLength="3" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PRVC" label="PRVC - Comune" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PRVL" label="PRVL - Localita'" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="PRVE" label="PRVE - Altra ripartizione amministrativa o localita' estera" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Input id="PRL" label="PRL - Altra localita'" maxLength="250"/>
+  <glz:Input id="PRE" label="PRE - Diocesi" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="PRC" label="PRC - COLLOCAZIONE SPECIFICA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" required="true">
+    <glz:Input id="PRCT" label="PRCT - Tipologia" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_Contenitore fisico##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="PRCQ" label="PRCQ - Qualificazione" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_Contenitore fisico##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="PRCD" label="PRCD - Denominazione" maxLength="80"/>
+    <glz:Input id="PRCC" label="PRCC - Complesso monumentale di appartenenza" maxLength="80"/>
+    <glz:Input id="PRCU" label="PRCU - Denominazione spazio viabilistico" maxLength="250"/>
+    <glz:Input id="PRCM" label="PRCM - Denominazione raccolta" maxLength="70"/>
+    <glz:Input id="PRCS" label="PRCS - Specifiche" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="PRD" label="PRD - DATA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="PRDI" label="PRDI - Data ingresso" maxLength="25"/>
+    <glz:Input id="PRDU" label="PRDU - Data uscita" maxLength="25"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="GP-tab" label="GP - GEOREFERENZIAZIONE TRAMITE PUNTO">
+<glz:Fieldset id="GP" label="GP - GEOREFERENZIAZIONE TRAMITE PUNTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+  <glz:Input id="GPL" label="GPL - Tipo di localizzazione" required="true" maxLength="40" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="GPD" label="GPD - DESCRIZIONE DEL PUNTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" required="true">
+    <glz:Fieldset id="GPDP" label="GPDP - PUNTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" required="true">
+      <glz:Input id="GPDPX" label="GPDPX - Coordinata X" required="true" maxLength="12"/>
+      <glz:Input id="GPDPY" label="GPDPY - Coordinata Y" required="true" maxLength="12"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="GPC" label="GPC - CARATTERISTICHE DEL PUNTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="GPCT" label="GPCT - Tipo" maxLength="50"/>
+    <glz:Input id="GPCL" label="GPCL - Quota s.l.m." maxLength="12"/>
+    <glz:Input id="GPCI" label="GPCI - Quota minima s.l.m. dell'area rappresentata dal punto" maxLength="12"/>
+    <glz:Input id="GPCS" label="GPCS - Quota massima s.l.m. dell'area rappresentata dal punto" maxLength="12"/>
+</glz:Fieldset>
+  <glz:Input id="GPM" label="GPM - Metodo di georeferenziazione" required="true" maxLength="70" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Input id="GPT" label="GPT - Tecnica di georeferenziazione" required="true" maxLength="70" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Input id="GPP" label="GPP - Proiezione e Sistema di riferimento" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+  <glz:Fieldset id="GPB" label="GPB - BASE DI RIFERIMENTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi" required="true">
+    <glz:Input id="GPBB" label="GPBB - Descrizione sintetica" required="true" maxLength="20"/>
+    <glz:Input id="GPBT" label="GPBT - Data" required="true" maxLength="10"/>
+    <glz:Input id="GPBO" label="GPBO - Note" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="RE-tab" label="RE - MODALITA' DI REPERIMENTO">
+<glz:Fieldset id="RE" label="RE - MODALITA' DI REPERIMENTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="RCG" label="RCG - RICOGNIZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="RCGU" label="RCGU - Uso del suolo" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_RCGU##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="RCGC" label="RCGC - Condizioni di visibilita'" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_RCGC##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="NCUN" label="NCUN - Codice univoco ICCD" maxLength="8"/>
+    <glz:Fieldset id="RCGA" label="RCGA - Responsabile scientifico" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="RCGA-element" label="RCGA - Responsabile scientifico" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Input id="RCGE" label="RCGE - Motivo" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_RCGE##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="RCGM" label="RCGM - Metodo" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_RCGM##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="RCGD" label="RCGD - Data" required="true" maxLength="50"/>
+    <glz:Input id="RCGH" label="RCGH - Sigla per citazione" maxLength="8"/>
+    <glz:Fieldset id="RCGS" label="RCGS - Bibliografia specifica" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="RCGS-element" label="RCGS - Bibliografia specifica" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+    <glz:Input id="RCGZ" label="RCGZ - Specifiche" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DSC" label="DSC - DATI DI SCAVO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="NCUN" label="NCUN - Codice univoco ICCD" maxLength="8"/>
+    <glz:Input id="SCAN" label="SCAN - Denominazione dello scavo" required="true" maxLength="100"/>
+    <glz:Fieldset id="DSCF" label="DSCF - Ente responsabile" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="DSCF-element" label="DSCF - Ente responsabile" maxLength="100"/>
+</glz:Fieldset>
+    <glz:Fieldset id="DSCA" label="DSCA - Responsabile scientifico" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="DSCA-element" label="DSCA - Responsabile scientifico" maxLength="100"/>
+</glz:Fieldset>
+    <glz:Input id="DSCT" label="DSCT - Motivo" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_DSCT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="DSCM" label="DSCM - Metodo" maxLength="100" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_DSCM##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="DSCD" label="DSCD - Data" required="true" maxLength="50"/>
+    <glz:Input id="DSCH" label="DSCH - Sigla per citazione" maxLength="8"/>
+    <glz:Input id="DSCU" label="DSCU - Unita' Stratigrafica" maxLength="25"/>
+    <glz:Input id="DSCS" label="DSCS - Numero tomba" maxLength="25"/>
+    <glz:Input id="DSCI" label="DSCI - Numero inventario di scavo" maxLength="25"/>
+    <glz:Input id="DSCZ" label="DSCZ - Bibliografia specifica" maxLength="1000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <glz:Input id="DSCN" label="DSCN - Specifiche" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AIN" label="AIN - ALTRE INDAGINI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="AINT" label="AINT - Tipo" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_AINT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="AIND" label="AIND - Data" maxLength="50"/>
+    <glz:Input id="AINR" label="AINR - Responsabile" maxLength="100"/>
+</glz:Fieldset>
+  <glz:Input id="RES" label="RES - Specifiche di reperimento" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="RO-tab" label="RO - RAPPORTO">
+<glz:Fieldset id="RO" label="RO - RAPPORTO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+  <glz:Fieldset id="ROF" label="ROF - RAPPORTO OPERA FINALE/ORIGINALE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="ROFF" label="ROFF - Stadio opera" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ROFO" label="ROFO - Opera finale/originale" maxLength="50"/>
+    <glz:Input id="ROFS" label="ROFS - Soggetto opera finale/originale" maxLength="250"/>
+    <glz:Input id="ROFA" label="ROFA - Autore opera finale/originale" maxLength="100"/>
+    <glz:Input id="ROFD" label="ROFD - Datazione opera finale/originale" maxLength="50"/>
+    <glz:Input id="ROFC" label="ROFC - Collocazione opera finale/originale" maxLength="100"/>
+</glz:Fieldset>
+  <glz:Fieldset id="REI" label="REI - REIMPIEGO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="REIP" label="REIP - Parte reimpiegata" required="true" maxLength="50"/>
+    <glz:Input id="REIT" label="REIT - Tipo reimpiego" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_REIT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="REID" label="REID - Datazione reimpiego" maxLength="50"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="DT-tab" label="DT - CRONOLOGIA">
+<glz:Fieldset id="DT" label="DT - CRONOLOGIA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+  <glz:Fieldset id="DTZ" label="DTZ - CRONOLOGIA GENERICA" required="true">
+    <glz:Input id="DTZG" label="DTZG - Secolo" required="true" maxLength="50"/>
+    <glz:Input id="DTZS" label="DTZS - Frazione di secolo" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DTS" label="DTS - CRONOLOGIA SPECIFICA" required="true">
+    <glz:Input id="DTSI" label="DTSI - Da" required="true" maxLength="15"/>
+    <glz:Input id="DTSV" label="DTSV - Validita'" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="DTSF" label="DTSF - A" required="true" maxLength="15"/>
+    <glz:Input id="DTSL" label="DTSL - Validita'" maxLength="25" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DTM" label="DTM - Motivazione cronologia" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <glz:Input id="DTM-element" label="DTM - Motivazione cronologia" maxLength="50" data="type=FormEditSelectMandatory;field=DTM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ADT" label="ADT - Altre datazioni" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="ADT-element" label="ADT - Altre datazioni" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AU-tab" label="AU - DEFINIZIONE CULTURALE">
+<glz:Fieldset id="AU" label="AU - DEFINIZIONE CULTURALE" required="true">
+  <glz:Fieldset id="AUT" label="AUT - AUTORE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" required="true" cssClass="GFEFieldset ui-sortable AU-alternative-mandatory">
+    <glz:Input id="__AUT" label="AUT - AUTORE" data="type=modalPage;pageid=AUT300_popup;controller=AUT300_controllers_ajax_FindTerm"/>
+    <glz:Input id="AUTS" label="AUTS - Riferimento all'autore" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="AUTR" label="AUTR - Riferimento all'intervento" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_AUTR##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Fieldset id="AUTM" label="AUTM - Motivazione dell'attribuzione" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="AUTM-element" label="AUTM - Motivazione dell'attribuzione" maxLength="50" data="type=FormEditSelectMandatory;field=AUTM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+    <glz:Input id="NCUN" label="NCUN - Codice univoco ICCD" maxLength="8"/>
+    <glz:Input id="AUTN" label="AUTN - Nome scelto" required="true" maxLength="100" disabled="true"/>
+    <glz:Input id="AUTA" label="AUTA - Dati anagrafici" required="true" maxLength="70" disabled="true"/>
+    <glz:Input id="AUTH" label="AUTH - Sigla per citazione" required="true" maxLength="8" disabled="true"/>
+    <glz:Input id="AUTB" label="AUTB - Nome scelto (ente collettivo)" maxLength="150"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ATB" label="ATB - AMBITO CULTURALE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" cssClass="GFEFieldset ui-sortable AU-alternative-mandatory">
+    <glz:Input id="ATBD" label="ATBD - Denominazione" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ATBD_OA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ATBR" label="ATBR - Riferimento all'intervento" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ATBR##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Fieldset id="ATBM" label="ATBM - Motivazione dell'attribuzione" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="ATBM-element" label="ATBM - Motivazione dell'attribuzione" maxLength="250" data="type=FormEditSelectMandatory;field=ATBM;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="AAT" label="AAT - Altre attribuzioni" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="AAT-element" label="AAT - Altre attribuzioni" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="EDT" label="EDT - EDITORI/STAMPATORI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" cssClass="GFEFieldset ui-sortable AU-alternative-mandatory">
+    <glz:Input id="EDTZ" label="EDTZ - Zecca" required="true" maxLength="50"/>
+    <glz:Input id="EDTA" label="EDTA - Autorita'" required="true" maxLength="50"/>
+    <glz:Input id="EDTN" label="EDTN - Nome" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="CMM" label="CMM - COMMITTENZA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Fieldset id="CMMN" label="CMMN - Nome" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="CMMN-element" label="CMMN - Nome" maxLength="70"/>
+</glz:Fieldset>
+    <glz:Input id="CMMD" label="CMMD - Data" maxLength="50"/>
+    <glz:Input id="CMMC" label="CMMC - Circostanza" maxLength="100"/>
+    <glz:Input id="CMMF" label="CMMF - Fonte" maxLength="50"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="MT-tab" label="MT - DATI TECNICI">
+<glz:Fieldset id="MT" label="MT - DATI TECNICI" required="true">
+  <glz:Fieldset id="MTC" label="MTC - Materia e tecnica" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <glz:Input id="MTC-element" label="MTC - Materia e tecnica" maxLength="150" data="type=FormEditSelectMandatory;field=MTC;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_MTC_OA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+  <glz:Fieldset id="MIS" label="MIS - MISURE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <glz:Input id="MISU" label="MISU - Unita'" required="true" maxLength="5" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="MISA" label="MISA - Altezza" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISL" label="MISL - Larghezza" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISP" label="MISP - Profondita'" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISD" label="MISD - Diametro" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISN" label="MISN - Lunghezza" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISS" label="MISS - Spessore" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Input id="MISG" label="MISG - Peso" maxLength="6" data="type=FormEditMandatory" cssClass="form-control MIS-alternative-mandatory"/>
+    <glz:Fieldset id="MISV" label="MISV - Varie" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="MISV-element" label="MISV - Varie" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Input id="MISR" label="MISR - Mancanza" maxLength="3" cssClass="form-control MIS-alternative-mandatory" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="MIST" label="MIST - Validita'" maxLength="10" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+</glz:Fieldset>
+  <glz:Input id="FIL" label="FIL - Filigrana" maxLength="50"/>
+  <glz:Input id="FRM" label="FRM - Formato" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_FRM_OA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="CO-tab" label="CO - CONSERVAZIONE">
+<glz:Fieldset id="CO" label="CO - CONSERVAZIONE" required="true">
+  <glz:Fieldset id="STC" label="STC - STATO DI CONSERVAZIONE" required="true">
+    <glz:Input id="STCC" label="STCC - Stato di conservazione" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="STCS" label="STCS - Indicazioni specifiche" maxLength="500"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="RS-tab" label="RS - RESTAURI">
+<glz:Fieldset id="RS" label="RS - RESTAURI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Fieldset id="RST" label="RST - RESTAURI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="RSTD" label="RSTD - Data" maxLength="50"/>
+    <glz:Input id="RSTS" label="RSTS - Situazione" maxLength="50"/>
+    <glz:Input id="RSTE" label="RSTE - Ente responsabile" maxLength="50"/>
+    <glz:Fieldset id="RSTN" label="RSTN - Nome operatore" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="RSTN-element" label="RSTN - Nome operatore" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="RSTR" label="RSTR - Ente finanziatore" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="RSTR-element" label="RSTR - Ente finanziatore" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="DA-tab" label="DA - DATI ANALITICI">
+<glz:Fieldset id="DA" label="DA - DATI ANALITICI" required="true">
+  <glz:Fieldset id="DES" label="DES - DESCRIZIONE" required="true">
+    <glz:Input id="DESO" label="DESO - Indicazioni sull'oggetto" required="true" maxLength="1300" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+    <glz:Fieldset id="DESI" label="DESI - Codifica Iconclass" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <glz:Input id="DESI-element" label="DESI - Codifica Iconclass" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="DESS" label="DESS - Indicazioni sul soggetto" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <glz:Input id="DESS-element" label="DESS - Indicazioni sul soggetto" maxLength="2000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="ISR" label="ISR - ISCRIZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ISRC" label="ISRC - Classe di appartenenza" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ISRC##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ISRL" label="ISRL - Lingua" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ISRL##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ISRS" label="ISRS - Tecnica di scrittura" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ISRS##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ISRT" label="ISRT - Tipo di caratteri" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ISRT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ISRP" label="ISRP - Posizione" required="true" maxLength="100"/>
+    <glz:Input id="ISRA" label="ISRA - Autore" maxLength="100"/>
+    <glz:Input id="ISRI" label="ISRI - Trascrizione" required="true" maxLength="10000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+  <glz:Fieldset id="STM" label="STM - STEMMI, EMBLEMI, MARCHI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="STMC" label="STMC - Classe di appartenenza" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_STMC##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="STMQ" label="STMQ - Qualificazione" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_STMQ##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="STMI" label="STMI - Identificazione" maxLength="100"/>
+    <glz:Input id="STMU" label="STMU - Quantita'" maxLength="10"/>
+    <glz:Input id="STMP" label="STMP - Posizione" required="true" maxLength="100"/>
+    <glz:Input id="STMD" label="STMD - Descrizione" required="true" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Input id="NSC" label="NSC - Notizie storico-critiche" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="TU-tab" label="TU - CONDIZIONE GIURIDICA E VINCOLI">
+<glz:Fieldset id="TU" label="TU - CONDIZIONE GIURIDICA E VINCOLI" required="true">
+  <glz:Fieldset id="ACQ" label="ACQ - ACQUISIZIONE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="ACQT" label="ACQT - Tipo acquisizione" maxLength="50" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ACQT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ACQN" label="ACQN - Nome" maxLength="50"/>
+    <glz:Input id="ACQD" label="ACQD - Data acquisizione" maxLength="25"/>
+    <glz:Input id="ACQL" label="ACQL - Luogo acquisizione" maxLength="50"/>
+</glz:Fieldset>
+  <glz:Fieldset id="CDG" label="CDG - CONDIZIONE GIURIDICA" required="true">
+    <glz:Input id="CDGG" label="CDGG - Indicazione generica" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Fieldset id="CDGS" label="CDGS - Indicazione specifica" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <glz:Input id="CDGS-element" label="CDGS - Indicazione specifica" maxLength="250"/>
+</glz:Fieldset>
+    <glz:Fieldset id="CDGI" label="CDGI - Indirizzo" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="CDGI-element" label="CDGI - Indirizzo" maxLength="250"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="NVC" label="NVC - PROVVEDIMENTI DI TUTELA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="NVCT" label="NVCT - Tipo provvedimento" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_NVCT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="NVCE" label="NVCE - Estremi provvedimento" required="true" maxLength="25"/>
+    <glz:Fieldset id="NVCD" label="NVCD - Data notificazione" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="NVCD-element" label="NVCD - Data notificazione" maxLength="25"/>
+</glz:Fieldset>
+    <glz:Input id="NVCI" label="NVCI - Estremi provvedimento in itinere" maxLength="25"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ALN" label="ALN - MUTAMENTI TITOLARITA'/POSSESSO/DETENZIONE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ALNT" label="ALNT - Tipo evento" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ALNT##,##level##:##2##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ALND" label="ALND - Data evento" maxLength="25"/>
+    <glz:Input id="ALNN" label="ALNN - Note" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ESP" label="ESP - ESPORTAZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ESPT" label="ESPT - Tipo licenza" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ESPU" label="ESPU - Ufficio" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ESPD" label="ESPD - Data emissione" required="true" maxLength="25"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="DO-tab" label="DO - FONTI E DOCUMENTI DI RIFERIMENTO">
+<glz:Fieldset id="DO" label="DO - FONTI E DOCUMENTI DI RIFERIMENTO" required="true">
+  <glz:Fieldset id="FTA" label="FTA - DOCUMENTAZIONE FOTOGRAFICA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=1" required="true">
+    <glz:Input id="FTAX" label="FTAX - Genere" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-2 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-10">
+<glz:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;IMAGE&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="FTA-image" required="false" />
+<glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+</glz:Panel>
+</glz:Panel>    <glz:Input id="FTAP" label="FTAP - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_FTAP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="FTAA" label="FTAA - Autore" maxLength="50"/>
+    <glz:Input id="FTAD" label="FTAD - Data" maxLength="25"/>
+    <glz:Input id="FTAE" label="FTAE - Ente proprietario" maxLength="250"/>
+    <glz:Input id="FTAC" label="FTAC - Collocazione" maxLength="50"/>
+    <glz:Input id="FTAN" label="FTAN - Codice identificativo" required="true" maxLength="25"/>
+    <glz:Input id="FTAT" label="FTAT - Note" maxLength="250"/>
+    <glz:Input id="FTAF" label="FTAF - Formato" maxLength="25"/>
+</glz:Fieldset>
+  <glz:Fieldset id="DRA" label="DRA - DOCUMENTAZIONE GRAFICA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="DRAX" label="DRAX - Genere" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-2 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-10">
+<glz:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;IMAGE&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="DRA-image" required="false" />
+<glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+</glz:Panel>
+</glz:Panel>    <glz:Input id="DRAT" label="DRAT - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_DRAT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="DRAO" label="DRAO - Note" maxLength="250"/>
+    <glz:Input id="DRAS" label="DRAS - Scala" maxLength="25"/>
+    <glz:Input id="DRAE" label="DRAE - Ente proprietario" maxLength="250"/>
+    <glz:Input id="DRAC" label="DRAC - Collocazione" maxLength="50"/>
+    <glz:Input id="DRAN" label="DRAN - Codice identificativo" required="true" maxLength="25"/>
+    <glz:Input id="DRAA" label="DRAA - Autore" maxLength="50"/>
+    <glz:Input id="DRAD" label="DRAD - Data" maxLength="25"/>
+</glz:Fieldset>
+  <glz:Fieldset id="VDC" label="VDC - DOCUMENTAZIONE VIDEO-CINEMATOGRAFICA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="VDCX" label="VDCX - Genere" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-2 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-10">
+<glz:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;VIDEO&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="VDC-image" required="false" />
+<glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+</glz:Panel>
+</glz:Panel>    <glz:Input id="VDCP" label="VDCP - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_VDCP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="VDCR" label="VDCR - Autore" maxLength="50"/>
+    <glz:Input id="VDCD" label="VDCD - Data" maxLength="25"/>
+    <glz:Input id="VDCE" label="VDCE - Ente proprietario" maxLength="250"/>
+    <glz:Input id="VDCA" label="VDCA - Titolo" maxLength="50"/>
+    <glz:Input id="VDCC" label="VDCC - Collocazione" maxLength="50"/>
+    <glz:Input id="VDCN" label="VDCN - Codice identificativo" required="true" maxLength="25"/>
+    <glz:Input id="VDCT" label="VDCT - Note" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="REG" label="REG - DOCUMENTAZIONE AUDIO" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="REGX" label="REGX - Genere" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+<glz:Panel cssClass="linkedMediaRepeaterICCD">
+<glz:Panel cssClass="col-sm-2 media-label"><glz:Text>Media</glz:Text></glz:Panel>
+<glz:Panel cssClass="col-sm-10">
+<glz:Input data="type=mediapicker;externalfiltersor=[{&quot;type&quot;:&quot;AUDIO&quot;},{&quot;type&quot;:&quot;CONTAINER&quot;}];preview=true" id="REG-image" required="false" />
+<glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+</glz:Panel>
+</glz:Panel>    <glz:Input id="REGP" label="REGP - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_REGP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="REGA" label="REGA - Autore" maxLength="50"/>
+    <glz:Input id="REGD" label="REGD - Data" maxLength="25"/>
+    <glz:Input id="REGE" label="REGE - Ente proprietario" maxLength="250"/>
+    <glz:Input id="REGZ" label="REGZ - Titolo" maxLength="250"/>
+    <glz:Input id="REGC" label="REGC - Collocazione" maxLength="50"/>
+    <glz:Input id="REGN" label="REGN - Codice identificativo" required="true" maxLength="25"/>
+    <glz:Input id="REGT" label="REGT - Note" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FNT" label="FNT - FONTI E DOCUMENTI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="FNTN" label="FNTN - Nome archivio" required="true" maxLength="250" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.gestioneDati.boards.models.proxy.ArchiveToIccdProxy;proxy_params={##model##:##archivi.models.ComplessoArchivistico##};return_object=true;"/>
+    <glz:Input id="FNT-unit" label="FNT - Unita'" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.gestioneDati.boards.models.proxy.ArchiveFromParentProxy;return_object=true;"/>
+<glz:Input id="FNTP" label="FNTP - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_FNTP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="FNTA" label="FNTA - Autore" maxLength="50"/>
+    <glz:Input id="FNTT" label="FNTT - Denominazione" maxLength="250"/>
+    <glz:Input id="FNTD" label="FNTD - Data" required="true" maxLength="25"/>
+    <glz:Input id="FNTF" label="FNTF - Foglio/Carta" maxLength="25"/>
+    <glz:Input id="FNTS" label="FNTS - Posizione" required="true" maxLength="50"/>
+    <glz:Input id="FNTI" label="FNTI - Codice identificativo" required="true" maxLength="25"/>
+</glz:Fieldset>
+  <glz:Fieldset id="ADM" label="ADM - ALTRA DOCUMENTAZIONE MULTIMEDIALE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ADMX" label="ADMX - Genere" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ADMP" label="ADMP - Tipo" required="true" maxLength="50" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##,##code##:##VA_ADMP##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="ADMA" label="ADMA - Autore" maxLength="50"/>
+    <glz:Input id="ADMD" label="ADMD - Data" maxLength="25"/>
+    <glz:Input id="ADME" label="ADME - Ente proprietario" maxLength="250"/>
+    <glz:Input id="ADMC" label="ADMC - Collocazione" maxLength="50"/>
+    <glz:Input id="ADMN" label="ADMN - Codice identificativo" required="true" maxLength="25"/>
+    <glz:Input id="ADMT" label="ADMT - Note" maxLength="250"/>
+</glz:Fieldset>
+  <glz:Fieldset id="BIB" label="BIB - BIBLIOGRAFIA" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0" required="true">
+    <glz:Input id="__BIB" label="BIB - BIBLIOGRAFIA" data="type=modalPage;pageid=BIB300_popup;controller=BIB300_controllers_ajax_FindTerm"/>
+    <glz:Input id="BIBX" label="BIBX - Genere" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="NCUN" label="NCUN - Codice univoco ICCD" maxLength="8"/>
+    <glz:Input id="BIBA" label="BIBA - Autore" required="true" maxLength="250" disabled="true"/>
+    <glz:Input id="BIBD" label="BIBD - Anno di edizione" required="true" maxLength="10" disabled="true"/>
+    <glz:Input id="BIBH" label="BIBH - Sigla per citazione" required="true" maxLength="8" disabled="true"/>
+    <glz:Input id="BIBN" label="BIBN - V., pp., nn." maxLength="50"/>
+    <glz:Input id="BIBI" label="BIBI - V., tavv., figg." maxLength="50"/>
+</glz:Fieldset>
+  <glz:Fieldset id="BIL" label="BIL - Citazione completa" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="BIL-element" label="BIL - Citazione completa" maxLength="500"/>
+</glz:Fieldset>
+  <glz:Fieldset id="MST" label="MST - MOSTRE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="MSTT" label="MSTT - Titolo" required="true" maxLength="250"/>
+    <glz:Fieldset id="MSTL" label="MSTL - Luogo" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="MSTL-element" label="MSTL - Luogo" maxLength="50"/>
+</glz:Fieldset>
+    <glz:Fieldset id="MSTD" label="MSTD - Data" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="MSTD-element" label="MSTD - Data" maxLength="25"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AD-tab" label="AD - ACCESSO AI DATI">
+<glz:Fieldset id="AD" label="AD - ACCESSO AI DATI" required="true">
+  <glz:Fieldset id="ADS" label="ADS - SPECIFICHE DI ACCESSO AI DATI" required="true">
+    <glz:Input id="ADSP" label="ADSP - Profilo di accesso" required="true" maxLength="1" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ADSM" label="ADSM - Motivazione" required="true" maxLength="70" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##SchedaOA300##}"/>
+    <glz:Input id="ADSD" label="ADSD - Indicazioni sulla data di scadenza" maxLength="25"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="CM-tab" label="CM - COMPILAZIONE">
+<glz:Fieldset id="CM" label="CM - COMPILAZIONE" required="true">
+  <glz:Fieldset id="CMP" label="CMP - COMPILAZIONE" required="true">
+    <glz:Input id="CMPD" label="CMPD - Data" required="true" maxLength="4"/>
+    <glz:Fieldset id="CMPN" label="CMPN - Nome" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <glz:Input id="CMPN-element" label="CMPN - Nome" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="RSR" label="RSR - Referente scientifico" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="RSR-element" label="RSR - Referente scientifico" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FUR" label="FUR - Funzionario responsabile" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <glz:Input id="FUR-element" label="FUR - Funzionario responsabile" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="RVM" label="RVM - TRASCRIZIONE PER INFORMATIZZAZIONE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="RVMD" label="RVMD - Data" required="true" maxLength="4"/>
+    <glz:Input id="RVMN" label="RVMN - Nome" required="true" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AGG" label="AGG - AGGIORNAMENTO - REVISIONE" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="AGGD" label="AGGD - Data" required="true" maxLength="4"/>
+    <glz:Input id="AGGN" label="AGGN - Nome" required="true" maxLength="70"/>
+    <glz:Input id="AGGE" label="AGGE - Ente" maxLength="70"/>
+    <glz:Fieldset id="AGGR" label="AGGR - Referente scientifico" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="AGGR-element" label="AGGR - Referente scientifico" maxLength="70"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGF" label="AGGF - Funzionario responsabile" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="AGGF-element" label="AGGF - Funzionario responsabile" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="ISP" label="ISP - ISPEZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="ISPD" label="ISPD - Data" required="true" maxLength="4"/>
+    <glz:Input id="ISPN" label="ISPN - Funzionario responsabile" required="true" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AN-tab" label="AN - ANNOTAZIONI">
+<glz:Fieldset id="AN" label="AN - ANNOTAZIONI" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Input id="OSS" label="OSS - Osservazioni" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab id="historyTab" label="{i18n:Storico}" routeUrl="linkHistory" cssClassTab="pull-right"/><glz:JSTab id="relationsTab" label="{i18n:Relazioni}" routeUrl="linkRelations" cssClassTab="pull-right"/><glz:JSTab dropdown="true" id="ecommerce-tab" label="Opzioni Ecommerce">
+  <glz:EmptyComponent skin="ecommerceOptions.html" />
+  <glz:Input id="ecommerceLicenses" label="Licenze per vendita complessiva" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+  <glz:List id="visibility" label="Visibilit&#224; FE" >
+    <glz:ListItem key="rdv" value="Completa (RDV)" selected="true"/>
+    <glz:ListItem key="rd" value="Visibile in ricerca e dettaglio, no viewer (RD)"/>
+    <glz:ListItem key="r" value="Visibile in ricerca, no dettaglio e viewer (R)" />
+    <glz:ListItem key="0" value="Non visibile"/>
+  </glz:List>
+</glz:JSTab></glz:JSTabGroup>
+
+    </glz:template>
+
+    <glz:template name="custom_states">
+      <mvc:State name="history" label="{i18n:Storico}" url="linkHistory">
+        <glz:Hidden controllerName="##controller_name##" />
+        <glz:JSTabGroup id="innerTabs">
+          <glz:JSTab id="historyTab" label="{i18n:Storico}" cssClassTab="pull-right">
+            <cms:FormEdit addValidationJs="false">
+              <cmp:ShowHistory id="history" model="SchedaOA300.models.Model_prova"/>
+              <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-glizycms-history" data="action=add" />
+              </cms:FormButtonsPanel>
+            </cms:FormEdit>
+          </glz:JSTab><glz:JSTab id="relationsTab" label="{i18n:Relazioni}" routeUrl="linkRelations" cssClassTab="pull-right"/>
+          <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+        </glz:JSTabGroup>
+      </mvc:State>      <mvc:State name="relations" label="{i18n:Relazioni}" url="linkRelations">
+        <glz:Hidden controllerName="##controller_name##" />
+        <glz:JSTabGroup id="innerTabs">
+          <glz:JSTab id="relationsTab" label="{i18n:Relazioni}" cssClassTab="pull-right">
+            <cmp:ComplexRelation id="complexRelation" />
+            <glz:DataProvider id="RelationDP" query="getRelations" recordClassName="metafad.gestioneDati.boards.models.Relations" />
+            <glz:RecordSetList id="relations" processCell="metafad.gestioneDati.boards.views.renderer.Relations" dataProvider="{RelationDP}" skin="relations.html">
+            </glz:RecordSetList>
+            <glz:DataProvider id="InverseRelationDP" query="getInverseRelations" recordClassName="metafad.gestioneDati.boards.models.Relations" />
+            <glz:RecordSetList id="inverseRelations" processCell="metafad.gestioneDati.boards.views.renderer.InverseRelations" dataProvider="{InverseRelationDP}" skin="relationsParent.html">
+            </glz:RecordSetList>
+            <cmp:RozRelations id="rozRelation" />
+          </glz:JSTab>
+          <glz:JSTab id="historyTab" label="{i18n:Storico}" routeUrl="linkHistory" cssClassTab="pull-right"/>
+          <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+        </glz:JSTabGroup>
+      </mvc:State>
+  </glz:template>
+</glz:include>

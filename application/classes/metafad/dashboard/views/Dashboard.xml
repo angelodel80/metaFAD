@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:d="metafad.dashboard.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php"
+          controllerName="metafad.dashboard.controllers.Index">
+    <glz:Import src="_common.xml"/>
+
+    <!-- widgets utente -->
+    <d:Widgets id="widgets" skin="metafad/dashboard/views/skins/Widgets.html"/>
+
+    <!-- Ultime richieste -->
+    <glz:DataProvider enabled="{config:metafad.be.hasEcommerce}" id="ls" recordClassName="metafad.ecommerce.requests.models.Model" query="getCurrentUserRequests"/>
+    <glz:RecordSetList enabled="{config:metafad.be.hasEcommerce}" id="lrRsl" dataProvider="{ls}" skin="metafad/dashboard/views/skins/LastRequest.html"/>
+
+    <!-- Attività Assegnate -->
+    <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.workflow.instanceActivities.controllers.*">
+
+        <glz:Hidden id="dashboard" value="true"/>
+        <glz:Hidden id="processId"/>
+        <glz:Hidden id="__model" value="metafad.workflow.processes.models.Model"/>
+        <glz:Hidden id="instanceActivityId" value=""/>
+        <glz:Hidden id="newNoteValue" value=""/>
+        <glz:Hidden id="updatePercentageValue" value=""/>
+
+    </cms:FormEdit>
+    <glz:DataProvider id="aa" recordClassName="metafad.workflow.instanceActivities.models.Model"
+                      query="getFromUserAndProcessStatus"/>
+    <glz:RecordSetList dataProvider="{aa}" skin="metafad/dashboard/views/skins/AssignedActivities.html"/>
+
+    <!-- ultime attività -->
+    <glz:DataProvider id="dp" recordClassName="metafad.modules.logs.models.Model" query="reportFromUserId"/>
+    <glz:RecordSetList dataProvider="{dp}" skin="metafad/dashboard/views/skins/Activities.html"/>
+
+</mvc:Page>

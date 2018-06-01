@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+        <glz:Modifier target="tabs" attribute="visible" value="false" />
+        <com:DataGridSolr id="dataGrid" recordClassName="metafad.gestioneDati.massiveEdit.models.Model" enableSorting="true" cssClass="table table-bordered table-striped" fullTextSearch="true">
+          <glz:DataGridColumn columnName="groupName_t" headerText="{i18n:Nome Gruppo}"/>
+          <glz:DataGridColumn columnName="routing_t" headerText="{i18n:Scheda}"/>
+          <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDeleteMassive" />
+        </com:DataGridSolr>
+		</mvc:State>
+
+    <mvc:State name="delete">
+      <glz:Hidden controllerName="metafad.gestioneDati.massiveEdit.controllers.*" />
+		</mvc:State>
+
+</mvc:Page>

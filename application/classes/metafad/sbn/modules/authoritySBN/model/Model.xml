@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model:Model model:type="document"
+  model:usePrefix="true"
+  model:tableName="metafad.gestioneDati.authoritySBN"
+  xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/">
+
+    <model:Define>
+
+      <!-- system -->
+      <model:Field name="id" type="string" length="30" index="true"/>
+      <model:Field name="filename" type="string" length="30" index="true"/>
+      <model:Field name="isbd" type="text" />
+      <model:Field name="created" type="string" length="20"/>
+      <model:Field name="mapVersion" type="string" length="20" />
+      <model:Field name="type" type="string" length="20" index="true"/>
+      <model:Field name="siteCode" type="string" length="20" />
+
+      <!-- index -->
+      <model:Field name="author_string" type="text" index="true"/>
+      <model:Field name="publicationDate_string" type="string" index="true" />
+      <model:Field name="inventory_string" type="text" index="true"/>
+      <model:Field name="documentType_string" type="string" index="true"/>
+      <model:Field name="title_string" type="string" index="true"/>
+
+      <!-- custom -->
+
+      <model:Field name="identifier" type="string" readFormat="false"/>
+      <model:Field name="idVersion" type="string" readFormat="false"/>
+      <model:Field name="unimarc" type="string" readFormat="false"/>
+      <model:Field name="date" type="string" readFormat="false"/>
+      <model:Field name="elaborationData" type="string" readFormat="false"/>
+      <model:Field name="personalName" type="string" readFormat="false"/>
+      <model:Field name="sourceRecord" type="string" readFormat="false"/>
+      <model:Field name="dating" type="string" readFormat="false"/>
+      <model:Field name="informativeNote" type="string" readFormat="false"/>
+      <model:Field name="sourceBibliographyPositive" type="string" readFormat="false"/>
+      <model:Field name="sourceBibliographyNegative" type="string" readFormat="false"/>
+      <model:Field name="groupName" type="string" readFormat="false"/>
+      <model:Field name="catalogingRules" type="string" readFormat="false"/>
+      <model:Field name="cataloguerNotes" type="string" readFormat="false"/>
+      <model:Field name="variantForms" type="string" readFormat="false"/>
+      <model:Field name="ISADN" type="string" readFormat="false"/>
+      <model:Field name="language" type="string" readFormat="false"/>
+      <model:Field name="nationality" type="string" readFormat="false"/>
+      <model:Field name="variantFormsEntity" type="string" readFormat="false"/>
+      <model:Field name="seeAlsoAuthor" type="string" readFormat="false"/>
+      <model:Field name="seeAlsoGroup" type="string" readFormat="false"/>
+      <model:Field name="idVID" type="string" readFormat="false"/>
+      <model:Field name="birth" type="string" readFormat="false"/>
+      <model:Field name="death" type="string" readFormat="false"/>
+
+      <model:Field name="tipoScheda" type="string" readFormat="false"/>
+      <model:Field name="tipoEnte" type="string" readFormat="false"/>
+      <model:Field name="vediAnche" type="string" readFormat="false"/>
+      <model:Field name="nome" type="string" readFormat="false"/>
+
+      <model:Field name="linkedIccd" type="string" index="true"/>
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+      public function getBeAdvancedSearchFields()
+      {
+        $searchFields = array( 'Identificativo' => 'id',
+        'Dati per la elaborazione' => 'Dati_per_la_elaborazione_s',
+        'Nome di persona' => 'Nome_di_persona_s',
+        'Fonte del record' => 'Fonte_del_record_s',
+        'Nascita' => 'Nascita_s',
+        'Morte' => 'Morte_s'
+        );
+
+        return $searchFields;
+      }
+      ]]>
+    </model:Script>
+
+    </model:Model>

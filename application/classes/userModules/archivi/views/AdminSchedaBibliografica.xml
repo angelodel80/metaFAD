@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="archivi.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:boards="metafad.gestioneDati.boards.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <com:ModalConfirm label="Attenzione" message="Sicuro di voler proseguire?"/>
+    <com:ModalAlert label="Attenzione" message="Operazione non corretta"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Fonti Bibliografiche}" url="archivi-SchedaBibliografica">
+        <cmp:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="false" recordClassName="archivi.models.SchedaBibliografica"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="archivi.controllers.*" fullTextSearch="true"
+                          JQueryUI="true" 
+                          autocompleteController="archivi.controllers.ajax.AutoComplete">
+<glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per la Scheda Bibliografica}"/>
+<glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Titolo libro o rivista}"/>
+<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Anno di edizione}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.common.views.renderer.authority.CellEditDraftDelete"/>
+        </cmp:DataGridSolr>
+        <cmp:AddButton label="Fonti Bibliografiche" acl="*,new" type="SchedaBibliografica" routeUrl="archiviMVCAdd" editableRegion="actions"
+                       recordClassName="archivi.models.SchedaBibliografica" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+        
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.SchedaBibliografica"/>
+			<glz:Hidden id="instituteKey" />
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
+
+            <glz:Hidden id="isTemplate"/>
+            <glz:Input id="templateTitle" label="{i18n:Titolo template}"/>
+            <glz:Link cssClass="tree openTree fa fa-list" enabled="false"/>
+            <glz:JSTabGroup id="SchedaBibliografica" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+
+            <glz:Panel cssClass="col-md-4 gerarchia no-padding" text="Gerarchia: " enabled="false">
+                <cmp:Tree id="treeview" startId="0" title="" controllerName="archivi.controllers.Gerarchia"/>
+            </glz:Panel>
+
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input id="acronimoSistema" label="Acronimo di sistema"/>
+      <glz:Input id="identificativo" readOnly="true" label="Identificativo per la Scheda Bibliografica"/>
+      <glz:Input id="codiceIdentificativoSistema" readOnly="true" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" required="true" data="type=repeat;noEmptyMessage=true"/>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="tipologiaESpecifiche" label="Tipologia e specifiche">
+      <glz:Input id="autore" label="Autore"/>
+      <glz:Input id="curatore" label="Curatore"/>
+      <glz:Input id="tipologiaSpecifica" label="Tipologia Specifica" required="true" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##code##:##VA_BIBF_BIB##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_BIBF_BIB"/>
+      <glz:Input id="titoloLibroORivista" label="Titolo libro o rivista" required="true"/>
+      <glz:Input id="titoloContributo" label="Titolo contributo"/>
+      <glz:Input id="luogoDiEdizione" label="Luogo di edizione"/>
+      <glz:Input id="editore" label="Editore"/>
+      <glz:Input id="annoDiEdizione" label="Anno di edizione" required="true"/>
+      <glz:Input id="numeroDiEdizione" label="Numero di edizione"/>
+      <glz:Input id="specifiche" label="Specifiche"/>
+      <glz:Input id="volume" label="Volume"/>
+      <glz:Input id="pagineNumeroCatalogo" label="Pagine / Numero catalogo"/>
+      <glz:Input id="siglaPerCitazione" label="Sigla per citazione"/>
+      <glz:Input id="abstract" label="Abstract" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimenti" label="Riferimenti">
+      <glz:Fieldset id="riferimentiWeb" label="Riferimenti Web" required="true">
+        <glz:Input id="denominazioneSitoOPaginaWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input id="dataDiInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input id="url" label="Url"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentoSbn" label="Riferimento SBN">
+        <glz:Input id="identificativoBid" label="Identificativo (BID)"/>
+        <glz:Input id="rifSBN_url" label="Url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCompilazione" label="Compilazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input id="linguaDescrizioneRecord" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+    <glz:Fieldset id="compilazione" label="Compilazione" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="redattore" label="Redattore"/>
+      <glz:Input id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+      <glz:Input id="noteRedazionali" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+    </glz:Fieldset>
+    <glz:Input id="osservazioni" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+
+
+                <glz:JSTab id="history" label="{i18n:Storico}" cssClassTab="pull-right"
+                           routeUrl="archivihistory"/>
+                <glz:JSTab id="edit" label="{i18n:Scheda}" cssClassTab="fake-active pull-right"/>
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+                
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="show,showDraft" label="{i18n:Show}" draw="false">
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.SchedaBibliografica"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+
+            <glz:JSTabGroup id="SchedaBibliografica" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input readOnly="true" id="acronimoSistema" label="Acronimo di sistema"/>
+      <glz:Input readOnly="true" id="identificativo" label="Identificativo per la Scheda Bibliografica"/>
+      <glz:Input readOnly="true" id="codiceIdentificativoSistema" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" required="true" data="readOnly=true;type=repeat;noEmptyMessage=true"/>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="tipologiaESpecifiche" label="Tipologia e specifiche">
+      <glz:Input readOnly="true" id="autore" label="Autore"/>
+      <glz:Input readOnly="true" id="curatore" label="Curatore"/>
+      <glz:Input readOnly="true" id="tipologiaSpecifica" label="Tipologia Specifica" required="true" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##code##:##VA_BIBF_BIB##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_BIBF_BIB"/>
+      <glz:Input readOnly="true" id="titoloLibroORivista" label="Titolo libro o rivista" required="true"/>
+      <glz:Input readOnly="true" id="titoloContributo" label="Titolo contributo"/>
+      <glz:Input readOnly="true" id="luogoDiEdizione" label="Luogo di edizione"/>
+      <glz:Input readOnly="true" id="editore" label="Editore"/>
+      <glz:Input readOnly="true" id="annoDiEdizione" label="Anno di edizione" required="true"/>
+      <glz:Input readOnly="true" id="numeroDiEdizione" label="Numero di edizione"/>
+      <glz:Input readOnly="true" id="specifiche" label="Specifiche"/>
+      <glz:Input readOnly="true" id="volume" label="Volume"/>
+      <glz:Input readOnly="true" id="pagineNumeroCatalogo" label="Pagine / Numero catalogo"/>
+      <glz:Input readOnly="true" id="siglaPerCitazione" label="Sigla per citazione"/>
+      <glz:Input readOnly="true" id="abstract" label="Abstract" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimenti" label="Riferimenti">
+      <glz:Fieldset id="riferimentiWeb" label="Riferimenti Web" required="true">
+        <glz:Input readOnly="true" id="denominazioneSitoOPaginaWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input readOnly="true" id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input readOnly="true" id="dataDiInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input readOnly="true" id="url" label="Url"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentoSbn" label="Riferimento SBN">
+        <glz:Input readOnly="true" id="identificativoBid" label="Identificativo (BID)"/>
+        <glz:Input readOnly="true" id="rifSBN_url" label="Url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabCompilazione" label="Compilazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input readOnly="true" id="linguaDescrizioneRecord" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+    <glz:Fieldset id="compilazione" label="Compilazione" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="redattore" label="Redattore"/>
+      <glz:Input readOnly="true" id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-schedabibliografica&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+      <glz:Input readOnly="true" id="noteRedazionali" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+    </glz:Fieldset>
+    <glz:Input readOnly="true" id="osservazioni" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+  </glz:Panel>
+</glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="archivi.controllers.*"/>
+    </mvc:State>
+
+    <mvc:State name="toggleFEVisibility">
+        <glz:Hidden controllerName="archivi.controllers.ToggleFEVisibility"/>
+    </mvc:State>
+
+    <mvc:State id="stateHistory" name="history" label="{i18n:Storico}" url="linkHistory">
+      <glz:JSTabGroup id="innerTabs">
+        <glz:JSTab id="historyTab" label="{i18n:Storico}" cssClassTab="pull-right">
+          <cms:FormEdit addValidationJs="false" controllerName="archivi.controllers.*">
+            <boards:ShowHistory id="history" model="archivi.models.SchedaBibliografica"/>
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-glizycms-history" data="action=add" />
+            </cms:FormButtonsPanel>
+          </cms:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+      </glz:JSTabGroup>
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="institutes_tbl" model:usePrefix="true">
+
+        <model:Script parent="model">
+        <![CDATA[
+            public function getRecordId()
+            {
+                return $this->institute_name;
+            }
+        ]]>
+        </model:Script>
+
+        <model:Define>
+          <model:Field name="institute_resp" type="object"/>
+        </model:Define>
+</model:Model>

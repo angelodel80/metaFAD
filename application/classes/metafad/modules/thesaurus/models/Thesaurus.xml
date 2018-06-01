@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="thesaurus_tbl" model:usePrefix="true">
+
+    <model:Query name="getThesauri" type="function">
+    <![CDATA[
+        $iterator->select('t1.*', 't2.*', 'GROUP_CONCAT(DISTINCT thesaurusforms_name) as forms')
+        		 ->leftJoin('t1', 'thesaurusforms_tbl', 't2', 't1.thesaurus_id = t2.thesaurusforms_FK_thesaurus_id')
+        		 ->groupBy('t1.thesaurus_id');
+	]]>
+	</model:Query>
+
+</model:Model>
+

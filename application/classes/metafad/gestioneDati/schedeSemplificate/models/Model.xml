@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="schedaSemplificata"
+        model:usePrefix="false"
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+
+        <model:Field name="name" type="string" />
+        <model:Field name="oldName" type="string" />
+        <model:Field name="form" type="object" readFormat="false"/>
+
+        <model:Field name="fieldJson" type="string" />
+    </model:Define>
+</model:Model>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:print="metafad.print.views.components.*"
+    src="metafad.views.TemplateModuleAdminPreview">
+
+    <glz:template name="model" value="BIB300.models.Model"/>
+    <glz:template name="form_fields">
+        
+<glz:Fieldset id="CD" label="{i18n:CD}" required="true">
+  <print:Input id="TSK" label="{i18n:TSK}" required="true" maxLength="5" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##BIB300##}"/>
+  <glz:Fieldset id="NCU" label="{i18n:NCU}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="NCUN" label="{i18n:NCUN}" maxLength="8"/>
+</glz:Fieldset>
+  <print:Input id="ESC" label="{i18n:ESC}" required="true" maxLength="25"/>
+  <print:Input id="ECP" label="{i18n:ECP}" maxLength="25"/>
+</glz:Fieldset>
+<glz:Fieldset id="BI" label="{i18n:BI}" required="true">
+  <glz:Fieldset id="BIB" label="{i18n:BIB}" required="true">
+    <print:Input id="BIBA" label="{i18n:BIBA}" required="true" maxLength="250"/>
+    <print:Input id="BIBC" label="{i18n:BIBC}" maxLength="70"/>
+    <print:Input id="BIBF" label="{i18n:BIBF}" required="true" maxLength="25" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##BIB300##,##code##:##VA_BIBF_BIB##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="BIBG" label="{i18n:BIBG}" required="true" maxLength="500"/>
+    <print:Input id="BIBT" label="{i18n:BIBT}" maxLength="250"/>
+    <print:Input id="BIBL" label="{i18n:BIBL}" maxLength="50"/>
+    <print:Input id="BIBZ" label="{i18n:BIBZ}" maxLength="50"/>
+    <print:Input id="BIBD" label="{i18n:BIBD}" required="true" maxLength="10"/>
+    <print:Input id="BIBE" label="{i18n:BIBE}" maxLength="70"/>
+    <print:Input id="BIBS" label="{i18n:BIBS}" maxLength="25"/>
+    <print:Input id="BIBV" label="{i18n:BIBV}" maxLength="25"/>
+    <print:Input id="BIBP" label="{i18n:BIBP}" maxLength="25"/>
+    <print:Input id="BIBH" label="{i18n:BIBH}" required="true" maxLength="8"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="CM" label="{i18n:CM}" required="true">
+  <glz:Fieldset id="CMP" label="{i18n:CMP}" required="true">
+    <print:Input id="CMPD" label="{i18n:CMPD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="CMPN" label="{i18n:CMPN}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="CMPN-element" label="{i18n:CMPN}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="RSR" label="{i18n:RSR}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="RSR-element" label="{i18n:RSR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FUR" label="{i18n:FUR}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <print:Input id="FUR-element" label="{i18n:FUR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AGG" label="{i18n:AGG}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="AGGD" label="{i18n:AGGD}" required="true" maxLength="4"/>
+    <print:Input id="AGGN" label="{i18n:AGGN}" required="true" maxLength="70"/>
+    <print:Input id="AGGE" label="{i18n:AGGE}" maxLength="70"/>
+    <glz:Fieldset id="AGGR" label="{i18n:AGGR}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGR-element" label="{i18n:AGGR}" maxLength="70"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGF" label="{i18n:AGGF}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGF-element" label="{i18n:AGGF}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AN" label="{i18n:AN}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <print:Input id="OSS" label="{i18n:OSS}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+
+
+    </glz:template>
+</glz:include>

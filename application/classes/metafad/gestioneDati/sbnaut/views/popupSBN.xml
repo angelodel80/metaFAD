@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.sbn.modules.sbnunimarc.views.components.*"
+          xmlns:sbn="metafad.gestioneDati.sbnweb.views.components.*"
+          controllerName="metafad.gestioneDati.sbnaut.controllers.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Popup.php">
+
+    <mvc:State name="index">
+        <glz:Form id="editForm" action="metafad.gestioneDati.sbnaut_popup">
+            <glz:Panel id="text-sbn" skin="sbnautsearch.html"/>
+            <glz:Panel cssClass="form-group input-bid">
+              <glz:Panel cssClass="col-sm-12">
+                <glz:Hidden id="type" />
+                <glz:Hidden id="version" />
+                <glz:Input id="BID" cssClass="inputBid form-control required" applyFormItemTemplate="false"/>
+              </glz:Panel>
+            </glz:Panel>
+            <glz:Panel id="formButtons" cssClass="formButtons">
+                <glz:HtmlButton id="btnNext" label="Prosegui" value="show" name="action" cssClass="btn btn-primary" />
+            </glz:Panel>
+        </glz:Form>
+    </mvc:State>
+
+    <mvc:State name="show">
+        <sbn:SBNForm skin="sbnweb.html"/>
+    </mvc:State>
+
+
+</mvc:Page>

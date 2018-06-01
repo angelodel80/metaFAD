@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<envelope:envelope xsi:schemaLocation="http://san.beniculturali.it/envelope-san/ http://san.beniculturali.it/tracciato/envelope-san.xsd" xmlns:mets="http://san.mibac.it/mets-san/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ead="http://san.mibac.it/ead-san-objdig/" xmlns:metsrights="http://san.mibac.it/metsrights-lite/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:envelope="http://san.beniculturali.it/envelope-san/">
+    <envelope:header CREATED="2015-12-09T17:20:51.475+01:00">
+        <envelope:source></envelope:source>
+    </envelope:header>
+    <envelope:recordList>
+        <envelope:record>
+            <envelope:recordHeader DIRECTIVE="UPSERT">
+                <envelope:recordIdentifier></envelope:recordIdentifier>
+                <envelope:recordDatestamp>2015-12-09T17:20:51.475+01:00</envelope:recordDatestamp>
+            </envelope:recordHeader>
+            <envelope:recordBody>
+                <mets:mets xsi:schemaLocation="http://san.mibac.it/mets-san/ http://san.beniculturali.it/tracciato/mets-san.xsd" xmlns:metsrights="http://san.mibac.it/metsrights-lite/" xmlns:mets="http://san.mibac.it/mets-san/" xmlns:mix="http://san.mibac.it/mix-lite/" xmlns:ead-context="http://san.mibac.it/ead-san-objdig/context" xmlns:ead="http://san.mibac.it/ead-san-objdig/" xmlns:ead-noarch="http://san.mibac.it/ead-san-objdig-noarch/" xmlns:san-dl="http://mibac.it/san/dl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <mets:metsHdr CREATEDATE="2015-12-09T17:20:51.475+01:00" LASTMODDATE="2015-12-09T17:20:51.475+01:00" RECORDSTATUS="Complete">
+                        <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+                            <mets:name></mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="IPOWNER" TYPE="ORGANIZATION">
+                            <mets:name></mets:name>
+                        </mets:agent>
+                        <mets:altRecordID TYPE=""></mets:altRecordID>
+                    </mets:metsHdr>
+                    <mets:dmdSec GROUPID="desc" ID="ead-des-001">
+                        <mets:mdWrap LABEL="Metadati EAD - Descrizione oggetto digitalizzato" MDTYPE="EAD" MIMETYPE="text/xml">
+                            <mets:xmlData>
+                                <ead:c>
+                                    <ead:did>
+                                        <ead:unitid identifier=""></ead:unitid>
+                                        <ead:unittitle></ead:unittitle>
+                                        <ead:abstract></ead:abstract>
+                                        <ead:unitdate normal="" datechar="principale"></ead:unitdate>
+                                        <ead:physdesc> 
+                                            <ead:genreform type="tipologie documentarie"></ead:genreform>
+                                        </ead:physdesc>
+                                        <ead:langmaterial>
+                                            <ead:language langcode=""/>
+                                        </ead:langmaterial>
+                                    </ead:did>
+                                    <ead:odd type="Segnatura">
+                                        <ead:p></ead:p>
+                                    </ead:odd>
+                                    <ead:phystech>
+                                        <ead:p></ead:p>
+                                    </ead:phystech>
+                                    <ead:prefercite>
+                                        <ead:p></ead:p>
+                                    </ead:prefercite>
+                                    <ead:controlaccess>
+                                    </ead:controlaccess>
+                                    <ead:dao xlink:href=""/>
+                                </ead:c>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:amdSec>
+                        <mets:rightsMD ID="amdRD001">
+                            <mets:mdWrap LABEL="Metadati Rights oggetto digitale" MDTYPE="METSRIGHTS" MIMETYPE="text/xml">
+                                <mets:xmlData>
+                                    <metsrights:RightsDeclarationMD RIGHTSCATEGORY="COPYRIGHTED">
+                                        <metsrights:RightsHolder>
+                                            <metsrights:RightsHolderName xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">Archivio di Stato di Firenze</metsrights:RightsHolderName>
+                                        </metsrights:RightsHolder>
+                                    </metsrights:RightsDeclarationMD>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:rightsMD ID="amdRA001">
+                            <mets:mdWrap LABEL="Metadati Rights oggetto analogico" MDTYPE="METSRIGHTS" MIMETYPE="text/xml">
+                                <mets:xmlData>
+                                    <metsrights:RightsDeclarationMD RIGHTSCATEGORY="COPYRIGHTED">
+                                        <metsrights:RightsHolder>
+                                            <metsrights:RightsHolderName xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">Archivio di Stato di Firenze</metsrights:RightsHolderName>
+                                        </metsrights:RightsHolder>
+                                    </metsrights:RightsDeclarationMD>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                    </mets:amdSec>
+                    <mets:fileSec>
+                        <mets:fileGrp USE="reference image">
+                            <mets:file ID="" MIMETYPE="image/jpg">
+                                <mets:FLocat LOCTYPE="URL" xlink:href=""/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="thumbnail image">
+                            <mets:file ID="" MIMETYPE="image/jpg">
+                                <mets:FLocat LOCTYPE="URL" xlink:href=""/>
+                            </mets:file>
+                        </mets:fileGrp>
+                    </mets:fileSec>
+                </mets:mets>
+            </envelope:recordBody>
+        </envelope:record>
+    </envelope:recordList>
+</envelope:envelope>

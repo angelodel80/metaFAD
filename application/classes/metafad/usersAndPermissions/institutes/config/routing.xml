@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+    <glz:Route name="metafad.usersAndPermissions.institutes"
+               value="{pageId=metafad.usersAndPermissions.institutes.views.Admin}/{action=edit}/{value=id}/"/>
+    <glz:Route name="metafad.usersAndPermissions.instituteSelect"
+               value="{pageId=metafad.usersAndPermissions.institutes.views.InstituteSelect}/{action=selectInstitute}/{value=instituteKey}"/>
+</glz:Routing>

@@ -1,0 +1,40 @@
+/* BEGIN User's Detail */
+
+.chat {
+   min-height: 80px;
+   img.online {
+      border-color: #55A791 !important;
+   }
+   .message {
+      span {
+         font-weight: normal;
+         &:not(:last-child) {
+            color: #55A791;
+            font-size: 25px;
+         }
+         &:last-child {
+            color: #000;
+         }
+      }
+   }
+}
+
+#latestActivities {
+   .message {
+      .name {
+         > span {
+            color: #55A791;
+         }
+      }
+      span {
+         a {
+            color: #55A791;
+         }
+      }
+   }
+}
+
+.user-image {
+	max-width: 25px!important;
+}
+/* END User's Detail */

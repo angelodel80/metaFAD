@@ -1,0 +1,59 @@
+{
+  "id": "Toponimi",
+  "tabs": [{
+    "id": "tabToponimi",
+    "label": "Toponimi",
+    "fields": [{
+      "id": "intestazione",
+      "type": "Input",
+      "label": "Intestazione",
+      "gridField": true,
+      "attributes": {
+        "readOnly": "true"
+      },
+      "model": {
+        "type": "string",
+        "index": "true"
+      },
+      "solr": {
+        "field": "intestazione_s"
+      },
+      "option": "{\"strip_tags\":false}"
+    }, {
+      "id": "nomeLuogo",
+      "label": "Nome del luogo/Toponimo",
+      "type": "OpenDictionary",
+      "dictionaryId": "VA_ARCHIVE_VOCI_TOPONIMO_NOME"
+    }, {
+      "id": "comuneAttuale",
+      "type": "ClosedDictionary",
+      "label": "Comune attuale",
+      "dictionaryId": "VC_Localizzazione",
+      "dictionaryFieldLevel": "Direct4",
+      "commentAbove": "DirectN porta subito il dizionario a vedere tutti i termini di livello N"
+    }, {
+      "id": "denominazioneCoeva",
+      "type": "Input",
+      "label": "Denominazione coeva"
+    }, {
+      "id": "qualifica",
+      "type": "ClosedDictionary",
+      "label": "Qualifica",
+      "dictionaryId": "VC_ARCHIVE_QUALIFICA_TOPONIMO"
+    }, {
+      "id": "externalID",
+      "type": "Hidden",
+      "label": "ID importazione",
+      "attributes": {
+        "readOnly": "true"
+      },
+      "model": {
+        "type": "string",
+        "index": "true"
+      },
+      "solr": {
+        "field": "externalID_s"
+      }
+    }]
+  }]
+}

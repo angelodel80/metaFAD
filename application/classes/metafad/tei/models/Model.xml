@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="metafad.tei.models.Model"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="pageId" type="string" />
+        <model:Field name="root" type="string" index="true"/>
+        <model:Field name="parent" type="array_id" index="true"/>
+        <model:Field name="sectionType" type="string" index="true"/>
+
+        <model:Field name="denominazione" type="string" />
+        <model:Field name="comune" type="string" />
+        <model:Field name="segnatura" type="string" />
+        <model:Field name="ordinamento" type="string" />
+        <model:Field name="titolo" type="text" />
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+    public function canAdd()
+    {
+        return $this->getTeiType() != 'unita-testuale';
+    }
+
+    public function getTeiType()
+    {
+        if ($this->sectionType) {
+            return $this->sectionType;
+        } else {
+            $map = array(
+                'tei-manoscritto' => 'manoscritto',
+                'tei-UnitaCodicologica' => 'unita-codicologica',
+                'tei-UnitaTestuale' => 'unita-testuale',
+            );
+            return $map[$this->pageId];
+        }
+    }
+
+    public function getTitle()
+    {
+        $name = "";
+
+        switch (strtolower($this->pageId)) {
+            case 'tei-manoscritto':
+                $name = implode(' | ', array($this->comune, $this->denominazione, $this->segnatura));
+                break;
+
+            case 'tei-unitacodicologica':
+                $name = $this->segnatura;
+                break;
+
+            case 'tei-unitatestuale':
+                $name = implode(' | ', array($this->ordinamento, $this->titolo));
+                break;
+        }
+
+        return $name;
+    }
+    ]]></model:Script>
+
+    <model:Query name="mysql_getParent">
+    <![CDATA[
+        SELECT
+          `doc`.*,
+          `doc_detail`.*
+        FROM
+          `documents_tbl` `doc`
+          JOIN `documents_detail_tbl` `doc_detail` ON (
+            `doc`.`document_id` = `doc_detail`.`document_detail_FK_document_id`
+          )
+          AND (
+            `doc_detail`.`document_detail_status` = 'PUBLISHED' OR
+            `doc_detail`.`document_detail_status` = 'DRAFT'
+          )
+          AND (
+            `doc_detail`.`document_detail_FK_language_id` = :languageId
+          )
+          LEFT JOIN `documents_index_int_tbl` `index0` ON (
+            `doc_detail`.`document_detail_id` = `index0`.`document_index_int_FK_document_detail_id`
+          )
+          AND (
+            `index0`.`document_index_int_name` = 'parent'
+          )
+        WHERE
+          (
+            `index0`.`document_index_int_value` = :parent
+          )
+        GROUP BY `doc`.`document_id`
+        ORDER BY `doc`.`document_id` ASC
+    ]]>
+    </model:Query>
+</model:Model>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+	<glz:Route method="GET" value="rest/getJson/{value=type}" controller="metafad.rest.controllers.GetJson"/>
+    <glz:Route method="GET" value="rest/strumag/list" controller="metafad.teca.STRUMAG.rest.controllers.List"/>
+    <glz:Route method="GET" value="rest/strumag/{value=id}" controller="metafad.teca.STRUMAG.rest.controllers.Load"/>
+    <glz:Route method="POST" value="rest/strumag" controller="metafad.teca.STRUMAG.rest.controllers.Save"/>
+    <glz:Route method="PUT" value="rest/strumag/{value=id}" controller="metafad.teca.STRUMAG.rest.controllers.Save"/>
+    <glz:Route method="GET" value="rest/viewer/metadato/{value=id}" controller="metafad.viewer.rest.controllers.Viewer"/>
+    <glz:Route method="GET" value="rest/ecommerce/getLicense" controller="metafad.ecommerce.rest.controllers.GetLicense"/>
+
+    <glz:Route name="archiviMVC" value="{pageId}/{value=sectionType}/{value=action}/{value=id}/{value=templateID}" />
+    <glz:Route name="archiviMVCAdd" value="{pageId}/{value=sectionType}/{action=edit}/0/" parseUrl="false" />
+    <glz:Route name="archiviMVCToggleFEVisibility" value="{pageId}/{action=toggleFEVisibility}/{value=model}/{value=id}" />
+    <glz:Route name="archiviMVCDelete" value="{pageId}/{action=delete}/{value=model}/{value=id}" />
+    <glz:Route name="archiviMVCAddTemplate" value="{pageId}/{value=sectionType}/{action=edit}/0/0" parseUrl="false" />
+
+    <glz:Route name="actionsMVCDelete" value="{pageId}/{action=delete}/{value=model}/{value=id}" />
+    <glz:Route name="actionsMVCNormalize" value="{pageId}/{action=normalize}/{value=model}/{value=id}" />
+    <glz:Route name="actionsMVCToggleVisibility" value="{pageId}/{action=togglevisibility}/{value=model}/{value=id}" />
+    <glz:Route name="actionsMVC" value="{pageId}/{value=action}/{value=id}/{value=templateID}" />
+    <glz:Route name="actionsMVCAdd" value="{pageId}/{action=edit}/0/" parseUrl="false" />
+    <glz:Route name="actionsMVCEditMassive" value="{pageId}/{action=editMassive}/{value=id}/" parseUrl="false" />
+    <glz:Route name="actionsMVCNormalizeMassive" value="{pageId}/{action=normalizeMassive}/{value=id}/" parseUrl="false" />
+    <glz:Route name="actionsMVCAddTemplate" value="{pageId}/{action=edit}/0/0" parseUrl="false" />
+    <glz:Route name="actionsMVCExport" value="{pageId}/{action=export}/{value=id}/" parseUrl="false" />
+    <glz:Route name="linkEdit" value="{pageId}/{action=edit}/{value=id}/" parseUrl="false" />
+    <glz:Route name="linkEditDraft" value="{pageId}/{action=editDraft}/{value=id}/" parseUrl="false" />
+    <glz:Route name="linkEdit" value="{pageId}/{action=edit}/{value=id}/{value=templateID}" parseUrl="false" />
+    <glz:Route name="linkHistory" value="{pageId}/{action=history}/{value=id}/" parseUrl="false" />
+    <glz:Route name="linkRelations" value="{pageId}/{action=relations}/{value=id}/" parseUrl="false" />
+
+    <glz:Route name="glizycmsMediaArchiveAdd" value="{pageId}/{action=add}" parseUrl="false" />
+
+    <glz:Route name="linkHome" value="home" parseUrl="false" />
+    <glz:Route name="linkCurrentPage" value="{pageId}" parseUrl="false" />
+    <glz:Route name="linkChangeAction" value="{pageId}/{value=action}" />
+    <glz:Route name="moduleAction" value="{pageId}/{value=action}" />
+    <glz:Route name="logout" value="{pageId=Logout}" />
+    <glz:Route name="login" value="{pageId=Login}" />
+    <glz:Route name="link" value="{pageId}" />
+
+    <glz:Route name="link-be-portale" value="{config=metafad.FE.url}/admin/" parseUrl="false" />
+</glz:Routing>

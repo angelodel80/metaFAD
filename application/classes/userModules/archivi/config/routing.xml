@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+	<glz:Route name="archiviTemplate" value="{pageId=archivi.views.Admin}/{action=edit}/{value=id}/{value=type}/{value=templateID}" />
+	<glz:Route name="archivihistory" value="{pageId}/{action=history}/{value=id}" />
+
+    <glz:Route name="metafad.gestioneDati.archivi#list" value="{pageId=archivi.views.Admin}/{action=index}/{value=id}" parseUrl="false" />
+    <glz:Route name="archivigerarchia" value="{pageId=archivi.views.Admin}/{action=gerarchia}/{value=id}" parseUrl="false" />
+
+    <glz:Route value="gestione-dati-archivi/{value=action}/{value=id}" pageId="gestione-dati-archivi" />
+    <glz:Route value="gestione-dati-archivi/{action=delete}/{value=model}/{value=id}" pageId="gestione-dati-archivi" />
+</glz:Routing>

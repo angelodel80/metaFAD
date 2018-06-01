@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:Page xmlns:mvc="org.glizy.mvc.components.*" 
+        xmlns:c="metafad.modules.iccd.views.components.*" 
+        xmlns:cmp="metafad.teca.MAG.views.components.*" 
+        xmlns:cms="org.glizycms.views.components.*" 
+        xmlns:com="metafad.common.views.components.*" 
+        xmlns:glz="http://www.glizy.org/dtd/1.0/" 
+        xmlns:mets="metafad.teca.mets.views.components.*" 
+        id="Page" 
+        defaultEditableRegion="content" 
+        templateType="php" 
+        templateFileName="Page.php"
+        defaultState="import">
+   <glz:Import src="_common.xml" />
+    <glz:StateSwitch defaultState="import" rememberState="false">
+
+   <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active" addQueryString="true" visible="false" />
+         <mvc:State name="import">
+        <glz:JSTabGroup id="tabs" showNav="true">
+            <glz:JSTab id="modsImport" label="{i18n:Genera da MODS}" dropdown="false">   
+                <com:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="metafad.mods.models.Model" cssClass="table table-bordered table-striped" controllerName="metafad.mods.controllers.*" fullTextSearch="true" JQueryUI="true">
+                    <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" />
+                    <glz:DataGridColumn columnName="titolo_s" headerText="{i18n:Titolo}" />
+                    <glz:DataGridColumn columnName="tipologiaRisorsa_s" headerText="{i18n:Tipologia}" />
+                    <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" width="10" cssClass="actions"
+                                        renderCell="metafad.teca.MAG.views.renderer.CellShow"/>
+                </com:DataGridSolr>
+
+                <c:FormEdit id="exportForm" newCode="true" controllerName="metafad.teca.mets.controllers.*" method="post" enctype="multipart/form-data">
+                    <glz:Hidden id="ids" />
+                    <glz:Panel id="countSelected" />
+                    <cms:FormButtonsPanel>
+                        <glz:HtmlButton label="{i18n:Genera METS}" name="action" cssClass="btn btn-flat btn-info" value="modsProcedure" data="action=modsProcedure" />
+                    </cms:FormButtonsPanel>
+                </c:FormEdit>
+            </glz:JSTab>
+        </glz:JSTabGroup>
+   </mvc:State>
+   <mvc:State name="importProcedure">
+      <glz:Hidden controllerName="metafad.teca.mets.controllers.ImportProcedure" />
+   </mvc:State>
+
+   <mvc:State name="modsProcedure">
+      <glz:Hidden controllerName="metafad.teca.mets.controllers.ModsProcedure" />
+   </mvc:State>
+   <glz:JSscript><![CDATA[$( document ).ready( function(){
+          $('#relatedBoard').change(function(){
+              $($('#board').data('instance').$element).data('proxy', $(this).val());
+              $('#board').data('instance').initialize($('#board').data('instance').$element);
+              if($('#relatedBoard').val() != "MAG Libero"){
+                  $('#s2id_board').attr("class", "select2-container form-control required");
+              } else {
+                  $('#s2id_board').attr("class", "select2-container hidden required");
+              }
+          });
+
+
+      });
+
+      window.onload = function(){
+          if($('#s2id_board .select2-choice span').text().length !== 0){
+              $('#s2id_board').attr("class", "select2-container form-control required");
+          }
+      }]]></glz:JSscript>
+      </glz:StateSwitch>
+</mvc:Page>

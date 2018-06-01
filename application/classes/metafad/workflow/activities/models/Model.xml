@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="activities"
+        model:usePrefix="false"
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <!-- attività del processo -->
+        <model:Field name="extId" type="int" index="true" />
+        <model:Field name="title" type="string" validator="date" index="true" />
+        <model:Field name="type" type="string" index="true" />
+        <model:Field name="lock" type="string" index="true"/>
+
+    </model:Define>
+</model:Model>

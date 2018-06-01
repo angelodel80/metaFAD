@@ -1,0 +1,36 @@
+<FilesMatch "^(composer\.(json|lock))$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+  </IfModule>
+</FilesMatch>
+
+SetEnvIf Origin "http(s)?://(www.)?(localhost|localhost:8080|localhost:8000|localhost:3000)$" AccessControlAllowOrigin=$0$1
+Header add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
+Header set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE"
+Header set Access-Control-Allow-Headers "X-Accept-Charset,X-Accept,Content-Type,X-Requested-With,X-File-Name,X-HTTP-Method-Override, Cache-control, Content-Length"
+Header set Access-Control-Allow-Credentials true
+
+<Files ~ "((application|core))$">
+  Order deny,allow
+  Deny from all
+</Files>
+
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(apiDoc)($|/) - [L]
+    RewriteRule ^(oaipmh.php/|ajax\.php|bin/|static/|cache/|favicon\.ico) - [L]
+
+    RewriteRule ^oaipmh/(.*)$ oaipmh.php?$1 [QSA,L]
+    RewriteRule ^oaipmh-mag/(.*)$ oaipmh-mag.php?$1 [QSA,L]
+
+    RewriteRule ^rest/(.*)$ rest.php?$1 [QSA,L]
+    RewriteRule ^img/(.*)/(.*)$ getImage.php?id=$1&size=$2 [QSA,L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+  model:tableName="STRUMAG" model:usePrefix="false" model:type="document"
+  model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+  <model:Define>
+    <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+    <model:Field name="MAG" type="text" index="true" />
+    <model:Field name="title" type="string" index="true" />
+    <model:Field name="state" type="int" index="true" />
+    <model:Field name="physicalSTRU" type="text" />
+    <model:Field name="logicalSTRU" type="text" />
+    <model:Field name="isValid" type="int" />
+  </model:Define>
+
+  <model:Script parent="model">
+  <![CDATA[
+  public function getBeAdvancedSearchFields()
+  {
+      $searchFields = array(
+      'Identificativo' => 'id',
+      'Titolo' => 'title_t',
+      'update_at' => 'update_at_s',
+    );
+    return $searchFields;
+  }
+
+  public function getSolrDocument()
+  {
+      $solrModel = array(
+          '__id' => 'id',
+          'metafad.teca.STRUMAG.models.Model' => 'document_type_t',
+          'updateDateTime' => 'update_at_s',
+          'document' => 'doc_store',
+		  'physicalSTRU' => 'physicalSTRU_only_store',
+		  'logicalSTRU' => 'logicalSTRU_only_store',
+          'isValid' => 'isValid_i',
+          'document_id' => 'document_id_t',
+          'document_detail_modificationDate' => 'document_detail_modificationDate_t',
+          'title' => 'title_t'
+      );
+      return $solrModel;
+  }
+
+  public function getTitle()
+  {
+    return $this->title;
+  }
+
+  public function getRecordId()
+  {
+    return $this->getTitle();
+  }
+
+  ]]>
+  </model:Script>
+</model:Model>

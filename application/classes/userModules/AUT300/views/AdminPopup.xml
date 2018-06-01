@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:r="org.glizycms.roleManager.views.*"
+  xmlns:c="metafad.modules.iccd.views.components.*"
+  xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Popup.php">
+
+<glz:Import src="_common.xml"/>
+
+<mvc:State name="index">
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.gestioneDati.boards.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="AUT300.models.Model"/>
+
+        <glz:JSTabGroup id="innerTabs" showNav="true">
+<glz:JSTab dropdown="true" id="CD-tab" label="{i18n:CD}">
+<glz:Fieldset id="CD" label="{i18n:CD}" required="true">
+  <glz:Input id="TSK" label="{i18n:TSK}" required="true" maxLength="5" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##}"/>
+  <glz:Fieldset id="NCU" label="{i18n:NCU}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <glz:Input id="NCUN" label="{i18n:NCUN}" maxLength="8"/>
+</glz:Fieldset>
+  <glz:Input id="ESC" label="{i18n:ESC}" required="true" maxLength="25"/>
+  <glz:Input id="ECP" label="{i18n:ECP}" maxLength="25"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AU-tab" label="{i18n:AU}">
+<glz:Fieldset id="AU" label="{i18n:AU}" required="true">
+  <glz:Fieldset id="AUT" label="{i18n:AUT}" required="true">
+    <glz:Input id="AUTN" label="{i18n:AUTN}" required="true" maxLength="100"/>
+    <glz:Input id="AUTA" label="{i18n:AUTA}" required="true" maxLength="70"/>
+    <glz:Input id="AUTC" label="{i18n:AUTC}" maxLength="70"/>
+    <glz:Input id="AUTO" label="{i18n:AUTO}" maxLength="70"/>
+    <glz:Input id="AUTP" label="{i18n:AUTP}" maxLength="70"/>
+    <glz:Input id="AUTE" label="{i18n:AUTE}" maxLength="70"/>
+    <glz:Input id="AUTF" label="{i18n:AUTF}" maxLength="70"/>
+    <glz:Input id="AUTV" label="{i18n:AUTV}" maxLength="350"/>
+    <glz:Input id="AUTZ" label="{i18n:AUTZ}" maxLength="1" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##}"/>
+    <glz:Input id="AUTL" label="{i18n:AUTL}" maxLength="50"/>
+    <glz:Input id="AUTD" label="{i18n:AUTD}" maxLength="25"/>
+    <glz:Input id="AUTX" label="{i18n:AUTX}" maxLength="50"/>
+    <glz:Input id="AUTT" label="{i18n:AUTT}" maxLength="25"/>
+    <glz:Input id="AUTG" label="{i18n:AUTG}" maxLength="250"/>
+    <glz:Input id="AUTU" label="{i18n:AUTU}" required="true" maxLength="350" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##,##code##:##VA_AUTU_AUT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="AUTQ" label="{i18n:AUTQ}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##,##code##:##VA_AUTQ_AUT##,##level##:##*##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <glz:Input id="AUTH" label="{i18n:AUTH}" required="true" maxLength="8"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="CM-tab" label="{i18n:CM}">
+<glz:Fieldset id="CM" label="{i18n:CM}" required="true">
+  <glz:Fieldset id="CMP" label="{i18n:CMP}" required="true">
+    <glz:Input id="CMPD" label="{i18n:CMPD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="CMPN" label="{i18n:CMPN}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <glz:Input id="CMPN-element" label="{i18n:CMPN}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="RSR" label="{i18n:RSR}" data="type=repeat;collapsable=false;repeatMin=0">
+      <glz:Input id="RSR-element" label="{i18n:RSR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FUR" label="{i18n:FUR}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <glz:Input id="FUR-element" label="{i18n:FUR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AGG" label="{i18n:AGG}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <glz:Input id="AGGD" label="{i18n:AGGD}" required="true" maxLength="4"/>
+    <glz:Input id="AGGN" label="{i18n:AGGN}" required="true" maxLength="70"/>
+    <glz:Input id="AGGE" label="{i18n:AGGE}" maxLength="70"/>
+    <glz:Fieldset id="AGGR" label="{i18n:AGGR}" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="AGGR-element" label="{i18n:AGGR}" maxLength="70"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGF" label="{i18n:AGGF}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <glz:Input id="AGGF-element" label="{i18n:AGGF}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab dropdown="true" id="AN-tab" label="{i18n:AN}">
+<glz:Fieldset id="AN" label="{i18n:AN}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <glz:Input id="OSS" label="{i18n:OSS}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+</glz:JSTab>
+<glz:JSTab id="historyTab" label="{i18n:Storico}" routeUrl="linkHistory" cssClassTab="pull-right"/></glz:JSTabGroup>
+
+        <glz:Panel cssClass="formButtons">
+            <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-primary js-glizycms-save"
+                            data="action=save" acl="*,edit"/>
+            <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                            cssClass="btn js-glizycms-cancel button-margin" data="action=close"/>
+        </glz:Panel>
+    </c:FormEdit>
+    <glz:JSscript><![CDATA[
+    $( document ).ready( function(){
+        $('.js-glizycms-save').data('trigger',function (e, data) {
+
+            var msg = {
+                type: 'save',
+                id: $('#__id').val(),
+                text: $('#AUTN').val() + ' - ' + $('#AUTH').val(),
+                values: data
+            }
+
+            Glizy.events.broadcast("glizy.FormEdit.modalPage.message", msg);
+        });
+
+        $('.js-glizycms-cancel').click(function (e) {
+            parent.postMessage('{"type":"cancel"}', parent.location.origin);
+        });
+    });
+    ]]></glz:JSscript>
+    </mvc:State>
+</mvc:Page>

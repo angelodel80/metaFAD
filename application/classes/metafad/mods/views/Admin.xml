@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:cmp="metafad.mods.views.components.*"
+  xmlns:com="metafad.common.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Page.php">
+
+  <glz:Import src="_common.xml" />
+
+  <mvc:State id="stateIndex" name="index" label="{i18n:Mods}" url="Mods">
+    <com:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="metafad.mods.models.Model" cssClass="table table-bordered table-striped" controllerName="metafad.mods.controllers.*" fullTextSearch="true" JQueryUI="true">
+      <glz:DataGridColumn columnName="titolo_s" headerText="{i18n:Titolo}" />
+      <glz:DataGridColumn columnName="tipologiaRisorsa_s" headerText="{i18n:Tipologia}" />
+      <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDraftDelete" />
+    </com:DataGridSolr>
+    <cmp:AddButton label="MODS" acl="*,new" routeUrl="actionsMVCAdd" editableRegion="actions" dataGridAjaxId="dataGrid" />
+  </mvc:State>
+
+  <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+    <com:FormEdit id="editForm" newCode="true" controllerName="metafad.mods.controllers.*">
+ 
+      <glz:Hidden id="__id" />
+      <glz:Hidden id="__model" value="metafad.mods.models.Model" />
+
+      <glz:JSTabGroup id="Mods" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+        <glz:JSTab id="tabIdentificazione" label="Identificazione e descrizione" dropdown="true">
+          <glz:Panel cssClass="col-md-12 active text-tab">
+            <glz:Fieldset id="identificativo-rep" label="Identificativo" data="type=repeat;noEmptyMessage=true">
+              <glz:Input id="identificativo" label="Identificativo" />
+              <glz:List id="tipo" label="Tipo" emptyValue=" - ">
+                <glz:ListItem value="BID" />
+                <glz:ListItem value="DOI" />
+                <glz:ListItem value="ISBN" />
+                <glz:ListItem value="ISSN" />
+                <glz:ListItem value="SIGI" />
+                <glz:ListItem value="uri" />
+                <glz:ListItem value="locale" />
+              </glz:List>
+            </glz:Fieldset>
+            <glz:Fieldset id="lingua-rep" label="Lingua" data="type=repeat;noEmptyMessage=true;repeatMin=1">
+              <glz:Input id="lingua" label="Lingua" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3" />
+            </glz:Fieldset>
+            <glz:Fieldset label="Tipologia di risorsa">
+              <glz:List id="tipologiaRisorsa" label="Tipologia" required="true" emptyValue=" - ">
+                <glz:ListItem value="testo a stampa" />
+                <glz:ListItem value="materiale cartografico" />
+                <glz:ListItem value="musica notata" />
+                <glz:ListItem value="registrazione sonora musicale" />
+                <glz:ListItem value="registrazione sonora non musicale" />
+                <glz:ListItem value="registrazione sonora" />
+                <glz:ListItem value="grafica" />
+                <glz:ListItem value="materiale video e da proiezione" />
+                <glz:ListItem value="oggetto" />
+                <glz:ListItem value="materiale multimendiale" />
+                <glz:ListItem value="risorsa elettronica" />
+              </glz:List>
+            </glz:Fieldset>
+            <glz:Fieldset label="Titolo">
+              <glz:List id="tipoTitolo" label="Tipo titolo" emptyValue=" - ">
+                <glz:ListItem value="numerato" />
+                <glz:ListItem value="abbreviato" />
+                <glz:ListItem value="tradotto" />
+                <glz:ListItem value="alternativo" />
+                <glz:ListItem value="uniforme" />
+              </glz:List>
+              <glz:Input id="titolo" label="Titolo" required="true" />
+              <glz:Input id="complementoTitolo" label="Complemento del titolo" />
+              <glz:Input id="numeroParteTitolo" label="Numero della parte" />
+              <glz:Input id="nomeParte" label="Nome della parte" />
+            </glz:Fieldset>
+            <glz:Fieldset id="autore-rep" label="Autore" data="type=repeat;noEmptyMessage=true">
+              <glz:List id="tipoNome" label="Tipo nome" emptyValue=" - ">
+                <glz:ListItem value="persona" />
+                <glz:ListItem value="ente" />
+                <glz:ListItem value="famiglia" />
+              </glz:List>
+              <glz:Input id="nome" label="Nome" />
+              <glz:Input id="ruolo" label="Ruolo" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##level##:##1##};dictId=VC_MODS_RUOLO"/>
+              <glz:Input id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+            </glz:Fieldset>
+            <glz:Fieldset label="Note editoriali">
+              <glz:Input id="luogo" label="Luogo" required="true" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##code##:##VA_MODS_LUOGO##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_LUOGO"/>
+              <glz:Input id="editore" label="Editore" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##;##code##:##VA_MODS_EDITORE##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_EDITORE"/>
+              <glz:Fieldset id="date" label="Date" data="type=repeat;repeatMin=1;repeatMax=1;">
+                <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data remota" />
+                <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data recente" />
+                <glz:Input id="qualifica" label="Qualifica" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusTermProxy;proxy_params={##dictionaryCode##:##VC_MODS_QUALIFICA_DATA##};dictId=VC_MODS_QUALIFICA_DATA" />
+              </glz:Fieldset>
+            </glz:Fieldset>
+            <glz:Fieldset label="Descrizione fisica">
+              <glz:Fieldset label="Materia e tecnica">
+                <glz:Fieldset id="materia-rep" label="Materia" data="type=repeat;noEmptyMessage=true">
+                  <glz:Input id="materia" label="Materia" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##code##:##VA_MODS_MATERIA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_MATERIA"/>
+                </glz:Fieldset>
+                <glz:Fieldset id="tecnica-rep" label="Tecnica" data="type=repeat;noEmptyMessage=true">
+                  <glz:Input id="tecnica" label="Tecnica" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##code##:##VA_MODS_TECNICA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_TECNICA"/>
+                </glz:Fieldset>
+                <glz:Input id="tipoEstensione" label="Tipo ed estensione" />
+              </glz:Fieldset>
+            </glz:Fieldset>
+          </glz:Panel>
+        </glz:JSTab>
+
+        <glz:JSTab id="tabSemantica" label="Semantica" dropdown="true">
+          <glz:Panel cssClass="col-md-12 active text-tab">
+            <glz:Input id="abstract" label="Abstract" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+            <glz:Input id="tavolaContenuti" label="Tavola dei contenuti" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+            <glz:Fieldset id="soggetto-rep" label="Soggetto" data="type=repeat;noEmptyMessage=true">
+              <glz:Input id="soggetto" label="Soggetto" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##code##:##VA_MODS_SOGGETTO##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_SOGGETTO"/>
+            </glz:Fieldset>
+            <glz:Input id="classificazione" label="Classificazione" data="type=selectfrom;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##code##:##VA_MODS_CLASSIFICAZIONE##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_MODS_CLASSIFICAZIONE"/>
+          </glz:Panel>
+        </glz:JSTab>
+
+        <glz:JSTab id="tabRelazioni" label="Relazioni" dropdown="true">
+          <glz:Panel cssClass="col-md-12 active text-tab">
+            <glz:Fieldset id="titoloCollegato-rep" label="Titolo collegato" data="type=repeat;noEmptyMessage=true">>
+              <glz:Input id="titoloCollegato" label="Titolo" data="type=selectfrom;proxy=metafad.mods.models.proxy.ModuleProxy;return_object=true" />
+              <glz:List id="tipoRelazione" label="Tipo di relazione" emptyValue=" - ">
+                <glz:ListItem value="preceding" />
+                <glz:ListItem value="succeeding" />
+                <glz:ListItem value="original" />
+                <glz:ListItem value="host" />
+                <glz:ListItem value="constituent" />
+                <glz:ListItem value="series" />
+                <glz:ListItem value="otherVersion" />
+                <glz:ListItem value="otherFormat" />
+                <glz:ListItem value="isReferencedBy" />
+                <glz:ListItem value="references" />
+                <glz:ListItem value="reviewOf" />
+              </glz:List>
+            </glz:Fieldset>
+            <glz:Fieldset id="parte-rep" label="Parte" data="type=repeat;noEmptyMessage=true">
+              <glz:List id="tipologiaParte" label="Tipologia" emptyValue=" - ">
+                <glz:ListItem value="part" />
+                <glz:ListItem value="volume" />
+                <glz:ListItem value="issue" />
+                <glz:ListItem value="chapter" />
+                <glz:ListItem value="section" />
+                <glz:ListItem value="paragraph" />
+                <glz:ListItem value="track" />
+              </glz:List>
+              <glz:Input id="numeroParte" label="Numero dell parte" />
+              <glz:Fieldset label="Titolo">
+                <glz:Input id="titoloParte" label="Titolo" />
+                <glz:List id="tipoTitoloParte" label="Tipo di titolo" emptyValue=" - ">
+                  <glz:ListItem value="part" />
+                  <glz:ListItem value="volume" />
+                  <glz:ListItem value="issue" />
+                  <glz:ListItem value="chapter" />
+                  <glz:ListItem value="section" />
+                  <glz:ListItem value="paragraph" />
+                  <glz:ListItem value="track" />
+                </glz:List>
+              </glz:Fieldset>
+            </glz:Fieldset>
+          </glz:Panel>
+        </glz:JSTab>
+
+        <glz:JSTab id="tabCopie" label="Copie" dropdown="true">
+          <glz:Panel cssClass="col-md-12 active text-tab">
+            <glz:Input id="localizzazione" label="Localizzazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##level##:##1##};dictId=VC_MODS_LOCALIZZAZIONE" />
+            <glz:Fieldset id="collocazione-rep" label="Collocazione" data="type=repeat;noEmptyMessage=true">
+              <glz:Input id="collocazione" label="Collocazione" />
+              <glz:Input id="specificazione" label="Specificazione" />
+              <glz:Fieldset id="inventario-rep" label="Inventario" data="type=repeat;noEmptyMessage=true">
+                <glz:Input id="inventario" label="Inventario" />
+              </glz:Fieldset>
+            </glz:Fieldset>
+            <glz:Input id="condizioniAccesso" label="Condizioni d'accesso" />
+          </glz:Panel>
+        </glz:JSTab>
+
+        <glz:JSTab id="tabCompilazione" label="Compilazione" dropdown="true">
+          <glz:Panel cssClass="col-md-12 active text-tab">
+            <glz:Input id="compilatore" label="Compilatore" required="true" readOnly="true" />
+            <glz:Input id="dataCreazione" label="Data di creazione" required="true" readOnly="true" />
+            <glz:Input id="dataModifica" label="Data di modifica" readOnly="true" />
+          </glz:Panel>
+        </glz:JSTab>
+
+        <glz:JSTab dropdown="true" visible="true" id="linkeMedia_tab" label="{i18n:Media}" enabled="true">
+          <glz:Input id="linkedStruMag" label="Metadato strutturale collegato" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" />
+
+          <glz:Fieldset cssClass="linkedMediaRepeater" id="linkedMedia" label="Media collegati a scheda" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+            <glz:Input data="type=mediapicker;preview=true" id="media" required="false" />
+          </glz:Fieldset>
+        </glz:JSTab>
+      </glz:JSTabGroup>
+
+      <cms:FormButtonsPanel>
+        <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,edit" />
+        <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,edit" />
+        <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+        <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+        <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+      </cms:FormButtonsPanel>
+    </com:FormEdit>
+  </mvc:State>
+
+  <mvc:State name="delete">
+    <glz:Hidden controllerName="metafad.mods.controllers.*" />
+  </mvc:State>
+
+  <glz:JSscript folder="metafad/mods/js" enabled="true"/>
+</mvc:Page>

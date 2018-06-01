@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    src="metafad.views.TemplateModuleAdminExport">
+
+    <glz:template name="model" value="AUT300.models.Model"/>
+    <glz:template name="autocompleteController" value="metafad.common.controllers.ajax.AutoComplete"/>
+    <glz:template name="grid_fields">
+		<glz:DataGridColumn columnName="AUTN_s" headerText="{i18n:AUTN}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="AUTH_s" headerText="{i18n:AUTH}" renderCell="metafad.common.views.renderer.ShortField"/>
+    </glz:template>
+</glz:include>

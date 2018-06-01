@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:type="2tables"
+	model:tableName="thesaurus_tbl,thesaurusdetails_tbl"
+    model:joinFields="thesaurus_id,thesaurusdetails_FK_thesaurus_id"
+    model:usePrefix="true">
+
+</model:Model>

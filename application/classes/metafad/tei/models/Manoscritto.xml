@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="metafad.tei.models.Manoscritto"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="pageId" type="string"/>
+        <model:Field name="root" type="string" index="true"/>
+        <model:Field name="parent" type="array_id" index="true"/>
+        <model:Field name="sectionType" type="string" index="true"/>
+
+        <!-- identificazione -->
+        <model:Field name="codice" type="string" />
+        <model:Field name="denominazione" type="string" />
+        <model:Field name="paese" type="string" />
+        <model:Field name="regione" type="string" />
+        <model:Field name="comune" type="string" />
+        <model:Field name="denominazione-fondo" type="string" />
+        <model:Field name="storia" type="string" />
+        <model:Field name="segnatura" type="string" />
+        <model:Field name="inventario" type="string" />
+        <model:Field name="cnms" type="string" />
+
+        <!-- descrizione interna -->
+        <model:Field name="sommario" type="string" />
+
+        <!-- descrizione esterna -->
+        <model:Field name="numeroElementi" type="string" />
+        <model:Field name="numeroVolumi" type="string" />
+        <model:Field name="fascicoliLegati" type="string" />
+        <model:Field name="note-composito" type="string" />
+        <model:Field name="palinsesto" type="string" />
+        <model:Field name="carte-palinsesto" type="string" />
+        <model:Field name="note-palinsesto" type="string" />
+        <model:Field name="materia-corpo-codice" type="string" />
+        <model:Field name="descrizione-corpo-codice" type="text" />
+        <model:Field name="materia-guardia" type="string" />
+        <model:Field name="descrizione-guardia" type="text" />
+        <model:Field name="note-materia" type="text" />
+        <model:Field name="guardieIniziali" type="string" />
+        <model:Field name="corpo" type="string" />
+        <model:Field name="guardieFinali" type="string" />
+        <model:Field name="mancanze" type="text" />
+        <model:Field name="frammenti" type="text" />
+        <model:Field name="partiStampa" type="text" />
+        <model:Field name="note-carte" type="text" />
+        <model:Field name="altezza" type="string" />
+        <model:Field name="larghezza" type="string" />
+        <model:Field name="unitaMisura" type="string" />
+        <model:Field name="carte-dimensioni" type="string" />
+        <model:Field name="formato-datazione" type="string" />
+        <model:Field name="datazione" type="string" />
+        <model:Field name="noteAllaDatazione" type="text" />
+        <model:Field name="stemmi" type="string" />
+        <model:Field name="carte-datazione" type="string" />
+        <model:Field name="descrizione-decorazione" type="text" />
+        <model:Field name="semplici" type="string" />
+        <model:Field name="colore" type="string" />
+        <model:Field name="filigranate" type="string" />
+        <model:Field name="penna" type="string" />
+        <model:Field name="pennello" type="string" />
+        <model:Field name="note-iniziali" type="text" />
+        <model:Field name="scuolaAutore" type="text" />
+        <model:Field name="formato-datazione-legatura" type="string" />
+        <model:Field name="datazione-legatura" type="string" />
+        <model:Field name="origine" type="string" />
+
+        <!-- storia -->
+        <model:Field name="formato-dataDelManoscritto" type="string" />
+        <model:Field name="dataDelManoscritto" type="string" />
+        <model:Field name="tipoDiData" type="string" />
+        <model:Field name="carta-manoscritto" type="string" />
+        <model:Field name="note-manoscritto" type="text" />
+        <model:Field name="formato-data" type="string" />
+        <model:Field name="dataDiEntrataDelMs" type="string" />
+        <model:Field name="trascrizioneElementiStorici" type="text" />
+        <model:Field name="antroponimi" type="object" readFormat="false"/>
+        <model:Field name="enti" type="object" readFormat="false"/>
+        <model:Field name="toponimi" type="object" readFormat="false"/>
+
+        <!-- bibliografia -->
+        <model:Field name="bibliografiaStampa" type="text" />
+        <model:Field name="bibliografiaNonStampa" type="text" />
+        <model:Field name="riproduzioni" type="text" />
+        <model:Field name="fonti" type="text" />
+        <model:Field name="osservazioni-bibliografia" type="text" />
+    
+        <!-- media -->
+        <model:Field name="linkedStruMag" type="object" readFormat="false"/>
+        <model:Field name="linkedMedia" type="object" readFormat="false"/>
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+    public function getSolrDocument()
+    {
+        $solrModel = array (
+            '__id' => 'id',
+            'document' => 'doc_store',
+            '__model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            '@parent[!]->id' => 'parent_i',
+            'comune' => 'comune_s',
+            'denominazione' => 'denominazione_s',
+            'segnatura' => 'segnatura_s',
+            'sectionType' => 'sectionType_s'
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array (
+);
+        return $searchFields;
+    }
+
+    public function getRecordId()
+    {
+        return $this->denominazione;
+    }
+    ]]></model:Script>
+</model:Model>

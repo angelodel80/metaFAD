@@ -1,0 +1,61 @@
+
+table.storageBrowser{
+	width: 100%;
+}
+
+table.storageBrowser .icon {
+	width: 18px;
+}
+
+table.storageBrowser td.folder {
+	background: url( '../icons/folder.png') no-repeat 4px 4px;
+}
+
+table.storageBrowser td.image {
+	background: url( '../icons/image.png') no-repeat 4px 4px;
+}
+
+table.storageBrowser td.audio {
+	background: url( '../icons/audio.png') no-repeat 4px 4px;
+}
+
+table.storageBrowser td.other {
+	background: url( '../icons/other.png') no-repeat 4px 4px;
+}
+
+table.storageBrowser td.pdf {
+	background: url( '../icons/pdf.png') no-repeat 4px 4px;
+}
+
+
+table.storageBrowser .filename {
+	font-weight: bold;
+}
+
+
+table.storageBrowser .size {
+	text-align:right;
+	width: 100px;
+}
+
+table.storageBrowser .date {
+	text-align:right;
+	width: 150px;
+}
+
+
+table.storageBrowser tbody tr {
+	cursor: pointer;
+}
+
+
+table#dataGrid.storageBrowser tbody tr.ruled td{
+	background-color: #fff;
+}
+
+
+div.addMedia input.mediaFilePicker {
+	margin-left: 10px;
+}
+
+button:focus {outline:0;}

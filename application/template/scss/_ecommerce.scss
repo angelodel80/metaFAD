@@ -1,0 +1,26 @@
+/* BEGIN Ecommerce */
+.e-request {
+   width: 20px;
+   height: 20px;
+   position: absolute;
+   top: 14px;
+   right: 33px;
+   text-align: center;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   span {
+      position: relative;
+      right: 1px;
+      bottom: 2px;
+   }
+}
+
+#manageState {
+    margin-bottom: 35px;
+    .stateLink {
+        margin: 5px 15px;
+        white-space: nowrap;
+    }
+}
+/* END Ecommerce */

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.users.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State name="index">
+         <com:DataGridAjax id="dataGrid" recordClassName="metafad.usersAndPermissions.users.models.Model"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.usersAndPermissions.users.controllers.*" fullTextSearch="false"
+                          setFiltersToQuery="true"
+                          query="datagridSearch"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="user_firstName" headerText="{i18n:GLZ_USER_FIRST}"/>
+            <glz:DataGridColumn columnName="user_lastName" headerText="{i18n:GLZ_USER_LAST}"/>
+            <glz:DataGridColumn columnName="user_loginId" headerText="{i18n:GLZ_USER_LOGINID}"/>
+            <glz:DataGridColumn columnName="usergroup_name" headerText="{i18n:GLZ_USER_GROUP}" />
+            <glz:DataGridColumn columnName="user_isActive" searchable="false" headerText="{i18n:GLZ_USER_ACTIVE}" cssClass="center"
+                                renderCell="org.glizycms.core.application.renderer.CellUserActive"/>
+            <glz:DataGridColumn columnName="user_id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.usersAndPermissions.users.views.renderer.CellEditDeleteDetail"/>
+        </com:DataGridAjax>
+        <com:DataGridFilter id="filter_group" dataGridAjaxId="dataGrid" fieldNumber="3" fieldName="usergroup_name" recordClassName="org.glizycms.groupManager.models.UserGroup" />
+        <cmp:AddButton label="" acl="*,new" routeUrl="metafad.usersAndPermissions.users" editableRegion="actions"
+                       recordClassName="metafad.usersAndPermissions.users.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+
+    <mvc:State id="stateEdit" name="edit" label="{i18n:Scheda}" draw="false">
+      <glz:DataDictionary id="usergroupsDP" recordClassName="org.glizycms.groupManager.models.UserGroup" field="usergroup_id,usergroup_name" />
+        <cms:FormEdit id="editForm" newCode="true"
+                      controllerName="metafad.usersAndPermissions.users.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="org.glizy.models.User"/>
+            <glz:Input id="user_firstName" label="{i18n:Nome}" required="true"/>
+            <glz:Input id="user_lastName" label="{i18n:Cognome}" required="true"/>
+            <glz:Input id="user_email" label="{i18n:Email}" type="email" required="true"/>
+            <glz:Input id="user_loginId" label="{i18n:Nome utente}" required="true"/>
+            <glz:Input id="user_password" label="{i18n:Password}" type="password" required="true"/>
+            <glz:List id="user_FK_usergroup_id" label="{i18n:GLZ_USER_GROUP}" dataProvider="{usergroupsDP}" emptyValue="-" required="true" />
+            <glz:Checkbox id="user_isActive" label="{i18n:Attivo}" type="checkbox"/>
+            <glz:Fieldset data="type=repeat;collapsable=false;repeatMin=0" id="instituteAndRole"
+                          label="{i18n:Istituto e Ruolo}" required="false">
+                <com:Container cssClass="userInstitute col-lg-5 col-md-5 col-sm-12">
+                    <glz:Input
+                    data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.usersAndPermissions.institutes.models.proxy.InstitutesProxy;return_object=true"
+                    id="institute" label="" required="true"/>
+                </com:Container>
+                <com:Container cssClass="userRole col-lg-6 col-md-6 col-sm-12">
+                <glz:Input
+                    data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.usersAndPermissions.roles.models.proxy.RolesContentProxy;return_object=true"
+                    id="roles" label="" required="true"/>
+                </com:Container>
+            </glz:Fieldset>
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" cssClass="btn btn-flat js-glizycms-cancel" routeUrl="link"
+                                data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State id="detail" name="detail" label="{i18n:Dettaglio}" draw="false">
+        <glz:DataProvider id="user" recordClassName="metafad.usersAndPermissions.users.models.Model" query="userFromId" param="{id}"/>
+        <glz:RecordSetList dataProvider="{user}"
+                           skin="metafad/usersAndPermissions/users/views/skins/User.html"/>
+
+        <glz:JSTabGroup id="detail" showNav="false">
+            <glz:JSTab id="defaultDetail" label="{i18n:Attività assegnate}" dropdown="false">
+                <glz:DataProvider id="AssignedActivities"
+                                  recordClassName="metafad.workflow.instanceActivities.models.Model"
+                                  query="getFromUserAndProcessStatus" param="{id}"/>
+                <glz:RecordSetList dataProvider="{AssignedActivities}"
+                                   skin="metafad/usersAndPermissions/users/views/skins/AssignedActivities.html"/>
+
+            </glz:JSTab>
+
+            <glz:JSTab id="latestActivities" label="{i18n:Ultime attività}" dropdown="false">
+
+                <glz:DataProvider id="latestActivities" recordClassName="metafad.modules.logs.models.Model"
+                                  query="reportFromUserId"
+                                  param="{id}"/>
+                <glz:RecordSetList dataProvider="{latestActivities}"
+                                   skin="metafad/usersAndPermissions/users/views/skins/LatestActivities.html"/>
+            </glz:JSTab>
+        </glz:JSTabGroup>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.usersAndPermissions.users.controllers.*"/>
+        <glz:Hidden id="__model" value="org.glizy.models.User"/>
+    </mvc:State>
+    <glz:JSscript><![CDATA[
+    window.onload = function(){
+        $('#instituteAndRole-addRowBtn').attr('value', 'Aggiungi istituto');
+        $('#instituteAndRole .GFEEmptyMessage').text('Premere il tasto "Aggiungi istituto" per inserire un nuovo istituto');
+        plusIcon = '<i class="fa fa-plus"></i>';
+        $('.GFEButtonContainer').prepend(plusIcon);
+    }
+
+
+]]></glz:JSscript>
+</mvc:Page>

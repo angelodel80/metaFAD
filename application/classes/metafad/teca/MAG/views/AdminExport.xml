@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.teca.MAG.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          defaultEditableRegion="content"
+          defaultAction="export"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State name="export">
+      <com:DataGridSolr id="dataGridExport" setLastSearch="true" recordClassName="metafad.teca.MAG.models.Model" cssClass="table table-bordered table-striped" fullTextSearch="true">
+          <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" />
+          <glz:DataGridColumn columnName="BIB_dc_identifier_index_t" headerText="{i18n:Identificativo}" width="12"/>
+          <glz:DataGridColumn columnName="BIB_dc_title_t" headerText="{i18n:Titolo}" width="40" renderCell="metafad.common.views.renderer.ShortField"/>
+          <glz:DataGridColumn columnName="update_at_s" headerText="{i18n:Data modifica}" width="15"/>
+          <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" width="10" cssClass="actions"
+                              renderCell="metafad.teca.MAG.views.renderer.CellShow"/>
+      </com:DataGridSolr>
+
+      <c:FormEdit id="exportForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*" method="post" enctype="multipart/form-data">
+        <glz:Panel cssClass="export-option aa">
+          <glz:Panel cssClass="export-option-checkbox">
+            <glz:Input id="exportAll" type="checkbox" value="exportAll" label="Esporta risultato della ricerca" cssClassLabel="" applyFormItemTemplate="false"/>
+          </glz:Panel>
+          <glz:Panel cssClass="export-option-checkbox">
+            <glz:Input id="exportSelected" type="checkbox" value="exportSelected" label="Esporta record selezionati" cssClassLabel="" applyFormItemTemplate="false"/>
+          </glz:Panel>exportTitle
+        </glz:Panel>
+        <glz:Panel id="countSelected" />
+        <glz:Input id="exportTitle" cssClass="form-control" label="Titolo esportazione" required="true"/>
+        <glz:Hidden id="ids" />
+        <glz:List id="exportMode" cssClass="form-control" label="{i18n:Tipo di esportazione}" >
+            <glz:ListItem key="zip" value="File ZIP"/>
+            <glz:ListItem key="oai" value="OAI-PMH"/>
+        </glz:List>
+        <glz:List id="exportFormat" cssClass="form-control" label="{i18n:Formato esportazione}" >
+            <glz:ListItem key="all" value="Tutto"/>
+            <glz:ListItem key="S" value="S"/>
+            <glz:ListItem key="M" value="M"/>
+            <glz:ListItem key="H" value="H"/>
+        </glz:List>
+        <glz:Input id="exportEmail" cssClass="form-control" label="Email di notifica" required="true"/>
+        <glz:Panel cssClass="export-mag-email-message col-sm-offset-3 col-sm-10 col-xs-12"><glz:Text>L'email verr&#224; inviata al termine dell'operazione, possono essere inseriti pi&#250; valori divisi da virgola.</glz:Text></glz:Panel>
+        <glz:HtmlButton label="{i18n:Esporta}" name="action" cssClass="btn btn-flat btn-info btn-export-mag" value="exportProcedure" data="action=exportProcedure" />
+      </c:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="exportProcedure">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.ExportProcedure"/>
+    </mvc:State>
+
+    <mvc:State name="getMagExport">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.GetMagExport"/>
+    </mvc:State>
+
+</mvc:Page>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scons xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://san.mibac.it/scons-san/"
+	   xsi:schemaLocation="http://www.san.beniculturali.it/tracciato http://www.san.beniculturali.it/tracciato/scons.xsd">
+	<formaautorizzata></formaautorizzata>
+	<acronimo></acronimo>
+	<identifier>
+		<recordId></recordId>
+		<sistemaId>PDN</sistemaId>
+	</identifier>
+	<tipologia></tipologia>
+	<sitoweb href=""></sitoweb>
+	<servizi></servizi>
+	<descrizione></descrizione>
+	<altroaccesso></altroaccesso>
+	<consultazione></consultazione>
+</scons>

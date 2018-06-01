@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+    <glz:Route name="metafad.teca.STRUMAG" value="{pageId=metafad.teca.STRUMAG.views.Admin}/{action=edit}/{value=id}" />
+</glz:Routing>

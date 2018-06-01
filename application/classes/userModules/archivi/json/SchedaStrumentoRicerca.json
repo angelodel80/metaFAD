@@ -1,0 +1,483 @@
+{
+  "id": "SchedaStrumentoRicerca",
+  "tabs": [
+    {
+      "id": "tabIdentificazione",
+      "label": "Identificazione",
+      "fields": [
+        {
+          "id": "codici",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Codici"
+          },
+          "children": [
+            {
+              "id": "acronimoSistema",
+              "type": "Input",
+              "label": "Acronimo di Sistema",
+              "solr": {
+                "field": "acronimoSistema_s"
+              }
+            },
+            {
+              "id": "identificativo",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Identificativo per lo Strumento",
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "gridField": true,
+              "solr": {
+                "field": "identificativo_s"
+              }
+            },
+            {
+              "id": "codiceIdentificativoSistema",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Codice identificativo di Sistema"
+            },
+            {
+              "id": "codiceIdentificativoPrecedente",
+              "type": "Repeater",
+              "label": "Codice identificativo precedente",
+              "children": [
+                {
+                  "id": "codice",
+                  "type": "Input",
+                  "label": "Codice"
+                }
+              ]
+            },
+            {
+              "id": "externalID",
+              "type": "Hidden",
+              "label": "ID importazione",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "externalID_s"
+              }
+            }
+          ]
+        },
+        {
+          "id": "titoloTipologia",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Titolo e Tipologia"
+          },
+          "children": [
+            {
+              "id": "titoloNormalizzato",
+              "type": "Input",
+              "label": "Titolo Normalizzato",
+              "required": "true",
+              "gridField": true,
+              "solr": {
+                "field": "denominazione_s"
+              }
+            },
+            {
+              "id": "titoloOriginaleStrumento",
+              "type": "Input",
+              "label": "Titolo originale dello strumento"
+            },
+            {
+              "id": "tipologia",
+              "type": "Fieldset",
+              "attributes": {
+                "label": "Tipologia"
+              },
+              "children": [
+                {
+                  "id": "tipologiaScelta",
+                  "type": "ClosedDictionary",
+                  "label": "Tipologia",
+                  "dictionaryId": "VC_ARCHIVE_TITOLO_TIPOLOGIA"
+                },
+                {
+                  "id": "specificazioneTipologia",
+                  "type": "Input",
+                  "label": "Specificazione",
+                  "model": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "descrizioneEstrinseca",
+          "type": "Fieldset",
+          "label": "Descrizione Estrinseca",
+          "children": [
+            {
+              "id": "tipoSupporto",
+              "type": "ClosedDictionary",
+              "label": "Tipo Supporto",
+              "dictionaryId": "VC_ARCHIVE_DESCRIZIONE_ESTRINSECA"
+            },
+            {
+              "id": "modalitaRedazione",
+              "type": "Fieldset",
+              "attributes": {
+                "label": "Modalità di Redazione"
+              },
+              "children": [
+                {
+                  "id": "modalitaRedazioneScelta",
+                  "type": "ClosedDictionary",
+                  "label": "Tipologia",
+                  "dictionaryId": "VC_ARCHIVE_MODALITA_REDAZIONE"
+                },
+                {
+                  "id": "specificazioneModalita",
+                  "type": "Input",
+                  "label": "Specificazione"
+                }
+              ]
+            },
+            {
+              "id": "consistenzaPaginazioneLegatura",
+              "type": "Input",
+              "label": "Consistenza, cartulazione/paginazione, legatura"
+            },
+            {
+              "id": "edito",
+              "label": "Edito",
+              "type": "ConditionalList",
+              "target": "{\"0\":\"\",\"1\":\"riferimentiBibliografici\",\"2\":\"riferimentiWeb\"}",
+              "values": [
+                "Edito",
+                "Pubblicato sul Web"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "complessoArchivistico",
+          "type": "Repeater",
+          "label": "Complesso Archivistico",
+          "children": [
+            {
+              "id": "complessoArchivisticoLink",
+              "type": "Link",
+              "label": "Complesso Archivistico",
+              "linkTo": "ComplessoArchivistico"
+            },
+            {
+              "id": "identificativoComplesso",
+              "type": "Input",
+              "label": "Identificativo per il Complesso Archivistico"
+            }
+          ]
+        },
+        {
+          "id": "autoreStrumentoRicerca",
+          "type": "Repeater",
+          "label": "Autore dello Strumento di Ricerca",
+          "children": [
+            {
+              "id": "cognomeAutore",
+              "type": "Input",
+              "label": "Cognome"
+            },
+            {
+              "id": "nomeAutore",
+              "type": "Input",
+              "label": "Nome"
+            },
+            {
+              "id": "qualificaRuolo",
+              "type": "ClosedDictionary",
+              "label": "Qualifica/Ruolo",
+              "dictionaryId": "VC_ARCHIVE_STRUMENTO_AUTORE_RUOLO"
+            }
+          ]
+        },
+        {
+          "id": "cronologiaRedazione",
+          "attributes": {
+            "cssClass": "js-archive-cronologia-root"
+          },
+          "type": "Repeater",
+          "label": "Cronologia (di redazione dello strumento)",
+          "children": [
+            {
+              "id": "estremoCronologicoTestuale",
+              "type": "Input",
+              "label": "Estremo cronologico testuale",
+              "gridField": true,
+              "solr": {
+                "field": "cronologia_s",
+                "searchExpr": "@estremoCronologicoTestuale"
+              },
+              "attributes": {
+                "readOnly": "true",
+                "cssClass": "js-archive-cronologia-concatText form-control"
+              }
+            },
+            {
+              "id": "estremoRemoto",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo remoto",
+              "children": [
+                {
+                  "id": "estremoRemoto_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRemoto_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRemoto_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRemoto_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "estremoRecente",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo recente",
+              "children": [
+                {
+                  "id": "estremoRecente_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRecente_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRecente_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRecente_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "noteDatazione",
+          "type": "RichText",
+          "label": "Nota alla Datazione"
+        },
+        {
+          "id": "strutturaStrumento",
+          "type": "RichText",
+          "label": "Struttura"
+        },
+        {
+          "id": "noteStoricoRelazionali",
+          "type": "RichText",
+          "label": "Note storico-redazionali"
+        }
+      ]
+    },
+    {
+      "id": "tabRiferimentiFonti",
+      "label": "Riferimenti e fonti",
+      "fields": [
+        {
+          "id": "riferimentiBibliografici",
+          "type": "Repeater",
+          "label": "Riferimenti bibliografici",
+          "children": [
+            {
+              "id": "linkRiferimentiBibliografici",
+              "type": "Link",
+              "label": "Riferimenti bibliografici",
+              "linkTo": "SchedaBibliografica"
+            },
+            {
+              "id": "indicazioniSpecifiche",
+              "type": "Input",
+              "label": "Indicazioni specifiche"
+            }
+          ]
+        },
+        {
+          "id": "fontiArchivistiche",
+          "type": "Repeater",
+          "label": "Fonti archivistiche",
+          "children": [
+            {
+              "id": "linkFontiArchivistiche",
+              "type": "Link",
+              "label": "Fonti archivistiche",
+              "linkTo": "FonteArchivistica"
+            }
+          ]
+        },
+        {
+          "id": "riferimentiWeb",
+          "type": "Repeater",
+          "label": "Riferimenti web",
+          "children": [
+            {
+              "id": "denominazioneSitoWeb",
+              "type": "Input",
+              "label": "Denominazione sito o pagina web"
+            },
+            {
+              "id": "descrizione",
+              "type": "RichText",
+              "label": "Descrizione"
+            },
+            {
+              "id": "dataInserimento",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control"
+              },
+              "type": "Input",
+              "label": "Data di inserimento"
+            },
+            {
+              "id": "url",
+              "type": "Url",
+              "label": "URL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabCompilazione",
+      "label": "Compilazione",
+      "fields": [
+        {
+          "id": "linguaDescrizioneRecord",
+          "label": "Lingua di descrizione del record",
+          "type": "ClosedDictionary",
+          "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+        },
+        {
+          "id": "compilazione",
+          "type": "Repeater",
+          "label": "Compilazione",
+          "children": [
+            {
+              "id": "redattore",
+              "type": "Input",
+              "label": "Redattore"
+            },
+            {
+              "id": "azione",
+              "type": "ClosedDictionary",
+              "label": "Azione",
+              "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+            },
+            {
+              "id": "noteRedazionali",
+              "type": "RichText",
+              "label": "Note redazionali"
+            },
+            {
+              "id": "data",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+              },
+              "type": "Input",
+              "label": "Data"
+            }
+          ]
+        },
+        {
+          "id": "osservazioni",
+          "type": "RichText",
+          "label": "Osservazioni"
+        }
+      ]
+    }
+  ]
+}

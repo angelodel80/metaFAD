@@ -1,0 +1,109 @@
+{
+  "__model": {
+    "type": "constant",
+    "value": "metafad.tei.models.UnitaCodicologica"
+  },
+  "pageId": {
+    "type": "constant",
+    "value": "tei-UnitaCodicologica"
+  },
+  "sectionType": {
+    "type": "constant",
+    "value": "unita-codicologica"
+  },
+  "parent": {
+    "type": "composite",
+    "repeatable": false,
+    "xpath": ".",
+    "struct": {
+      "id": {
+        "type": "simple",
+        "xpath": "./@idparent"
+      },
+      "text": {
+        "type": "simple",
+        "xpath": "./@textparent"
+      }
+    }
+  },
+  "segnatura": {
+    "type": "simple",
+    "xpath": "./x:msIdentifier/x:idno"
+  },
+  "fascicoliLegati": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:p/x:term[@n='2']"
+  },
+  "note-composito": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:p/x:note[@type='sez02']"
+  },
+  "note-palinsesto": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:p/x:note[@type='sez03']"
+  },
+  "materia-corpo-codice": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/@material"
+  },
+  "materia-guardia": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/@material"
+  },
+  "note-materia": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:note[@type='sez06']"
+  },
+  "note-carte": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:note[@type='sez08']"
+  },
+  "altezza": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure[@type='height']"
+  },
+  "larghezza": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure[@type='width']"
+  },
+  "unitaMisura": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:measure/@unit"
+  },
+  "carte-dimensioni": {
+    "type": "simple",
+    "xpath": "./x:physDesc/x:objectDesc/x:supportDesc/x:extent/x:locus"
+  },
+  "dataDelManoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:origDate"
+  },
+  "carta-manoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:locus"
+  },
+  "note-manoscritto": {
+    "type": "simple",
+    "xpath": "./x:history/x:origin/x:p/x:origDate"
+  },
+  "bibliografiaStampa": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='1Astampa']"
+  },
+  "bibliografiaNonStampa": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='2Nonastampa']"
+  },
+  "riproduzioni": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:surrogates/x:p"
+  },
+  "fonti": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:bibl[@n='3Fonti']"
+  },
+  "osservazioni-bibliografia": {
+    "type": "simple",
+    "xpath": "./x:additional/x:listBibl/x:note[@type='osservazioni']"
+  }
+}

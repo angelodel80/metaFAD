@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="MAG"
+        model:usePrefix="false"
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+        <model:Script parent="model">
+        <![CDATA[
+        public function getBeAdvancedSearchFields()
+        {
+            $searchFields = array(
+      			'BIB_dc_identifier_index' => 'BIB_dc_identifier_index_t',
+      			'BIB_dc_title' => 'BIB_dc_title_t',
+            'update_at' => 'update_at_s',
+          );
+          return $searchFields;
+        }
+
+        public function getSolrDocument()
+        {
+            $solrModel = array(
+                '__id' => 'id',
+                'metafad.teca.MAG.models.Model' => 'document_type_t',
+                'updateDateTime' => 'update_at_s',
+                'document' => 'doc_store',
+                'isValid' => 'isValid_i',
+                'document_id' => 'document_id_t',
+          		'document_detail_modificationDate' => 'document_detail_modificationDate_t',
+                'BIB_dc_identifier_index' => 'BIB_dc_identifier_index_t',
+                '@BIB_dc_title[!]->BIB_dc_title_value' => 'BIB_dc_title_t'
+            );
+
+            $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+            return $solrModel;
+        }
+
+        public function getTitle()
+        {
+          return $this->BIB_dc_identifier_index;
+        }
+
+        public function getRecordId()
+        {
+          return $this->BIB_dc_identifier_index;
+        }
+
+        ]]>
+        </model:Script>
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="extId" type="int" index="true" />
+        <model:Field name="linkedFormType" type="string" />
+        <model:Field name="linkedForm" type="object" readFormat="false" />
+        <model:Field name="stato" type="string" index="true" />
+        <model:Field name="GEN_creation" type="string" />
+        <model:Field name="GEN_lastUpdate" type="string" />
+        <model:Field name="GEN_stprog" type="string" />
+        <model:Field name="GEN_collection" type="string" />
+        <model:Field name="GEN_agency" type="string" />
+        <model:Field name="GEN_access_rights" type="string" />
+        <model:Field name="GEN_completeness" type="string" />
+        <model:Field name="GEN_img_group" type="object" readFormat="false" />
+        <model:Field name="GEN_audio_group" type="object" readFormat="false" />
+        <model:Field name="GEN_video_group" type="object" readFormat="false" />
+
+        <model:Field name="BIB_level" type="string" />
+
+        <model:Field name="BIB_dc_identifier" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_identifier_index" type="string" index="true" />
+
+        <model:Field name="BIB_dc_title" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_creator" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_publisher" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_subject" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_description" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_contributor" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_date" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_type" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_format" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_source" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_language" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_relation" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_coverage" type="object" readFormat="false" />
+        <model:Field name="BIB_dc_rights" type="object" readFormat="false" />
+        <model:Field name="BIB_holdings" type="object" readFormat="false" />
+        <model:Field name="BIB_local_bib_geo_coord" type="object" readFormat="false" />
+        <model:Field name="BIB_local_bib_not_date" type="object" readFormat="false" />
+        <model:Field name="BIB_piece_year" type="string" />
+        <model:Field name="BIB_piece_issue" type="string" />
+        <model:Field name="BIB_piece_stpiece_per" type="string" />
+        <model:Field name="BIB_piece_part_number" type="string" />
+        <model:Field name="BIB_piece_part_name" type="string" />
+        <model:Field name="BIB_piece_stpiece_vol" type="string" />
+
+        <model:Field name="stru" type="object" readFormat="false" />
+        <model:Field name="logicalStru" type="string" />
+        <model:Field name="flagVestito" type="string" />
+        <model:Field name="flagParent" type="string" />
+
+        <model:Field name="linkedStru" type="object" readFormat="false"/>
+
+        <model:Field name="status" type="string" index="true" />
+        <model:Field name="instituteKey" type="string" index="true" />
+        <model:Field name="relatedBoard" type="string" />
+        <model:Field name="board" type="fulltext" />
+        <model:Field name="isValid" type="int" />
+
+        <model:Field name="stru_options" type="string" />
+    </model:Define>
+</model:Model>

@@ -1,0 +1,4 @@
+<?php
+class metafad_usersAndPermissions_institutes_controllers_Delete extends org_glizycms_contents_controllers_activeRecordEdit_Delete
+{
+}

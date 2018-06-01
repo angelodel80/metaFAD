@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:print="metafad.print.views.components.*"
+    src="metafad.views.TemplateModuleAdminPreview">
+
+    <glz:template name="model" value="AUT300.models.Model"/>
+    <glz:template name="form_fields">
+        
+<glz:Fieldset id="CD" label="{i18n:CD}" required="true">
+  <print:Input id="TSK" label="{i18n:TSK}" required="true" maxLength="5" data="type=FormEditSelectMandatory;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##}"/>
+  <glz:Fieldset id="NCU" label="{i18n:NCU}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+    <print:Input id="NCUN" label="{i18n:NCUN}" maxLength="8"/>
+</glz:Fieldset>
+  <print:Input id="ESC" label="{i18n:ESC}" required="true" maxLength="25"/>
+  <print:Input id="ECP" label="{i18n:ECP}" maxLength="25"/>
+</glz:Fieldset>
+<glz:Fieldset id="AU" label="{i18n:AU}" required="true">
+  <glz:Fieldset id="AUT" label="{i18n:AUT}" required="true">
+    <print:Input id="AUTN" label="{i18n:AUTN}" required="true" maxLength="100"/>
+    <print:Input id="AUTA" label="{i18n:AUTA}" required="true" maxLength="70"/>
+    <print:Input id="AUTC" label="{i18n:AUTC}" maxLength="70"/>
+    <print:Input id="AUTO" label="{i18n:AUTO}" maxLength="70"/>
+    <print:Input id="AUTP" label="{i18n:AUTP}" maxLength="70"/>
+    <print:Input id="AUTE" label="{i18n:AUTE}" maxLength="70"/>
+    <print:Input id="AUTF" label="{i18n:AUTF}" maxLength="70"/>
+    <print:Input id="AUTV" label="{i18n:AUTV}" maxLength="350"/>
+    <print:Input id="AUTZ" label="{i18n:AUTZ}" maxLength="1" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##}"/>
+    <print:Input id="AUTL" label="{i18n:AUTL}" maxLength="50"/>
+    <print:Input id="AUTD" label="{i18n:AUTD}" maxLength="25"/>
+    <print:Input id="AUTX" label="{i18n:AUTX}" maxLength="50"/>
+    <print:Input id="AUTT" label="{i18n:AUTT}" maxLength="25"/>
+    <print:Input id="AUTG" label="{i18n:AUTG}" maxLength="250"/>
+    <print:Input id="AUTU" label="{i18n:AUTU}" required="true" maxLength="350" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##,##code##:##VA_AUTU_AUT##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="AUTQ" label="{i18n:AUTQ}" required="true" maxLength="100" data="type=FormEditSelectMandatory;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##AUT300##,##code##:##VA_AUTQ_AUT##,##level##:##*##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm"/>
+    <print:Input id="AUTH" label="{i18n:AUTH}" required="true" maxLength="8"/>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="CM" label="{i18n:CM}" required="true">
+  <glz:Fieldset id="CMP" label="{i18n:CMP}" required="true">
+    <print:Input id="CMPD" label="{i18n:CMPD}" required="true" maxLength="4"/>
+    <glz:Fieldset id="CMPN" label="{i18n:CMPN}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+        <print:Input id="CMPN-element" label="{i18n:CMPN}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+  <glz:Fieldset id="RSR" label="{i18n:RSR}" data="type=repeat;collapsable=false;repeatMin=0">
+      <print:Input id="RSR-element" label="{i18n:RSR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="FUR" label="{i18n:FUR}" required="true" data="type=repeat;collapsable=false;repeatMin=1">
+      <print:Input id="FUR-element" label="{i18n:FUR}" maxLength="70"/>
+</glz:Fieldset>
+  <glz:Fieldset id="AGG" label="{i18n:AGG}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+    <print:Input id="AGGD" label="{i18n:AGGD}" required="true" maxLength="4"/>
+    <print:Input id="AGGN" label="{i18n:AGGN}" required="true" maxLength="70"/>
+    <print:Input id="AGGE" label="{i18n:AGGE}" maxLength="70"/>
+    <glz:Fieldset id="AGGR" label="{i18n:AGGR}" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGR-element" label="{i18n:AGGR}" maxLength="70"/>
+</glz:Fieldset>
+    <glz:Fieldset id="AGGF" label="{i18n:AGGF}" required="true" data="type=repeat;collapsable=false;repeatMin=0">
+        <print:Input id="AGGF-element" label="{i18n:AGGF}" maxLength="70"/>
+</glz:Fieldset>
+</glz:Fieldset>
+</glz:Fieldset>
+<glz:Fieldset id="AN" label="{i18n:AN}" data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+  <print:Input id="OSS" label="{i18n:OSS}" maxLength="5000" type="multiline" rows="10" cols="70" wrap="on" htmlEditor="true"/>
+</glz:Fieldset>
+
+
+    </glz:template>
+</glz:include>

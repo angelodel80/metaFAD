@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="metafad.tei.models.UnitaTestuale"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="pageId" type="string" />
+        <model:Field name="root" type="string" index="true"/>
+        <model:Field name="parent" type="array_id" index="true"/>
+        <model:Field name="sectionType" type="string" index="true"/>
+
+        <!-- identificazione -->
+        <model:Field name="carte" type="text" />
+        <model:Field name="ordinamento" type="string" />
+        <model:Field name="testoAutografo" type="string" />
+        <model:Field name="note" type="text" />
+        <model:Field name="carteggio" type="string" />
+        <model:Field name="carteggioRep" type="object" readFormat="false"/>
+        <model:Field name="titolo" type="text" />
+        <model:Field name="tipologia" type="string" />
+        <model:Field name="carta-titolo" type="text" />
+        <model:Field name="note-titolo" type="text" />
+        <model:Field name="nomeNelTitoloRep" type="object" readFormat="false"/>
+        <model:Field name="incipit" type="object" readFormat="false"/>
+        <model:Field name="explicit" type="object" readFormat="false"/>
+        <model:Field name="osservazioni" type="text" />
+        <model:Field name="antroponimi" type="object" readFormat="false"/>
+        <model:Field name="enti" type="object" readFormat="false"/>
+        <model:Field name="toponimi" type="object" readFormat="false"/>
+
+        <!-- media -->
+        <model:Field name="linkedStruMag" type="object" readFormat="false"/>
+        <model:Field name="linkedMedia" type="object" readFormat="false"/>
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+    public function getSolrDocument()
+    {
+        $solrModel = array (
+            '__id' => 'id',
+            'document' => 'doc_store',
+            '__model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            '@parent[!]->id' => 'parent_i',
+            'titolo' => 'titolo_s',
+            'sectionType' => 'sectionType_s'
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array (
+);
+        return $searchFields;
+    }
+
+    public function getRecordId()
+    {
+        return $this->titolo;
+    }
+    ]]></model:Script>
+</model:Model>

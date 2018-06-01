@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="processes" model:usePrefix="false" model:type="document">
+
+    <model:Define>
+        <!-- processo -->
+        <model:Field name="extId" type="int" index="true" />
+        <model:Field name="title" type="string" index="true"/>
+        <model:Field name="status" type="int" index="true"/>
+        <model:Field name="percentage" type="int" index="true"/>
+        <model:Field name="startDate" type="datetime" index="true" />
+        <model:Field name="instanceActivities" type="array"/>
+
+    </model:Define>
+
+    <model:Query name="report" type="function" arguments="id">
+        <![CDATA[
+        $expr = $iterator->expr();
+
+        $iterator->select('*')
+            ->where("document_id", $id);
+    ]]>
+    </model:Query>
+
+</model:Model>

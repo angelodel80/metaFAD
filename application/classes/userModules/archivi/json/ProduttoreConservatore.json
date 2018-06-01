@@ -1,0 +1,3175 @@
+{
+  "id": "ProduttoreConservatore",
+  "tabs": [
+    {
+      "id": "tabIdentificazione",
+      "label": "Identificazione",
+      "fields": [
+        {
+          "id": "codici",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Codici"
+          },
+          "children": [
+            {
+              "id": "acronimoSistema",
+              "type": "Input",
+              "required": "true",
+              "solr": {
+                "field": "acronimoSistema_s"
+              },
+              "label": "Acronimo di sistema"
+            },
+            {
+              "id": "identificativo",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Identificativo per l'Entità",
+              "gridField": true,
+              "solr": {
+                "field": "identificativo_s"
+              }
+            },
+            {
+              "id": "codiceIdentificativoSistema",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Codice identificativo di sistema"
+            },
+            {
+              "id": "altriCodiciIdentificativi",
+              "type": "Repeater",
+              "label": "Altri codici identificativi",
+              "children": [
+                {
+                  "id": "codice",
+                  "type": "Input",
+                  "label": "Codice"
+                },
+                {
+                  "id": "qualifica",
+                  "type": "Input",
+                  "label": "Qualifica"
+                }
+              ]
+            },
+            {
+              "id": "codiceIdentificativoPrecedente",
+              "type": "Repeater",
+              "label": "Codice identificativo precedente",
+              "children": [
+                {
+                  "id": "codice",
+                  "type": "Input",
+                  "label": "Codice"
+                }
+              ]
+            },
+            {
+              "id": "externalID",
+              "type": "Hidden",
+              "label": "ID importazione",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "externalID_s"
+              }
+            },
+            {
+              "id": "isProdCons",
+              "type": "Hidden",
+              "label": "Maschera Finale Produttore/Conservatore",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "array"
+              },
+              "solr": {
+                "field": "prodCons_ss"
+              }
+            },
+            {
+              "id": "isForceProdCons",
+              "type": "Hidden",
+              "label": "Maschera di forzatura Produttore/Conservatore",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "array"
+              }
+            }
+          ]
+        },
+        {
+          "id": "tipologia",
+          "type": "Fieldset",
+          "label": "Tipologia",
+          "children": [
+            {
+              "id": "tipologiaChoice",
+              "type": "ConditionalList",
+              "label": "Tipologia",
+              "target": "{\"0\":\"\",\"1\":\"tipologiaEnte,condizioneGiuridica,luogoEnte,ente_famiglia_denominazione,cronologiaEnte,contestoStatuale\",\"2\":\"luogoFamiglia,ente_famiglia_denominazione,cronologiaFamiglia\",\"3\":\"genere,luogoPersona,persona_denominazione,cronologiaPersona,titoloEntita,attivitaProfessioneQualifica\"}",
+              "required": "true",
+              "values": [
+                "Ente",
+                "Famiglia",
+                "Persona"
+              ],
+              "model": {
+                "type": "string",
+                "index": "true"
+              }
+            },
+            {
+              "id": "tipologiaEnte",
+              "type": "ClosedDictionary",
+              "label": "Tipologia Ente",
+              "dictionaryId": "VC_ARCHIVE_ENTE_TIPOLOGIA"
+            },
+            {
+              "comments": "LASCIO COSÌ",
+              "id": "genere",
+              "type": "ClosedList",
+              "label": "Genere",
+              "values": [
+                "Femminile",
+                "Maschile",
+                "Non rilevato"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "condizioneGiuridica",
+          "type": "Repeater",
+          "label": "Condizione giuridica",
+          "required": "true",
+          "children": [
+            {
+              "id": "listCondizioneGiuridica",
+              "type": "ClosedDictionary",
+              "label": "Condizione giuridica",
+              "required": "true",
+              "dictionaryId": "VC_ARCHIVE_CONDIZIONE_GIURIDICA"
+            },
+            {
+              "id": "estremiCronologici",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "cond_giuridica_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "cond_giuridica_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ente_famiglia_denominazione",
+          "type": "Repeater",
+          "label": "Denominazione",
+          "option": "{\"array_id\":{\"type\":\"string\",\"field\":\"entitaDenominazione\"}}",
+          "model": {
+            "type": "array_id",
+            "index": "true",
+            "readFormat": "true"
+          },
+          "children": [
+            {
+              "id": "entitaDenominazione",
+              "type": "Input",
+              "label": "Denominazione",
+              "required": "true",
+              "gridField": true,
+              "solr": {
+                "field": "denominazione_s",
+                "searchExpr": "@entitaDenominazione"
+              }
+            },
+            {
+              "id": "ente_famiglia_acronimo",
+              "type": "Input",
+              "label": "Acronimo"
+            },
+            {
+              "id": "ente_famiglia_linguaDenominazione",
+              "label": "Lingua di denominazione",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+            },
+            {
+              "id": "ente_famiglia_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "ente_famiglia_qualificaData",
+                  "type": "ClosedDictionary",
+                  "dictionaryId": "VC_ARCHIVE_ENTE_DATA_QUALIFICA",
+                  "label": "Qualifica della data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-qualifica-data form-control"
+                  }
+                },
+                {
+                  "id": "ente_famiglia_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            },
+            {
+              "comments": "LASCIO COSÌ",
+              "id": "ente_famiglia_qualifica",
+              "type": "ClosedList",
+              "label": "Qualifica",
+              "values": [
+                "Denominazione principale",
+                "Altre denominazioni"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "persona_denominazione",
+          "type": "Repeater",
+          "label": "Denominazione",
+          "option": "{\"array_id\":{\"type\":\"string\",\"field\":\"entitaDenominazione\"}}",
+          "model": {
+            "type": "array_id",
+            "index": "true",
+            "readFormat": "true"
+          },
+          "children": [
+            {
+              "id": "persona_nome",
+              "type": "Input",
+              "label": "Nome"
+            },
+            {
+              "id": "entitaDenominazione",
+              "type": "Input",
+              "label": "Cognome",
+              "required": "true",
+              "solr": {
+                "field": "denominazione_s",
+                "searchExpr": "@entitaDenominazione"
+              }
+            },
+            {
+              "id": "persona_patronimico",
+              "type": "Input",
+              "label": "Patronimico"
+            },
+            {
+              "id": "persona_nomeAvo",
+              "type": "Input",
+              "label": "Nome dell’avo"
+            },
+            {
+              "id": "persona_pseudonimo",
+              "type": "Input",
+              "label": "Pseudonimo"
+            },
+            {
+              "id": "persona_soprannome",
+              "type": "Input",
+              "label": "Soprannome"
+            },
+            {
+              "id": "persona_linguaDenominazione",
+              "label": "Lingua di denominazione",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+            },
+            {
+              "id": "persona_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "persona_qualificaData",
+                  "type": "ClosedDictionary",
+                  "dictionaryId": "VC_ARCHIVE_PERSONA_DATA_QUALIFICA",
+                  "label": "Qualifica della data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-qualifica-data form-control"
+                  }
+                },
+                {
+                  "id": "persona_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            },
+            {
+              "comments": "LASCIO COSÌ",
+              "id": "persona_qualifica",
+              "type": "ClosedList",
+              "label": "Qualifica",
+              "values": [
+                "Denominazione principale",
+                "Altre denominazioni"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "luogoEnte",
+          "type": "Repeater",
+          "label": "Luogo Ente",
+          "onlyOne": true,
+          "children": [
+            {
+              "id": "luogoEnte_nomeLuogo",
+              "type": "Input",
+              "label": "Nome luogo/Toponimo"
+            },
+            {
+              "id": "luogoEnte_comuneAttuale",
+              "label": "Comune Attuale",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_Localizzazione",
+              "dictionaryFieldLevel": "Direct4"
+            },
+            {
+              "id": "luogoEnte_denominazioneStorica",
+              "type": "Input",
+              "label": "Denominazione storica"
+            },
+            {
+              "id": "luogoEnte_qualificaLuogo",
+              "type": "ClosedDictionary",
+              "label": "Qualifica luogo",
+              "dictionaryId": "VC_ARCHIVE_ENTE_LUOGO_QUALIFICA"
+            },
+            {
+              "id": "luogoEnte_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "luogoEnte_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "luogoEnte_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "luogoFamiglia",
+          "type": "Repeater",
+          "label": "Luogo Famiglia",
+          "onlyOne": true,
+          "children": [
+            {
+              "id": "luogoFamiglia_nomeLuogo",
+              "type": "Input",
+              "label": "Nome luogo/Toponimo"
+            },
+            {
+              "id": "luogoFamiglia_comuneAttuale",
+              "label": "Comune Attuale",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_Localizzazione",
+              "dictionaryFieldLevel": "Direct4"
+            },
+            {
+              "id": "luogoFamiglia_denominazioneStorica",
+              "type": "Input",
+              "label": "Denominazione storica"
+            },
+            {
+              "id": "luogoFamiglia_qualificaLuogo",
+              "type": "ClosedDictionary",
+              "label": "Qualifica luogo",
+              "required": "true",
+              "dictionaryId": "VC_ARCHIVE_FAMIGLIA_LUOGO_QUALIFICA"
+            },
+            {
+              "id": "luogoFamiglia_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "luogoFamiglia_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "luogoFamiglia_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "luogoPersona",
+          "type": "Repeater",
+          "label": "Luogo Persona",
+          "onlyOne": true,
+          "children": [
+            {
+              "id": "luogoPersona_nomeLuogo",
+              "type": "Input",
+              "label": "Nome luogo/Toponimo"
+            },
+            {
+              "id": "luogoPersona_comuneAttuale",
+              "label": "Comune Attuale",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_Localizzazione",
+              "dictionaryFieldLevel": "Direct4"
+            },
+            {
+              "id": "luogoPersona_denominazioneStorica",
+              "type": "Input",
+              "label": "Denominazione storica"
+            },
+            {
+              "id": "luogoPersona_qualificaLuogo",
+              "type": "ClosedDictionary",
+              "label": "Qualifica luogo",
+              "required": "true",
+              "dictionaryId": "VC_ARCHIVE_PERSONA_LUOGO_QUALIFICA"
+            },
+            {
+              "id": "luogoPersona_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "luogoPersona_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "luogoPersona_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cronologiaEnte",
+          "attributes": {
+            "cssClass": "js-archive-cronologia-root"
+          },
+          "type": "Repeater",
+          "label": "Estremi cronologici",
+          "children": [
+            {
+              "id": "estremoCronologicoTestuale",
+              "type": "Input",
+              "label": "Estremo cronologico testuale",
+              "attributes": {
+                "readOnly": "true",
+                "cssClass": "js-archive-cronologia-concatText form-control"
+              }
+            },
+            {
+              "id": "estremoRemoto",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo remoto",
+              "children": [
+                {
+                  "id": "estremoRemoto_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRemoto_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRemoto_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRemoto_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "estremoRecente",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo recente",
+              "children": [
+                {
+                  "id": "estremoRecente_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRecente_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRecente_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRecente_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "Ente_qualificaData",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_ENTE_DATA_QUALIFICA",
+              "label": "Qualifica della data",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-qualifica-data form-control"
+              }
+            },
+            {
+              "id": "Ente_notaDatazione",
+              "type": "RichText",
+              "label": "Nota alla datazione"
+            }
+          ]
+        },
+        {
+          "id": "cronologiaFamiglia",
+          "attributes": {
+            "cssClass": "js-archive-cronologia-root"
+          },
+          "type": "Repeater",
+          "label": "Estremi cronologici",
+          "children": [
+            {
+              "id": "estremoCronologicoTestuale",
+              "type": "Input",
+              "label": "Estremo cronologico testuale",
+              "attributes": {
+                "readOnly": "true",
+                "cssClass": "js-archive-cronologia-concatText form-control"
+              }
+            },
+            {
+              "id": "estremoRemoto",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo remoto",
+              "children": [
+                {
+                  "id": "estremoRemoto_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRemoto_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRemoto_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRemoto_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "estremoRecente",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo recente",
+              "children": [
+                {
+                  "id": "estremoRecente_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRecente_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRecente_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRecente_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "Famiglia_qualificaData",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_FAMIGLIA_DATA_QUALIFICA",
+              "label": "Qualifica della data",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-qualifica-data form-control"
+              }
+            },
+            {
+              "id": "Famiglia_notaDatazione",
+              "type": "RichText",
+              "label": "Nota alla datazione"
+            }
+          ]
+        },
+        {
+          "id": "cronologiaPersona",
+          "attributes": {
+            "cssClass": "js-archive-cronologia-root"
+          },
+          "type": "Repeater",
+          "label": "Estremi cronologici",
+          "children": [
+            {
+              "id": "estremoCronologicoTestuale",
+              "type": "Input",
+              "label": "Estremo cronologico testuale",
+              "attributes": {
+                "readOnly": "true",
+                "cssClass": "js-archive-cronologia-concatText form-control"
+              }
+            },
+            {
+              "id": "estremoRemoto",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo remoto",
+              "children": [
+                {
+                  "id": "estremoRemoto_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRemoto_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRemoto_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRemoto_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "estremoRecente",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+              },
+              "type": "FieldSet",
+              "label": "Estremo recente",
+              "children": [
+                {
+                  "id": "estremoRecente_data",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-dateInput form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                },
+                {
+                  "id": "estremoRecente_secolo",
+                  "type": "ClosedDictionary",
+                  "label": "Secolo",
+                  "onChangeTarget": "*`-->estremoRecente_specifica",
+                  "dictionaryId": "VC_ARCHIVE_SECOLO",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-century form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_specifica",
+                  "type": "ClosedDictionary",
+                  "label": "Specifica",
+                  "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                },
+                {
+                  "id": "estremoRecente_validita",
+                  "type": "ClosedDictionary",
+                  "label": "Validità",
+                  "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-valid-data form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_codificaData",
+                  "type": "Input",
+                  "attributes": {
+                    "label": "Codifica della data",
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-codificaText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRecente_noteData",
+                  "type": "RichText",
+                  "label": "Note alla data"
+                }
+              ]
+            },
+            {
+              "id": "Persona_qualificaData",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_PERSONA_DATA_QUALIFICA",
+              "label": "Qualifica della data",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-qualifica-data form-control"
+              }
+            },
+            {
+              "id": "Persona_notaDatazione",
+              "type": "RichText",
+              "label": "Nota alla datazione"
+            }
+          ]
+        },
+        {
+          "id": "noteEntita",
+          "type": "RichText",
+          "label": "Note"
+        },
+        {
+          "id": "contestoStatuale",
+          "type": "Repeater",
+          "label": "Contesto statuale",
+          "children": [
+            {
+              "id": "inputConstestoStatuale",
+              "type": "ClosedDictionary",
+              "label": "Contesto statuale",
+              "dictionaryId": "VC_ARCHIVE_CONTESTO_STATUALE"
+            },
+            {
+              "id": "cont_stat_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "cont_stat_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "cont_stat_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "titoloEntita",
+          "type": "Repeater",
+          "label": "Titolo",
+          "children": [
+            {
+              "id": "inputTitolo",
+              "type": "Input",
+              "label": "Titolo"
+            },
+            {
+              "id": "titolo_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control select2-container"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "titolo_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "titolo_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "attivitaProfessioneQualifica",
+          "type": "Repeater",
+          "label": "Attività, professione o qualifica",
+          "children": [
+            {
+              "id": "inputAttivitaProfessioneQualifica",
+              "type": "Input",
+              "label": "Attività, professione o qualifica"
+            },
+            {
+              "id": "att_prof_qual_cronologia",
+              "attributes": {
+                "cssClass": "js-archive-cronologia-root"
+              },
+              "type": "Repeater",
+              "onlyOne": true,
+              "label": "Estremi cronologici",
+              "children": [
+                {
+                  "id": "estremoCronologicoTestuale",
+                  "type": "Input",
+                  "label": "Estremo cronologico testuale",
+                  "attributes": {
+                    "readOnly": "true",
+                    "cssClass": "js-archive-cronologia-concatText form-control"
+                  }
+                },
+                {
+                  "id": "estremoRemoto",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo remoto",
+                  "children": [
+                    {
+                      "id": "estremoRemoto_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRemoto_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRemoto_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRemoto_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "estremoRecente",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                  },
+                  "type": "FieldSet",
+                  "label": "Estremo recente",
+                  "children": [
+                    {
+                      "id": "estremoRecente_data",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-dateInput form-control"
+                      },
+                      "type": "Input",
+                      "label": "Data"
+                    },
+                    {
+                      "id": "estremoRecente_secolo",
+                      "type": "ClosedDictionary",
+                      "label": "Secolo",
+                      "onChangeTarget": "*`-->estremoRecente_specifica",
+                      "dictionaryId": "VC_ARCHIVE_SECOLO",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-century form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_specifica",
+                      "type": "ClosedDictionary",
+                      "label": "Specifica",
+                      "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                    },
+                    {
+                      "id": "estremoRecente_validita",
+                      "type": "ClosedDictionary",
+                      "label": "Validità",
+                      "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-valid-data form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_codificaData",
+                      "type": "Input",
+                      "attributes": {
+                        "label": "Codifica della data",
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-codificaText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRecente_noteData",
+                      "type": "RichText",
+                      "label": "Note alla data"
+                    }
+                  ]
+                },
+                {
+                  "id": "att_prof_qual_qualificaData",
+                  "type": "Input",
+                  "label": "Qualifica della data"
+                },
+                {
+                  "id": "att_prof_qual_notaDatazione",
+                  "type": "RichText",
+                  "label": "Nota alla datazione"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabSoggettoProduttore",
+      "label": "Soggetto produttore",
+      "fields": [
+        {
+          "id": "sog_prod_descrizione",
+          "type": "Fieldset",
+          "label": "Descrizione",
+          "children": [
+            {
+              "id": "storiaBiografiaStrutturaAmministrativa",
+              "type": "RichText",
+              "label": "Storia / Biografia / Struttura amministrativa"
+            }
+          ]
+        },
+        {
+          "id": "collegamentiProduttore",
+          "type": "Fieldset",
+          "label": "Collegamenti",
+          "children": [
+            {
+              "id": "complessiArchivisticiProduttore",
+              "type": "Repeater",
+              "label": "Complessi archivistici",
+              "children": [
+                {
+                  "id": "inputComplessiArchivistici",
+                  "type": "Link",
+                  "label": "Complesso",
+                  "linkTo": "ComplessoArchivistico",
+                  "model": {
+                    "type": "object"
+                  }
+                },
+                {
+                  "id": "cronologia",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-root"
+                  },
+                  "onlyOne": true,
+                  "type": "Repeater",
+                  "label": "Estremi cronologici della relazione",
+                  "children": [
+                    {
+                      "id": "estremoCronologicoTestuale",
+                      "type": "Input",
+                      "label": "Estremo cronologico testuale",
+                      "attributes": {
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-concatText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo remoto",
+                      "children": [
+                        {
+                          "id": "estremoRemoto_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRemoto_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRemoto_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRemoto_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "estremoRecente",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo recente",
+                      "children": [
+                        {
+                          "id": "estremoRecente_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRecente_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRecente_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRecente_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "qualificaData",
+                      "type": "ClosedDictionary",
+                      "label": "Qualifica della data",
+                      "dictionaryId": "VC_ARCHIVE_QUALIFICA_DATA"
+                    },
+                    {
+                      "id": "notaDatazione",
+                      "type": "RichText",
+                      "label": "Nota alla datazione"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "soggettiProduttori",
+              "type": "Repeater",
+              "label": "Soggetti produttori",
+              "children": [
+                {
+                  "id": "inputSoggettiProduttori",
+                  "type": "Link",
+                  "label": "Collegamento Soggetto Produttore",
+                  "linkTo": "ProduttoreConservatore"
+                },
+                {
+                  "id": "sog_prod_qualifica",
+                  "type": "Input",
+                  "label": "Qualifica"
+                },
+                {
+                  "id": "sog_prod_cronologia",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-root"
+                  },
+                  "type": "Repeater",
+                  "onlyOne": true,
+                  "label": "Estremi cronologici della relazione",
+                  "children": [
+                    {
+                      "id": "estremoCronologicoTestuale",
+                      "type": "Input",
+                      "label": "Estremo cronologico testuale",
+                      "attributes": {
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-concatText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo remoto",
+                      "children": [
+                        {
+                          "id": "estremoRemoto_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRemoto_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRemoto_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRemoto_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "estremoRecente",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo recente",
+                      "children": [
+                        {
+                          "id": "estremoRecente_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRecente_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRecente_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRecente_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "sog_prod_qualificaData",
+                      "type": "Input",
+                      "label": "Qualifica della data"
+                    },
+                    {
+                      "id": "sog_prod_notaDatazione",
+                      "type": "RichText",
+                      "label": "Nota alla datazione"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "riferimentiFontiProduttore",
+          "type": "Fieldset",
+          "label": "Riferimenti e fonti",
+          "children": [
+            {
+              "id": "riferimentiBibliograficiProduttore",
+              "type": "Repeater",
+              "label": "Riferimenti bibliografici",
+              "children": [
+                {
+                  "id": "inputRiferimentiBibliografici",
+                  "type": "Link",
+                  "linkTo": "SchedaBibliografica",
+                  "label": "Riferimenti bibliografici"
+                },
+                {
+                  "id": "indicazioniSpecifiche",
+                  "type": "Input",
+                  "label": "Indicazioni specifiche"
+                }
+              ]
+            },
+            {
+              "id": "fontiArchivisticheProduttore",
+              "type": "Repeater",
+              "label": "Fonti archivistiche",
+              "children": [
+                {
+                  "id": "inputFontiArchivistiche",
+                  "type": "Link",
+                  "linkTo": "FonteArchivistica",
+                  "label": "Fonti archivistiche"
+                }
+              ]
+            },
+            {
+              "id": "riferimentiWebProduttore",
+              "type": "Repeater",
+              "label": "Riferimenti web",
+              "children": [
+                {
+                  "id": "denominazioneSitoWeb",
+                  "type": "Input",
+                  "label": "Denominazione sito o pagina web"
+                },
+                {
+                  "id": "rifWeb_descrizione",
+                  "type": "RichText",
+                  "label": "Descrizione"
+                },
+                {
+                  "id": "rifWeb_dataInserimento",
+                  "attributes": {
+                    "cssClass": "js-archive-dateTextBox form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data di inserimento"
+                },
+                {
+                  "id": "rifWeb_url",
+                  "type": "Url",
+                  "label": "URL"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "compilazione",
+          "label": "Compilazione",
+          "type": "Fieldset",
+          "required": "true",
+          "children": [
+            {
+              "id": "linguaDescrizioneRecordProduttore",
+              "label": "Lingua di descrizione del record",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+            },
+            {
+              "id": "compilazioneProduttore",
+              "type": "Repeater",
+              "label": "Compilazione",
+              "required": "true",
+              "children": [
+                {
+                  "id": "redattore",
+                  "type": "Input",
+                  "label": "Redattore"
+                },
+                {
+                  "id": "azione",
+                  "type": "ClosedDictionary",
+                  "label": "Azione",
+                  "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+                },
+                {
+                  "id": "note",
+                  "type": "RichText",
+                  "label": "Note redazionali"
+                },
+                {
+                  "id": "data",
+                  "attributes": {
+                    "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+                  },
+                  "type": "Date",
+                  "label": "Data"
+                }
+              ]
+            },
+            {
+              "id": "osservazioniProduttore",
+              "type": "RichText",
+              "label": "Osservazioni"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabSoggettoConservatore",
+      "label": "Soggetto conservatore",
+      "fields": [
+        {
+          "id": "sog_cons_descrizione",
+          "type": "Fieldset",
+          "label": "Descrizione",
+          "children": [
+            {
+              "id": "cenniStoriciIstituzionali",
+              "type": "RichText",
+              "label": "Cenni storici istituzionali"
+            },
+            {
+              "id": "sog_cons_patrimonio",
+              "type": "RichText",
+              "label": "Patrimonio e politiche di gestione e di acquisizione"
+            },
+            {
+              "id": "sog_cons_note",
+              "type": "RichText",
+              "label": "Note"
+            }
+          ]
+        },
+        {
+          "id": "sog_cons_contattiSedi",
+          "type": "Fieldset",
+          "label": "Contatti e sedi",
+          "children": [
+            {
+              "id": "sog_cons_contatti",
+              "type": "Fieldset",
+              "label": "Contatti",
+              "children": [
+                {
+                  "id": "sog_cons_mail",
+                  "type": "Input",
+                  "label": "Mail"
+                },
+                {
+                  "id": "sog_cons_pec",
+                  "type": "Input",
+                  "label": "PEC"
+                },
+                {
+                  "id": "sog_cons_url",
+                  "type": "Url",
+                  "label": "URL"
+                },
+                {
+                  "id": "sog_cons_telefono",
+                  "type": "Input",
+                  "label": "Telefono"
+                },
+                {
+                  "id": "sog_cons_fax",
+                  "type": "Input",
+                  "label": "Fax"
+                }
+              ]
+            },
+            {
+              "id": "sog_cons_sedi",
+              "type": "Repeater",
+              "label": "Sedi",
+              "children": [
+                {
+                  "id": "sog_cons_sedi_denominazione",
+                  "type": "Input",
+                  "label": "Denominazione"
+                },
+                {
+                  "id": "sog_cons_sedi_tipologia",
+                  "type": "ClosedDictionary",
+                  "label": "Tipologia",
+                  "dictionaryId": "VC_ARCHIVE_CONSERV_SEDI_TIPOLOGIA"
+                },
+                {
+                  "id": "sog_cons_sedi_telefono",
+                  "type": "Input",
+                  "label": "Telefono"
+                },
+                {
+                  "id": "sog_cons_sedi_fax",
+                  "type": "Input",
+                  "label": "Fax"
+                },
+                {
+                  "id": "sog_cons_sedi_mail",
+                  "type": "Input",
+                  "label": "Mail"
+                },
+                {
+                  "id": "sog_cons_sedi_indirizzo",
+                  "type": "Fieldset",
+                  "label": "Indirizzo",
+                  "children": [
+                    {
+                      "id": "sog_cons_sedi_stato",
+                      "label": "Stato",
+                      "type": "ClosedDictionary",
+                      "dictionaryId": "VC_Localizzazione",
+                      "dictionaryFieldLevel": "Direct1"
+                    },
+                    {
+                      "id": "sog_cons_sedi_regione",
+                      "label": "Regione",
+                      "type": "ClosedDictionary",
+                      "dictionaryId": "VC_Localizzazione",
+                      "dictionaryFieldLevel": "Direct2"
+                    },
+                    {
+                      "id": "sog_cons_sedi_provincia",
+                      "label": "Provincia",
+                      "type": "ClosedDictionary",
+                      "dictionaryId": "VC_Localizzazione",
+                      "dictionaryFieldLevel": "Direct3"
+                    },
+                    {
+                      "id": "sog_cons_sedi_comune",
+                      "label": "Comune",
+                      "type": "ClosedDictionary",
+                      "dictionaryId": "VC_Localizzazione",
+                      "dictionaryFieldLevel": "Direct4"
+                    },
+                    {
+                      "id": "sog_cons_sedi_localita",
+                      "label": "Località",
+                      "type": "Input"
+                    },
+                    {
+                      "id": "sog_cons_sedi_via",
+                      "type": "Input",
+                      "label": "Via"
+                    },
+                    {
+                      "id": "sog_cons_sedi_numero",
+                      "type": "Input",
+                      "label": "Numero"
+                    },
+                    {
+                      "id": "sog_cons_sedi_cap",
+                      "type": "Input",
+                      "label": "CAP"
+                    },
+                    {
+                      "id": "sog_cons_sedi_indirizzoTestuale",
+                      "type": "Input",
+                      "label": "Indirizzo testuale"
+                    },
+                    {
+                      "comments": "BOOLEANO, A CHE SERVE UN DICTIONARY?",
+                      "id": "sog_cons_sedi_accessoDisabili",
+                      "type": "ClosedList",
+                      "label": "Accesso disabili",
+                      "values": [
+                        "Sì",
+                        "No"
+                      ]
+                    },
+                    {
+                      "id": "sog_cons_sedi_noteIndirizzo",
+                      "type": "Input",
+                      "label": "Note indirizzo"
+                    },
+                    {
+                      "id": "sog_cons_sedi_coordinatePuntoAccesso",
+                      "type": "Map",
+                      "label": "Coordinate punto di accesso"
+                    }
+                  ]
+                },
+                {
+                  "id": "sog_cons_sedi_giornoApertura",
+                  "type": "Repeater",
+                  "label": "Giorno di apertura",
+                  "children": [
+                    {
+                      "comments": "NON NECESSARIO",
+                      "id": "sog_cons_sedi_giornoSettimana",
+                      "type": "ClosedList",
+                      "label": "Giorno della settimana",
+                      "values": [
+                        "Lunedì",
+                        "Martedì",
+                        "Mercoledì",
+                        "Giovedì",
+                        "Venerdì",
+                        "Sabato",
+                        "Domenica"
+                      ]
+                    },
+                    {
+                      "id": "sog_cons_sedi_tempoApertura",
+                      "type": "Fieldset",
+                      "label": "Tempo di apertura",
+                      "children": [
+                        {
+                          "id": "orarioInizio",
+                          "type": "Input",
+                          "label": "Orario inizio"
+                        },
+                        {
+                          "id": "sog_cons_sedi_orarioFine",
+                          "type": "Input",
+                          "label": "Orario fine"
+                        },
+                        {
+                          "id": "sog_cons_sedi_note",
+                          "type": "RichText",
+                          "label": "Note"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "sog_cons_sedi_descrizione",
+                      "type": "RichText",
+                      "label": "Descrizione"
+                    }
+                  ]
+                },
+                {
+                  "id": "sog_cons_sedi_servizi",
+                  "type": "Repeater",
+                  "label": "Servizi",
+                  "children": [
+                    {
+                      "id": "denominazione",
+                      "type": "Input",
+                      "label": "Denominazione"
+                    },
+                    {
+                      "id": "sog_cons_sedi_noteErogazioneServizio",
+                      "type": "RichText",
+                      "label": "Note su erogazione servizio"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fieldsetCondizioniAccesso",
+          "type": "Fieldset",
+          "label": "Condizioni di accesso",
+          "children": [
+            {
+              "id": "condizioniAccesso",
+              "type": "RichText",
+              "label": "Condizioni di accesso"
+            }
+          ]
+        },
+        {
+          "id": "collegamentiConservatore",
+          "type": "Fieldset",
+          "label": "Collegamenti",
+          "children": [
+            {
+              "id": "complessiArchivisticiConservatore",
+              "type": "Repeater",
+              "label": "Complessi archivistici",
+              "children": [
+                {
+                  "id": "linkComplessiArchivistici",
+                  "type": "Link",
+                  "label": "Complesso",
+                  "linkTo": "ComplessoArchivistico",
+                  "model": {
+                    "type": "object"
+                  }
+                },
+                {
+                  "id": "cronologia",
+                  "attributes": {
+                    "cssClass": "js-archive-cronologia-root"
+                  },
+                  "onlyOne": true,
+                  "type": "Repeater",
+                  "label": "Estremi cronologici della relazione",
+                  "children": [
+                    {
+                      "id": "estremoCronologicoTestuale",
+                      "type": "Input",
+                      "label": "Estremo cronologico testuale",
+                      "attributes": {
+                        "readOnly": "true",
+                        "cssClass": "js-archive-cronologia-concatText form-control"
+                      }
+                    },
+                    {
+                      "id": "estremoRemoto",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-remotoRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo remoto",
+                      "children": [
+                        {
+                          "id": "estremoRemoto_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRemoto_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRemoto_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRemoto_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRemoto_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "estremoRecente",
+                      "attributes": {
+                        "cssClass": "js-archive-cronologia-recenteRoot js-archive-cronologia-estremo"
+                      },
+                      "type": "FieldSet",
+                      "label": "Estremo recente",
+                      "children": [
+                        {
+                          "id": "estremoRecente_data",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-dateInput form-control"
+                          },
+                          "type": "Input",
+                          "label": "Data"
+                        },
+                        {
+                          "id": "estremoRecente_secolo",
+                          "type": "ClosedDictionary",
+                          "label": "Secolo",
+                          "onChangeTarget": "*`-->estremoRecente_specifica",
+                          "dictionaryId": "VC_ARCHIVE_SECOLO",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-century form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_specifica",
+                          "type": "ClosedDictionary",
+                          "label": "Specifica",
+                          "dictionaryId": "VC_ARCHIVE_SPEC_SECOLO"
+                        },
+                        {
+                          "id": "estremoRecente_validita",
+                          "type": "ClosedDictionary",
+                          "label": "Validità",
+                          "dictionaryId": "VC_ARCHIVE_VALIDITA_DATA",
+                          "attributes": {
+                            "cssClass": "js-archive-cronologia-valid-data form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_codificaData",
+                          "type": "Input",
+                          "attributes": {
+                            "label": "Codifica della data",
+                            "readOnly": "true",
+                            "cssClass": "js-archive-cronologia-codificaText form-control"
+                          }
+                        },
+                        {
+                          "id": "estremoRecente_noteData",
+                          "type": "RichText",
+                          "label": "Note alla data"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "qualificaData",
+                      "type": "ClosedDictionary",
+                      "label": "Qualifica della data",
+                      "dictionaryId": "VC_ARCHIVE_QUALIFICA_DATA"
+                    },
+                    {
+                      "id": "notaDatazione",
+                      "type": "RichText",
+                      "label": "Nota alla datazione"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "riferimentiFontiConservatore",
+          "type": "Fieldset",
+          "label": "Riferimenti e fonti",
+          "children": [
+            {
+              "id": "riferimentiBibliograficiConvervatore",
+              "type": "Repeater",
+              "label": "Riferimenti bibliografici",
+              "children": [
+                {
+                  "id": "inputRiferimentiBibliografici",
+                  "type": "Link",
+                  "linkTo": "SchedaBibliografica",
+                  "label": "Riferimenti bibliografici"
+                },
+                {
+                  "id": "indicazioniSpecifiche",
+                  "type": "Input",
+                  "label": "Indicazioni specifiche"
+                }
+              ]
+            },
+            {
+              "id": "fontiArchivisticheConvervatore",
+              "type": "Repeater",
+              "label": "Fonti archivistiche",
+              "children": [
+                {
+                  "id": "inputFontiArchivistiche",
+                  "type": "Link",
+                  "linkTo": "FonteArchivistica",
+                  "label": "Fonti archivistiche"
+                }
+              ]
+            },
+            {
+              "id": "riferimentiWebConvervatore",
+              "type": "Repeater",
+              "label": "Riferimenti web",
+              "children": [
+                {
+                  "id": "rifWeb_Conserv_denominazioneSitoWeb",
+                  "type": "Input",
+                  "label": "Denominazione sito o pagina web"
+                },
+                {
+                  "id": "rifWeb_Conserv_descrizione",
+                  "type": "RichText",
+                  "label": "Descrizione"
+                },
+                {
+                  "id": "rifWeb_Conserv_dataInserimento",
+                  "attributes": {
+                    "cssClass": "js-archive-dateTextBox form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data di inserimento"
+                },
+                {
+                  "id": "rifWeb_Conserv_url",
+                  "type": "Url",
+                  "label": "URL"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "conserv_compilazione",
+          "label": "Compilazione",
+          "type": "Fieldset",
+          "children": [
+            {
+              "id": "linguaDescrizioneRecordConvervatore",
+              "label": "Lingua di descrizione del record",
+              "type": "ClosedDictionary",
+              "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+            },
+            {
+              "id": "compilazioneConvervatore",
+              "type": "Repeater",
+              "label": "Compilazione",
+              "required": "true",
+              "children": [
+                {
+                  "id": "redattore",
+                  "type": "Input",
+                  "label": "Redattore"
+                },
+                {
+                  "id": "azione",
+                  "type": "ClosedDictionary",
+                  "label": "Azione",
+                  "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+                },
+                {
+                  "id": "note",
+                  "type": "RichText",
+                  "label": "Note redazionali"
+                },
+                {
+                  "id": "data",
+                  "attributes": {
+                    "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+                  },
+                  "type": "Input",
+                  "label": "Data"
+                }
+              ]
+            },
+            {
+              "id": "osservazioniConvervatore",
+              "type": "RichText",
+              "label": "Osservazioni"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.workflow.processes.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+    
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.workflow.processes#list">
+        <com:DataGridAjax id="dataGrid" recordClassName="metafad.workflow.processes.models.Model"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.workflow.processes.controllers.*" fullTextSearch="false"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="title" headerText="{i18n:Titolo}"
+                                renderCell="org.glizycms.contents.views.renderer.DocumentTitle"/>
+            <glz:DataGridColumn columnName="startDate" headerText="{i18n:Data assegnazione}"
+                                renderCell="org.glizycms.contents.views.renderer.DocumentTitle"/>
+            <glz:DataGridColumn columnName="status" headerText="{i18n:Stato}"
+                                renderCell="metafad.workflow.processes.views.renderer.StatusTitle"/>
+            <glz:DataGridColumn columnName="percentage" headerText="{i18n:Completamento}"
+                                renderCell="metafad.workflow.processes.views.renderer.Percentage"/>
+            <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.workflow.processes.views.renderer.CellStartEditDeleteVisibleCopyCopyWithoutValue"/>
+        </com:DataGridAjax>
+        <cmp:AddButton label="" acl="*,new" routeUrl="metafad.workflow.processes" editableRegion="actions"
+                       recordClassName="metafad.workflow.processes.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit" label="{i18n:Scheda}" draw="false">
+        <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.workflow.processes.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.workflow.processes.models.Model"/>
+            <glz:Input id="title" label="{i18n:Titolo}" size="90"/>
+
+            <glz:Fieldset data="type=repeat;collapsable=false;repeatMin=1" id="activities"
+                          label="{i18n:Attività del processo}" required="true">
+                <glz:Hidden id="document_id"/>
+                <glz:Input
+                        data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.workflow.activities.models.proxy.ActivitiesProxy;return_object=true"
+                        id="activity" label="{i18n:Attività}" required="true" size="1000"/>
+                <glz:Link cssClass="deleteButton btn btn-danger btn-flat fa fa-trash" routeUrl=" "/>
+                <glz:Input id="deadlineDate" label="{i18n:Scadenza}" size="40" data="type=date" />
+                <glz:List id="boardType" label="{i18n:Scheda da catalogare}">
+                    <glz:ListItem value=""/>
+                    <glz:ListItem key="F" value="Scheda F"/>
+                    <glz:ListItem key="OA" value="Scheda OA"/>
+                </glz:List>
+                <glz:Input id="startingBoardId" label="{i18n:Da (identificativo)}" size="90"/>
+                <glz:Input id="endingBoardId" label="{i18n:A (identificativo)}" size="90"/>
+                <glz:Input id="note" label="{i18n:Note}" size="90" type="multiline"/>
+                <glz:Input
+                        data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.usersAndPermissions.users.models.proxy.UsersProxy;return_object=true"
+                        id="assignements" label="{i18n:Assegnata}" required="true"/>
+            </glz:Fieldset>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                                cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State id="stateDetail" name="detail" label="{i18n:Dettaglio}" draw="false">
+        <glz:JSTabGroup id="detail" showNav="false">
+            <glz:JSTab id="defaultDetail" label="{i18n:Dettaglio}" dropdown="false">
+                <cms:FormEdit id="editForm" newCode="true" controllerName="metafad.workflow.processes.controllers.*">
+                    <glz:Hidden id="processId" value=""/>
+                    <glz:Hidden id="__model" value="metafad.workflow.processes.models.Model"/>
+                    <glz:Hidden id="instanceActivityId" value=""/>
+                    <glz:Hidden id="newNoteValue" value=""/>
+                    <glz:Input id="title" label="{i18n:Titolo}" size="90" disabled="true"/>
+                </cms:FormEdit>
+                <glz:Fieldset data="collapsable=false" id="activities"
+                                  label="{i18n:Attività del processo}" required="false">
+                        <glz:DataProvider id="instanceActivities" recordClassName="metafad.workflow.instanceActivities.models.Model"  query="getFromProcessId" params="{id}"/>
+                        <glz:RecordSetList dataProvider="{instanceActivities}" skin="metafad/workflow/processes/views/skins/InstanceActivities.html"/>
+                </glz:Fieldset>
+            </glz:JSTab>
+            <glz:JSTab id="graphDetail" label="{i18n:Grafo}" dropdown="false">
+                <glz:DataProvider id="instanceActivities"  recordClassName="metafad.workflow.instanceActivities.models.Model" query="getFromProcessId" params="{id}"/>
+                <glz:RecordSetList dataProvider="{instanceActivities}" skin="metafad/workflow/processes/views/skins/ProcessGraph.html"/>
+            </glz:JSTab>
+        </glz:JSTabGroup>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.workflow.processes.controllers.Delete"/>
+    </mvc:State>
+    <mvc:State name="togglevisibility">
+        <glz:Hidden controllerName="org.glizycms.contents.controllers.moduleEdit.Togglevisibility"/>
+    </mvc:State>
+    <mvc:State name="togglestart">
+        <glz:Hidden controllerName="metafad.workflow.processes.controllers.ToggleStart"/>
+    </mvc:State>
+    <mvc:State name="togglecopy">
+        <glz:Hidden controllerName="metafad.workflow.processes.controllers.ToggleCopy"/>
+    </mvc:State>
+    <mvc:State name="togglecopywithoutvalue">
+        <glz:Hidden controllerName="metafad.workflow.processes.controllers.ToggleCopyWithoutValue"/>
+    </mvc:State>
+    
+    <glz:JSscript><![CDATA[
+    $( document ).ready( function(){
+        $('.icon.GFERowDelete.GFERightIcon').hide();
+        $('.deleteButton').removeAttr('href');
+        
+        $('.deleteButton').click(function(){
+            parentId = $('.deleteButton').parent().attr('id');
+            console.log(parentId + ' .icon.GFERowDelete.GFERightIcon');
+            $('#' + parentId + ' .icon.GFERowDelete.GFERightIcon').click();
+        });
+    });
+    
+    window.onload = function(){
+        if($('#s2id_board .select2-choice span').text().length !== 0){
+            $('#s2id_board').attr("class", "select2-container form-control required");
+        }
+    }
+    
+            
+]]></glz:JSscript>
+</mvc:Page>

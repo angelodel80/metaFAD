@@ -1,0 +1,6 @@
+##SITE_NAME##: ##TITLE##
+Gentile ##USER##,
+le inviamo un aggiornamento relativo lo stato della seguente richiesta:
+##REQUEST##
+
+##STATUS##

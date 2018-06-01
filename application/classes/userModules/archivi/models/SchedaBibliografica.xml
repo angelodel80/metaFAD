@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="archivi.models.SchedaBibliografica"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="_denominazione" type="string" index="true" />
+        <model:Field name="pageId" type="string" />
+        <model:Field name="root" type="string" index="true"/>
+        <model:Field name="isValid" type="int"/>
+<model:Field name="acronimoSistema" description="Acronimo di sistema" type="string"/>
+<model:Field name="identificativo" description="Identificativo per la Scheda Bibliografica" type="string"/>
+<model:Field name="codiceIdentificativoSistema" description="Codice identificativo di sistema" type="string"/>
+<model:Field validator="notempty" name="codiceIdentificativoPrecedente" description="Codice identificativo precedente" type="object" readFormat="false"/>
+<model:Field name="externalID" description="ID importazione" type="string" index="true"/>
+<model:Field name="autore" description="Autore" type="string"/>
+<model:Field name="curatore" description="Curatore" type="string"/>
+<model:Field validator="notempty" name="tipologiaSpecifica" description="Tipologia Specifica" type="string"/>
+<model:Field validator="notempty" name="titoloLibroORivista" description="Titolo libro o rivista" type="string"/>
+<model:Field name="titoloContributo" description="Titolo contributo" type="string"/>
+<model:Field name="luogoDiEdizione" description="Luogo di edizione" type="string"/>
+<model:Field name="editore" description="Editore" type="string"/>
+<model:Field validator="notempty" name="annoDiEdizione" description="Anno di edizione" type="string"/>
+<model:Field name="numeroDiEdizione" description="Numero di edizione" type="string"/>
+<model:Field name="specifiche" description="Specifiche" type="string"/>
+<model:Field name="volume" description="Volume" type="string"/>
+<model:Field name="pagineNumeroCatalogo" description="Pagine / Numero catalogo" type="string"/>
+<model:Field name="siglaPerCitazione" description="Sigla per citazione" type="string"/>
+<model:Field name="abstract" description="Abstract" type="text"/>
+<model:Field name="denominazioneSitoOPaginaWeb" description="Denominazione sito o pagina web" type="string"/>
+<model:Field name="descrizione" description="Descrizione" type="text"/>
+<model:Field name="dataDiInserimento" description="Data di inserimento" type="string"/>
+<model:Field name="url" description="Url" type="string"/>
+<model:Field name="identificativoBid" description="Identificativo (BID)" type="string"/>
+<model:Field name="rifSBN_url" description="Url" type="string"/>
+<model:Field name="linguaDescrizioneRecord" description="Lingua di descrizione del record" type="string"/>
+<model:Field name="compilazione" description="Compilazione" type="object" readFormat="false"/>
+<model:Field name="osservazioni" description="Osservazioni" type="text"/>
+
+    </model:Define>
+
+    <model:Script parent="model"><![CDATA[
+    public function publish($values = null, $comment='', $forceNew=false)
+    {
+        $r = parent::publish($values, $comment, $forceNew);
+        return $r;
+    }
+
+    public function save($values=null, $forceNew=false, $status='DRAFT', $comment='')
+    {
+        $isNew = $this->isNew();
+        $r = parent::save($values, $forceNew, $status, $comment);
+
+        return $r;
+    }
+
+    public function getSolrDocument()
+    {
+        $solrModel = array (
+            '__id' => 'id',
+            'document' => 'doc_store',
+            '__model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            '_hasDigital' => 'digitale_i',
+            'isValid' => 'isValid_i',
+            'acronimoSistema' => 'acronimoSistema_s',
+            'identificativo' => 'identificativo_s',
+            'externalID' => 'externalID_s',
+            'titoloLibroORivista' => 'denominazione_s',
+            'annoDiEdizione' => 'cronologia_s',
+            'tipologiaSpecifica' => 'tipologia_s',
+            '@titoloLibroORivista,titoloContributo[]' => 'titolo_ss',
+            '@autore,curatore[]' => 'autore_ss',
+            'luogoDiEdizione' => 'luogoDiEdizione_s',
+            '@compilazione->redattore[]' => 'redattore_ss',
+            '@compilazione->azione[]' => 'azione_ss',
+);
+        
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array (
+  array (
+    'type' => 'autocomplete',
+    'label' => 'ID',
+    'field' => 'identificativo_s',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Tipologia',
+    'field' => 'tipologia_s',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Titolo',
+    'field' => 'titolo_ss',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Autore/Curatore',
+    'field' => 'autore_ss',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Luogo di edizione',
+    'field' => 'luogoDiEdizione_s',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Anno di edizione',
+    'field' => 'cronologia_s',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Redattore',
+    'field' => 'redattore_ss',
+  ),
+  array (
+    'type' => 'autocomplete',
+    'label' => 'Azione',
+    'field' => 'azione_ss',
+  ),
+);
+        return $searchFields;
+    }
+
+    public function getRecordId()
+    {
+      return $this->_denominazione;
+    }
+    ]]></model:Script>
+
+    <model:Query name="mysql_getByIndexedInt">
+        <![CDATA[
+        SELECT
+          `doc`.*,
+          `doc_detail`.*
+        FROM
+          `documents_tbl` `doc`
+          JOIN `documents_detail_tbl` `doc_detail` ON (
+            `doc`.`document_id` = `doc_detail`.`document_detail_FK_document_id`
+          )
+          AND (
+            `doc_detail`.`document_detail_status` = 'PUBLISHED' OR
+            `doc_detail`.`document_detail_status` = 'DRAFT'
+          )
+          AND (
+            `doc_detail`.`document_detail_FK_language_id` = :languageId
+          )
+          LEFT JOIN `documents_index_int_tbl` `index0` ON (
+            `doc_detail`.`document_detail_id` = `index0`.`document_index_int_FK_document_detail_id`
+          )
+          AND (
+            `index0`.`document_index_int_name` = :intName
+          )
+        WHERE
+          (
+            `index0`.`document_index_int_value` = :intVal
+          )
+        GROUP BY `doc`.`document_id`
+        ORDER BY `doc_detail`.`document_detail_FK_document_id` DESC
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_getByIndexedText">
+        <![CDATA[
+        SELECT
+          `doc`.*,
+          `doc_detail`.*
+        FROM
+          `documents_tbl` `doc`
+          JOIN `documents_detail_tbl` `doc_detail` ON (
+            `doc`.`document_id` = `doc_detail`.`document_detail_FK_document_id`
+          )
+          AND (
+            `doc_detail`.`document_detail_status` = 'PUBLISHED' OR
+            `doc_detail`.`document_detail_status` = 'DRAFT'
+          )
+          AND (
+            `doc_detail`.`document_detail_FK_language_id` = :languageId
+          )
+          LEFT JOIN `documents_index_text_tbl` `index0` ON (
+            `doc_detail`.`document_detail_id` = `index0`.`document_index_text_FK_document_detail_id`
+          )
+          AND (
+            `index0`.`document_index_text_name` = :textName
+          )
+        WHERE
+          (
+            `index0`.`document_index_text_value` = :textVal
+          )
+        GROUP BY `doc`.`document_id`
+        ORDER BY `doc_detail`.`document_detail_FK_document_id` DESC
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_getByDocumentId">
+        <![CDATA[
+        SELECT
+          `doc`.*,
+          `doc_detail`.*
+        FROM
+          `documents_tbl` `doc`
+          JOIN `documents_detail_tbl` `doc_detail` ON (
+            `doc_detail`.`document_detail_FK_document_id` = :docId
+          )
+          AND (
+            `doc_detail`.`document_detail_status` = 'PUBLISHED' OR
+            `doc_detail`.`document_detail_status` = 'DRAFT'
+          )
+          AND (
+            `doc_detail`.`document_detail_FK_language_id` = :languageId
+          )
+        GROUP BY `doc`.`document_id`
+        ORDER BY `doc_detail`.`document_detail_FK_document_id` DESC
+    ]]>
+    </model:Query>
+</model:Model>

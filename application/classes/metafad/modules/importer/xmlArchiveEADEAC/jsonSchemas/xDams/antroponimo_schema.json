@@ -1,0 +1,106 @@
+{
+  "externalID": {
+    "xpath": "./control/recordId/text()"
+  },
+  "__model": {
+    "type": "constant",
+    "value": "archivi.models.Antroponimi"
+  },
+  "intestazione": {
+    "xpath": ".",
+    "type": "composite",
+    "struct": {
+      "cognome": {
+        "xpath": "./cpfDescription/identity/nameEntry/part[@localType='ord']",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_AddToDictionary",
+          "params": {
+            "dictionaryId": "VA_ARCHIVE_VOCI_PERSONA_COGNOME"
+          }
+        }
+      },
+      "nome": {
+        "xpath": "./cpfDescription/identity/nameEntry/part[@localType='prime']",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_AddToDictionary",
+          "params": {
+            "dictionaryId": "VA_ARCHIVE_VOCI_PERSONA_NOME"
+          }
+        }
+      },
+      "qualificazione": {
+        "xpath": "./cpfDescription/identity/nameEntry/part[@localType='ulterior']",
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_Implode",
+          "params": {
+            "separator": " ; ",
+            "sendToDictionaryId": "VA_ARCHIVE_VOCI_PERSONA_QUALIFICA"
+          }
+        }
+      },
+      "dateAttivita": {
+        "xpath": ["./cpfDescription/description/existDates/dateRange/fromDate/@standardDate", "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"],
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_Implode",
+          "params": {
+            "separator": " ; "
+          }
+        },
+        "joiner": {
+          "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+          "params": {
+            "separator": " - "
+          }
+        }
+      },
+      "dataNascita": {
+        "xpath": "./cpfDescription/description/existDates/dateRange/fromDate/@standardDate"
+      },
+      "dataMorte": {
+        "xpath": "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_IntestazioneFromStdClass",
+      "params": {
+        "tipo": "ANTROPONIMO"
+      }
+    }
+  },
+  "cognome": {
+    "xpath": "./cpfDescription/identity/nameEntry/part[@localType='ord']"
+  },
+  "nome": {
+    "xpath": "./cpfDescription/identity/nameEntry/part[@localType='prime']"
+  },
+  "qualificazione": {
+    "xpath": "./cpfDescription/identity/nameEntry/part[@localType='ulterior']",
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_Implode",
+      "params": {
+        "separator": " ; "
+      }
+    }
+  },
+  "dateAttivita": {
+    "xpath": ["./cpfDescription/description/existDates/dateRange/fromDate/@standardDate", "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"],
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_Implode",
+      "params": {
+        "separator": " ; "
+      }
+    },
+    "joiner": {
+      "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+      "params": {
+        "separator": " - "
+      }
+    }
+  },
+  "dataNascita": {
+    "xpath": "./cpfDescription/description/existDates/dateRange/fromDate/@standardDate"
+  },
+  "dataMorte": {
+    "xpath": "./cpfDescription/description/existDates/dateRange/toDate/@standardDate"
+  }
+}

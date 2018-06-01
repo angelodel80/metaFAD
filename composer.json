@@ -1,0 +1,19 @@
+{
+  "name": "poloDigitaleNapoli/metafad",
+  "description": "Polo Digitale Napoli - Metafad",
+  "license": "MIT",
+  "require": {
+  },
+  "require-dev": {
+  },
+  "scripts": {
+      "clear-cache": [
+          "rm -rf cache/*.php",
+          "rm -rf cache/*.jpg",
+          "rm -rf cache/*.js"
+      ]
+    }
+}
+
+
+

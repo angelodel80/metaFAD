@@ -1,0 +1,370 @@
+/* editForm css fix POLODEBUG-329*/
+
+#editForm {
+	margin-bottom: 80px;
+
+	div.tab-pane > fieldset > .GFERowContainer {
+		margin-left: 0;
+	}
+
+	fieldset {
+		margin-top: 35px;
+		.GFERowContainer {
+			border-top: 1px solid #ccc;
+			padding-bottom: 10px;
+			p {
+				margin-left: 20px;
+			}
+		}
+
+
+
+		fieldset {
+			margin-top: 20px;
+			margin-bottom: 20px;
+            clear: both;
+
+            &.GFEFieldset {
+				border-left: 1px solid #CCC;
+            }
+
+			legend {
+				color: #138CCA;
+				border-bottom: 1px solid #CCC;
+				padding: 0 10px;
+			}
+			.border-legend {
+				border-left: 7px solid #CCC;
+				height: 20px;
+				position: absolute;
+        		margin-top: -40px;
+        		margin-left: -1px;
+			}
+		}
+		>fieldset {
+			margin-left: 20px;
+		}
+		.border-legend {
+			border-left: 7px solid #CCC;
+			height: 20px;
+			position: absolute;
+			margin-top: -40px;
+			margin-left: -1px;
+		}
+		legend {
+			padding-left: 10px;
+		}
+		&:first-child>.border-legend {
+			border-color: #ccc;
+		}
+		&.GFEFieldset {
+			fieldset.GFEFieldset {
+				padding-top: 0;
+			}
+		}
+	}
+	.tab-pane>fieldset,
+	.text-tab>fieldset,
+    #fields {
+		margin-left: 0px;
+		>.border-legend {
+			border-left: 7px solid #CCC;
+		}
+	}
+	.text-tab>fieldset>legend,
+	.tab-pane>fieldset>legend {
+		width: auto;
+		border-bottom: 1px solid #ccc;
+		padding-right: 12px;
+		color: #138CCA;
+		font-weight: bolder;
+	}
+	/* BEGIN MAG*/
+	#editBib {
+		>fieldset {
+			>.border-legend {
+				border-color: #ccc;
+			}
+			.GFERowContainer {
+				@extend .GFERowContainer;
+			}
+		}
+	}
+	.groupDiv {
+        .groupButton {
+            margin-left: 5px;
+        }
+    }
+	/* END MAG */
+	/* BEGIN ICCD */
+	#relatedBoardIccd {
+		.GFERowContainer {
+			border-top: none;
+		}
+		.trashButtonDiv {
+			display: inline-block;
+			position: relative;
+			top: 20px;
+		}
+	}
+	/* END ICCD */
+
+
+	legend+fieldset {
+		margin-top: 0;
+	}
+}
+
+
+/* BEGIN Form Edit */
+
+form {
+	&.formEdit fieldset {
+		legend {
+			font-size: 18px;
+			color: #333;
+			padding: 0px;
+			display: inline-block;
+			width: auto;
+		}
+	}
+}
+
+form {
+	&.stickyForm .formButtons .content {
+		input {
+			margin: 0 3px;
+			font-size: 14px;
+			background-color: #dedede;
+		}
+		.btn-info,
+		.btn-primary {
+			background-color: #00c0ef;
+			border-color: #00acd6;
+		}
+	}
+	fieldset.GFEFieldset {
+		margin-left: 0;
+		padding: 0;
+		overflow-x: hidden;
+		//margin-bottom: 40px;
+		border: 0;
+		.trashButtonDiv {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+		.btn-icon {
+			cursor: pointer;
+		}
+	}
+}
+
+
+/* END form edit */
+
+
+/* BEGIN GlizyFormEdit */
+
+fieldset.GFEFieldset fieldset.GFEFieldset {
+	margin-left: 30px;
+	margin-right: 10px;
+	margin-bottom: 0;
+}
+
+.fieldsetDescriptive {
+	padding: 0 !important;
+	border: 0 !important;
+	legend {
+		color: #3c8dbc !important;
+		font-size: 22px !important;
+		border-bottom: 1px solid #ccc !important;
+		width: 100% !important;
+		&:before {
+			top: 30px;
+		}
+	}
+}
+
+.GFEFooter {
+	width: auto;
+	padding: 8px 8px 8px 20px;
+	margin: 15px 0 0 0;
+	/*border-top: 1px solid #e5e5e5; */
+}
+
+legend + .GFEFooter {
+	margin-top: 0;
+}
+
+.GFEButtonContainer {
+	float: left;
+}
+
+.GFEButtonContainer.center {
+	float: none;
+	text-align: center;
+}
+
+.GFEStatusContainer {
+	float: right;
+	font-size: 13px;
+	display: none;
+	margin-top: 9px;
+}
+
+input {
+	&.readOnly {
+		border: 0;
+		background: none !important;
+	}
+	&.GFEAddRow {
+		font-size: 13px;
+      background-color: #F0F0F0;
+	}
+}
+
+fieldset .GFERowContainer {
+	margin-left: 20px;
+}
+
+.GFERowContainer {
+	position: relative;
+	padding: 5px;
+	background-color: white;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	width: auto;
+	margin-top: 10px;
+	padding-right: 20px;
+	/*border: 1px solid #e5e5e5;*/
+	+.GFERowContainer {
+		border-top: 0;
+	}
+	.form-group label {
+		font-size: 95%;
+		padding-right: 0;
+	}
+	/*.col-sm-10 {
+    width: 80%;
+  }*/
+	&.GFERowContainerOdd {
+		background-color: #E0E0E0;
+	}
+	&.GFEEditingRow {
+		position: relative;
+		z-index: 101;
+	}
+	fieldset {
+		margin-left: 18px !important;
+	}
+	.GFEAddRow:active {
+		box-shadow: none;
+	}
+}
+
+.GFERowCollapsed,
+.GFERowExpanded {}
+
+.GFERowHeader {
+	float: left;
+}
+
+.GFERowHandler {
+	cursor: move;
+	height: 100%;
+}
+
+.GFERowPreview div.GFEPreviewItem {
+	display: none;
+	&:nth-child(1),
+	&:nth-child(2) {
+		display: inline;
+	}
+}
+
+.GFERowHandler.GFERowHandlerExpanded {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #f4f4f4;
+	padding: 0 0 0 3px;
+	.dragAndDrop {
+		color: #BABABA;
+		padding-right: 2px;
+		padding-right: 2px;
+	}
+}
+
+.GFERecordTitle {
+	display: inline-block;
+	font-weight: bold;
+	margin: 9px 12px;
+}
+
+.GFERowPanel {
+	margin: 3px 5px;
+}
+
+.GFEPreviewItem {
+	display: inline-block;
+	padding: 2px 3px;
+	margin: 1px 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #fff;
+}
+
+.GFESideClearer {
+	clear: both;
+}
+
+.GFEEmptyMessage {
+	text-align: center;
+	margin: 6px;
+}
+
+.GFERowContainer .icon {
+	cursor: pointer;
+}
+
+
+/*.GFERightIcon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}*/
+
+.GFERowButtonContainer {
+	text-align: center;
+	clear: both;
+	margin-top: 14px;
+}
+
+.GButtonDisabled {
+	opacity: 0.5;
+	/*filter: alpha(opacity = 50);*/
+}
+
+.GFETranslucentCover {
+	position: fixed;
+	display: none;
+	/*background-color: black;*/
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	opacity: 0.5;
+	/*filter: alpha(opacity = 50);*/
+}
+
+.GFEcomments {
+	width: 100%;
+	height: 150px;
+	border: 0 !important;
+}
+/* END GlizyFormEdit */

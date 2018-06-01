@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:c="metafad.modules.iccd.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Popup.php">
+
+<glz:Import src="_common.xml"/>
+
+<mvc:State name="edit">
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.MAG.controllers.media.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.teca.MAG.models.Ocr"/>
+
+        <glz:Input id="sequence_number" label="{i18n:Sequence number}" type="number"/>
+        <glz:Input id="nomenclature" label="{i18n:Nomenclature}"/>
+
+        <glz:Fieldset id="usage" label="{i18n:Usage}" data="type=repeat;collapsable=false;repeatMin=0">
+          <glz:List id="usage_value" label="{i18n:Usage}" emptyValue="">
+              <glz:ListItem key="a" value="a (no copyright)"/>
+              <glz:ListItem key="b" value="b (ha copyright)"/>
+          </glz:List>
+        </glz:Fieldset>
+        <glz:Input id="file" label="{i18n:File}" required="true"/>
+        <glz:Input id="md5" label="{i18n:MD5}" required="true"/>
+        <glz:Input id="filesize" label="{i18n:Filesize}"/>
+        <glz:Fieldset id="format" label="{i18n:Format}" required="true" emptyValue="">
+          <glz:Input id="name" label="{i18n:Name}"/>
+          <glz:List id="mime" label="{i18n:Mime}" required="true" emptyValue="">
+              <glz:ListItem key="text/plain" value="text/plain"/>
+              <glz:ListItem key="text/xml" value="text/xml"/>
+              <glz:ListItem key="text/html" value="text/html"/>
+              <glz:ListItem key="text/rtf" value="text/rtf"/>
+              <glz:ListItem key="application/msword" value="application/msword"/>
+              <glz:ListItem key="application/pdf" value="application/pdf"/>
+          </glz:List>
+          <glz:List id="compression" label="{i18n:Compression}" emptyValue="">
+              <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+              <glz:ListItem key="ZIP" value="ZIP"/>
+              <glz:ListItem key="RAR" value="RAR"/>
+              <glz:ListItem key="GZ" value="GZ"/>
+          </glz:List>
+        </glz:Fieldset>
+        <glz:Input id="software_ocr" label="{i18n:Software OCR}"/>
+        <glz:Input id="datetimecreated" type="datetime" label="{i18n:DateTime Created}"/>
+        <glz:Input id="note" label="{i18n:Note}"/>
+
+        <cms:FormButtonsPanel id="formButtons">
+          <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-primary js-glizycms-save"
+                          data="action=save" acl="*,edit" />
+        </cms:FormButtonsPanel>
+    </c:FormEdit>
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,4 @@
+<?php
+class metafad_gestioneDati_boards_controllers_History extends metafad_gestioneDati_boards_controllers_Relations
+{
+}

@@ -1,0 +1,163 @@
+{
+  "externalID": {
+    "xpath": "./control/recordId/text()"
+  },
+  "__model": {
+    "type": "constant",
+    "value": "archivi.models.ProduttoreConservatore"
+  },
+  "tipologiaChoice": {
+    "type": "constant",
+    "value": "Famiglia"
+  },
+  "noteEntita": {
+    "xpath": "./cpfDescription/description/biogHist/p",
+    "type": "composite",
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+      "params": {
+        "separator": "\r\n====================\r\n",
+        "internalSeparator": "\r\n\r\n"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    },
+    "struct": {
+      "Nota": {
+        "xpath": "./text()"
+      }
+    }
+  },
+  "linguaDescrizioneRecordProduttore": {
+    "xpath": "./control/languagedeclaration/language/text()"
+  },
+  "linguaDescrizioneRecordConservatore": {
+    "xpath": "./control/languagedeclaration/language/text()"
+  },
+  "ente_famiglia_denominazione": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./cpfDescription/identity/nameEntry",
+    "struct": {
+      "entitaDenominazione": {
+        "xpath": "./part[@localType='normal']/text()"
+      }
+    }
+  },
+  "luogoFamiglia": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./cpfDescription/description/places/place",
+    "struct": {
+      "luogoFamiglia_nomeLuogo": {
+        "xpath": "./placeEntry/text()"
+      },
+      "luogoFamiglia_qualificaLuogo": {
+        "xpath": "./descriptiveNote/p",
+        "type": "composite",
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+          "params": {
+            "separator": ",",
+            "internalSeparator": ","
+          }
+        },
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+        },
+        "struct": {
+          "Nota": {
+            "xpath": "./text()"
+          }
+        }
+      }
+    }
+  },
+  "cronologiaFamiglia": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./cpfDescription/description/existDates/dateRange",
+    "struct": {
+      "estremoCronologicoTestuale": {
+        "type": "simple",
+        "xpath": ["./fromDate/@standardDate", "./toDate/@standardDate"],
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_Implode",
+          "params": {
+            "separator": " - "
+          }
+        },
+        "joiner": {
+          "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+          "params": {
+          }
+        }
+      },
+      "estremoRemoto_data": {
+        "xpath": ["./fromDate/@standardDate", "./fromDate/text()"]
+      },
+      "estremoRemoto_codifica": {
+        "xpath": "./fromDate/@standardDate"
+      },
+      "estremoRecente_data": {
+        "xpath": ["./toDate/@standardDate", "./toDate/text()"]
+      },
+      "estremoRecente_codifica": {
+        "xpath": "./toDate/@standardDate"
+      }
+    }
+  },
+  "compilazioneProduttore": {
+    "type": "composite",
+    "xpath": "./control/maintenanceHistory/maintenanceEvent",
+    "repeatable": true,
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    },
+    "struct": {
+      "redattore": {
+        "type": "simple",
+        "xpath": "./agent/text()"
+      },
+      "azione": {
+        "type": "simple",
+        "xpath": "./eventType/text()"
+      },
+      "data": {
+        "type": "simple",
+        "xpath": "./eventDateTime/text()"
+      },
+      "note": {
+        "type": "simple",
+        "xpath": "./eventDescription/text()"
+      }
+    }
+  },
+  "compilazioneConservatore": {
+    "type": "composite",
+    "xpath": "./control/maintenanceHistory/maintenanceEvent",
+    "repeatable": true,
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    },
+    "struct": {
+      "redattore": {
+        "type": "simple",
+        "xpath": "./agent/text()"
+      },
+      "azione": {
+        "type": "simple",
+        "xpath": "./eventType/text()"
+      },
+      "data": {
+        "type": "simple",
+        "xpath": "./eventDateTime/text()"
+      },
+      "note": {
+        "type": "simple",
+        "xpath": "./eventDescription/text()"
+      }
+    }
+  }
+}

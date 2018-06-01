@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="archivi.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:boards="metafad.gestioneDati.boards.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <com:ModalConfirm label="Attenzione" message="Sicuro di voler proseguire?"/>
+    <com:ModalAlert label="Attenzione" message="Operazione non corretta"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Entità}" url="archivi-ProduttoreConservatore">
+        <cmp:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="false" recordClassName="archivi.models.ProduttoreConservatore"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="archivi.controllers.*" fullTextSearch="true"
+                          JQueryUI="true" 
+                          autocompleteController="archivi.controllers.ajax.AutoComplete">
+<glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per l'Entità}"/>
+<glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}"/>
+<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Estremo cronologico testuale}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.common.views.renderer.authority.CellEditDraftDelete"/>
+        </cmp:DataGridSolr>
+        <cmp:AddButton label="Entità" acl="*,new" type="ProduttoreConservatore" routeUrl="archiviMVCAdd" editableRegion="actions"
+                       recordClassName="archivi.models.ProduttoreConservatore" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+        
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.ProduttoreConservatore"/>
+			<glz:Hidden id="instituteKey" />
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
+
+            <glz:Hidden id="isTemplate"/>
+            <glz:Input id="templateTitle" label="{i18n:Titolo template}"/>
+            <glz:Link cssClass="tree openTree fa fa-list" enabled="false"/>
+            <glz:JSTabGroup id="ProduttoreConservatore" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+
+            <glz:Panel cssClass="col-md-4 gerarchia no-padding" text="Gerarchia: " enabled="false">
+                <cmp:Tree id="treeview" startId="0" title="" controllerName="archivi.controllers.Gerarchia"/>
+            </glz:Panel>
+
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input id="acronimoSistema" label="Acronimo di sistema" required="true"/>
+      <glz:Input id="identificativo" readOnly="true" label="Identificativo per l'Entità"/>
+      <glz:Input id="codiceIdentificativoSistema" readOnly="true" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="altriCodiciIdentificativi" label="Altri codici identificativi" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="codice" label="Codice"/>
+        <glz:Input id="qualifica" label="Qualifica"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="codice" label="Codice"/>
+      </glz:Fieldset>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+      <glz:Hidden id="isProdCons" readOnly="true" label="Maschera Finale Produttore/Conservatore"/>
+      <glz:Hidden id="isForceProdCons" readOnly="true" label="Maschera di forzatura Produttore/Conservatore"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="tipologia" label="Tipologia">
+      <glz:List id="tipologiaChoice" label="Tipologia" required="true" data="target=tipologiaEnte,condizioneGiuridica,luogoEnte,ente_famiglia_denominazione,cronologiaEnte,contestoStatuale,luogoFamiglia,ente_famiglia_denominazione,cronologiaFamiglia,genere,luogoPersona,persona_denominazione,cronologiaPersona,titoloEntita,attivitaProfessioneQualifica;val_0=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;val_1=1,1,1,1,1,1,0,1,0,0,0,0,0,0,0;val_2=0,0,0,1,0,0,1,1,1,0,0,0,0,0,0;val_3=0,0,0,0,0,0,0,0,0,1,1,1,1,1,1" emptyValue=" - ">
+        <glz:ListItem value="Ente"/>
+        <glz:ListItem value="Famiglia"/>
+        <glz:ListItem value="Persona"/>
+      </glz:List>
+      <glz:Input id="tipologiaEnte" label="Tipologia Ente" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_TIPOLOGIA"/>
+      <glz:List id="genere" label="Genere" emptyValue=" - ">
+        <glz:ListItem value="Femminile"/>
+        <glz:ListItem value="Maschile"/>
+        <glz:ListItem value="Non rilevato"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="condizioneGiuridica" label="Condizione giuridica" required="true" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="listCondizioneGiuridica" label="Condizione giuridica" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONDIZIONE_GIURIDICA"/>
+      <glz:Fieldset id="estremiCronologici" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="cond_giuridica_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="cond_giuridica_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="ente_famiglia_denominazione" label="Denominazione" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="entitaDenominazione" label="Denominazione" required="true"/>
+      <glz:Input id="ente_famiglia_acronimo" label="Acronimo"/>
+      <glz:Input id="ente_famiglia_linguaDenominazione" label="Lingua di denominazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="ente_famiglia_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="ente_famiglia_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_DATA_QUALIFICA"/>
+        <glz:Input id="ente_famiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+      <glz:List id="ente_famiglia_qualifica" label="Qualifica" emptyValue=" - ">
+        <glz:ListItem value="Denominazione principale"/>
+        <glz:ListItem value="Altre denominazioni"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="persona_denominazione" label="Denominazione" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="persona_nome" label="Nome"/>
+      <glz:Input id="entitaDenominazione" label="Cognome" required="true"/>
+      <glz:Input id="persona_patronimico" label="Patronimico"/>
+      <glz:Input id="persona_nomeAvo" label="Nome dell’avo"/>
+      <glz:Input id="persona_pseudonimo" label="Pseudonimo"/>
+      <glz:Input id="persona_soprannome" label="Soprannome"/>
+      <glz:Input id="persona_linguaDenominazione" label="Lingua di denominazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="persona_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="persona_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_DATA_QUALIFICA"/>
+        <glz:Input id="persona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+      <glz:List id="persona_qualifica" label="Qualifica" emptyValue=" - ">
+        <glz:ListItem value="Denominazione principale"/>
+        <glz:ListItem value="Altre denominazioni"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoEnte" label="Luogo Ente" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input id="luogoEnte_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input id="luogoEnte_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input id="luogoEnte_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input id="luogoEnte_qualificaLuogo" label="Qualifica luogo" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoEnte_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="luogoEnte_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="luogoEnte_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoFamiglia" label="Luogo Famiglia" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input id="luogoFamiglia_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input id="luogoFamiglia_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input id="luogoFamiglia_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input id="luogoFamiglia_qualificaLuogo" label="Qualifica luogo" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_FAMIGLIA_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoFamiglia_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="luogoFamiglia_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="luogoFamiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoPersona" label="Luogo Persona" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input id="luogoPersona_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input id="luogoPersona_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input id="luogoPersona_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input id="luogoPersona_qualificaLuogo" label="Qualifica luogo" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoPersona_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="luogoPersona_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="luogoPersona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaEnte" label="Estremi cronologici" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input id="Ente_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_DATA_QUALIFICA"/>
+      <glz:Input id="Ente_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaFamiglia" label="Estremi cronologici" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input id="Famiglia_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_FAMIGLIA_DATA_QUALIFICA"/>
+      <glz:Input id="Famiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaPersona" label="Estremi cronologici" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input id="Persona_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_DATA_QUALIFICA"/>
+      <glz:Input id="Persona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Input id="noteEntita" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Fieldset id="contestoStatuale" label="Contesto statuale" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="inputConstestoStatuale" label="Contesto statuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONTESTO_STATUALE"/>
+      <glz:Fieldset id="cont_stat_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="cont_stat_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="cont_stat_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="titoloEntita" label="Titolo" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="inputTitolo" label="Titolo"/>
+      <glz:Fieldset id="titolo_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control select2-container" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="titolo_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="titolo_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="attivitaProfessioneQualifica" label="Attività, professione o qualifica" data="type=repeat;noEmptyMessage=true">
+      <glz:Input id="inputAttivitaProfessioneQualifica" label="Attività, professione o qualifica"/>
+      <glz:Fieldset id="att_prof_qual_cronologia" label="Estremi cronologici" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input id="att_prof_qual_qualificaData" label="Qualifica della data"/>
+        <glz:Input id="att_prof_qual_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabSoggettoProduttore" label="Soggetto produttore" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="sog_prod_descrizione" label="Descrizione">
+      <glz:Input id="storiaBiografiaStrutturaAmministrativa" label="Storia / Biografia / Struttura amministrativa" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamentiProduttore" label="Collegamenti">
+      <glz:Fieldset id="complessiArchivisticiProduttore" label="Complessi archivistici" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputComplessiArchivistici" label="Complesso" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ComplessoArchivistico;return_object=true;textfield=_denominazione"/>
+        <glz:Fieldset id="cronologia" label="Estremi cronologici della relazione" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+          <glz:Input id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+      <glz:Fieldset id="soggettiProduttori" label="Soggetti produttori" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputSoggettiProduttori" label="Collegamento Soggetto Produttore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+        <glz:Input id="sog_prod_qualifica" label="Qualifica"/>
+        <glz:Fieldset id="sog_prod_cronologia" label="Estremi cronologici della relazione" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input id="sog_prod_qualificaData" label="Qualifica della data"/>
+          <glz:Input id="sog_prod_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiFontiProduttore" label="Riferimenti e fonti">
+      <glz:Fieldset id="riferimentiBibliograficiProduttore" label="Riferimenti bibliografici" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+        <glz:Input id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="fontiArchivisticheProduttore" label="Fonti archivistiche" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentiWebProduttore" label="Riferimenti web" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input id="rifWeb_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input id="rifWeb_dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input id="rifWeb_url" label="URL" data="type=url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="compilazione" label="Compilazione" required="true">
+      <glz:Input id="linguaDescrizioneRecordProduttore" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="compilazioneProduttore" label="Compilazione" required="true" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="redattore" label="Redattore"/>
+        <glz:Input id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+        <glz:Input id="note" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data" data="type=date"/>
+      </glz:Fieldset>
+      <glz:Input id="osservazioniProduttore" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabSoggettoConservatore" label="Soggetto conservatore" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="sog_cons_descrizione" label="Descrizione">
+      <glz:Input id="cenniStoriciIstituzionali" label="Cenni storici istituzionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="sog_cons_patrimonio" label="Patrimonio e politiche di gestione e di acquisizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input id="sog_cons_note" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="sog_cons_contattiSedi" label="Contatti e sedi">
+      <glz:Fieldset id="sog_cons_contatti" label="Contatti">
+        <glz:Input id="sog_cons_mail" label="Mail"/>
+        <glz:Input id="sog_cons_pec" label="PEC"/>
+        <glz:Input id="sog_cons_url" label="URL" data="type=url"/>
+        <glz:Input id="sog_cons_telefono" label="Telefono"/>
+        <glz:Input id="sog_cons_fax" label="Fax"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="sog_cons_sedi" label="Sedi" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="sog_cons_sedi_denominazione" label="Denominazione"/>
+        <glz:Input id="sog_cons_sedi_tipologia" label="Tipologia" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONSERV_SEDI_TIPOLOGIA"/>
+        <glz:Input id="sog_cons_sedi_telefono" label="Telefono"/>
+        <glz:Input id="sog_cons_sedi_fax" label="Fax"/>
+        <glz:Input id="sog_cons_sedi_mail" label="Mail"/>
+        <glz:Fieldset id="sog_cons_sedi_indirizzo" label="Indirizzo">
+          <glz:Input id="sog_cons_sedi_stato" label="Stato" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct1##};dictId=VC_Localizzazione"/>
+          <glz:Input id="sog_cons_sedi_regione" label="Regione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct2##};dictId=VC_Localizzazione"/>
+          <glz:Input id="sog_cons_sedi_provincia" label="Provincia" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct3##};dictId=VC_Localizzazione"/>
+          <glz:Input id="sog_cons_sedi_comune" label="Comune" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+          <glz:Input id="sog_cons_sedi_localita" label="Località"/>
+          <glz:Input id="sog_cons_sedi_via" label="Via"/>
+          <glz:Input id="sog_cons_sedi_numero" label="Numero"/>
+          <glz:Input id="sog_cons_sedi_cap" label="CAP"/>
+          <glz:Input id="sog_cons_sedi_indirizzoTestuale" label="Indirizzo testuale"/>
+          <glz:List id="sog_cons_sedi_accessoDisabili" label="Accesso disabili" emptyValue=" - ">
+            <glz:ListItem value="Sì"/>
+            <glz:ListItem value="No"/>
+          </glz:List>
+          <glz:Input id="sog_cons_sedi_noteIndirizzo" label="Note indirizzo"/>
+          <glz:Input id="sog_cons_sedi_coordinatePuntoAccesso" label="Coordinate punto di accesso" data="type=googlemaps"/>
+        </glz:Fieldset>
+        <glz:Fieldset id="sog_cons_sedi_giornoApertura" label="Giorno di apertura" data="type=repeat;noEmptyMessage=true">
+          <glz:List id="sog_cons_sedi_giornoSettimana" label="Giorno della settimana" emptyValue=" - ">
+            <glz:ListItem value="Lunedì"/>
+            <glz:ListItem value="Martedì"/>
+            <glz:ListItem value="Mercoledì"/>
+            <glz:ListItem value="Giovedì"/>
+            <glz:ListItem value="Venerdì"/>
+            <glz:ListItem value="Sabato"/>
+            <glz:ListItem value="Domenica"/>
+          </glz:List>
+          <glz:Fieldset id="sog_cons_sedi_tempoApertura" label="Tempo di apertura">
+            <glz:Input id="orarioInizio" label="Orario inizio"/>
+            <glz:Input id="sog_cons_sedi_orarioFine" label="Orario fine"/>
+            <glz:Input id="sog_cons_sedi_note" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:Fieldset>
+          <glz:Input id="sog_cons_sedi_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset id="sog_cons_sedi_servizi" label="Servizi" data="type=repeat;noEmptyMessage=true">
+          <glz:Input id="denominazione" label="Denominazione"/>
+          <glz:Input id="sog_cons_sedi_noteErogazioneServizio" label="Note su erogazione servizio" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="fieldsetCondizioniAccesso" label="Condizioni di accesso">
+      <glz:Input id="condizioniAccesso" label="Condizioni di accesso" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamentiConservatore" label="Collegamenti">
+      <glz:Fieldset id="complessiArchivisticiConservatore" label="Complessi archivistici" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="linkComplessiArchivistici" label="Complesso" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ComplessoArchivistico;return_object=true;textfield=_denominazione"/>
+        <glz:Fieldset id="cronologia" label="Estremi cronologici della relazione" data="type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input id="estremoCronologicoTestuale" readOnly="true" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRemoto_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input id="estremoRecente_codificaData" label="Codifica della data" readOnly="true" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+          <glz:Input id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiFontiConservatore" label="Riferimenti e fonti">
+      <glz:Fieldset id="riferimentiBibliograficiConvervatore" label="Riferimenti bibliografici" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+        <glz:Input id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="fontiArchivisticheConvervatore" label="Fonti archivistiche" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="inputFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentiWebConvervatore" label="Riferimenti web" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="rifWeb_Conserv_denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input id="rifWeb_Conserv_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input id="rifWeb_Conserv_dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input id="rifWeb_Conserv_url" label="URL" data="type=url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="conserv_compilazione" label="Compilazione">
+      <glz:Input id="linguaDescrizioneRecordConvervatore" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="compilazioneConvervatore" label="Compilazione" required="true" data="type=repeat;noEmptyMessage=true">
+        <glz:Input id="redattore" label="Redattore"/>
+        <glz:Input id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+        <glz:Input id="note" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+      </glz:Fieldset>
+      <glz:Input id="osservazioniConvervatore" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+
+
+                <glz:JSTab id="history" label="{i18n:Storico}" cssClassTab="pull-right"
+                           routeUrl="archivihistory"/>
+                <glz:JSTab id="edit" label="{i18n:Scheda}" cssClassTab="fake-active pull-right"/>
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+                <glz:HtmlButton label="{i18n:Valida CAT-SAN}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=validate" acl="*,publish" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="show,showDraft" label="{i18n:Show}" draw="false">
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.ProduttoreConservatore"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+
+            <glz:JSTabGroup id="ProduttoreConservatore" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+<glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="codici" label="Codici">
+      <glz:Input readOnly="true" id="acronimoSistema" label="Acronimo di sistema" required="true"/>
+      <glz:Input readOnly="true" id="identificativo" label="Identificativo per l'Entità"/>
+      <glz:Input readOnly="true" id="codiceIdentificativoSistema" label="Codice identificativo di sistema"/>
+      <glz:Fieldset id="altriCodiciIdentificativi" label="Altri codici identificativi" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="codice" label="Codice"/>
+        <glz:Input readOnly="true" id="qualifica" label="Qualifica"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="codiceIdentificativoPrecedente" label="Codice identificativo precedente" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="codice" label="Codice"/>
+      </glz:Fieldset>
+      <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+      <glz:Hidden id="isProdCons" readOnly="true" label="Maschera Finale Produttore/Conservatore"/>
+      <glz:Hidden id="isForceProdCons" readOnly="true" label="Maschera di forzatura Produttore/Conservatore"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="tipologia" label="Tipologia">
+      <glz:List id="tipologiaChoice" label="Tipologia" required="true" data="target=tipologiaEnte,condizioneGiuridica,luogoEnte,ente_famiglia_denominazione,cronologiaEnte,contestoStatuale,luogoFamiglia,ente_famiglia_denominazione,cronologiaFamiglia,genere,luogoPersona,persona_denominazione,cronologiaPersona,titoloEntita,attivitaProfessioneQualifica;val_0=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;val_1=1,1,1,1,1,1,0,1,0,0,0,0,0,0,0;val_2=0,0,0,1,0,0,1,1,1,0,0,0,0,0,0;val_3=0,0,0,0,0,0,0,0,0,1,1,1,1,1,1" emptyValue=" - ">
+        <glz:ListItem value="Ente"/>
+        <glz:ListItem value="Famiglia"/>
+        <glz:ListItem value="Persona"/>
+      </glz:List>
+      <glz:Input readOnly="true" id="tipologiaEnte" label="Tipologia Ente" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_TIPOLOGIA"/>
+      <glz:List id="genere" label="Genere" emptyValue=" - ">
+        <glz:ListItem value="Femminile"/>
+        <glz:ListItem value="Maschile"/>
+        <glz:ListItem value="Non rilevato"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="condizioneGiuridica" label="Condizione giuridica" required="true" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="listCondizioneGiuridica" label="Condizione giuridica" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONDIZIONE_GIURIDICA"/>
+      <glz:Fieldset id="estremiCronologici" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="cond_giuridica_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="cond_giuridica_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="ente_famiglia_denominazione" label="Denominazione" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="entitaDenominazione" label="Denominazione" required="true"/>
+      <glz:Input readOnly="true" id="ente_famiglia_acronimo" label="Acronimo"/>
+      <glz:Input readOnly="true" id="ente_famiglia_linguaDenominazione" label="Lingua di denominazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="ente_famiglia_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="ente_famiglia_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_DATA_QUALIFICA"/>
+        <glz:Input readOnly="true" id="ente_famiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+      <glz:List id="ente_famiglia_qualifica" label="Qualifica" emptyValue=" - ">
+        <glz:ListItem value="Denominazione principale"/>
+        <glz:ListItem value="Altre denominazioni"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="persona_denominazione" label="Denominazione" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="persona_nome" label="Nome"/>
+      <glz:Input readOnly="true" id="entitaDenominazione" label="Cognome" required="true"/>
+      <glz:Input readOnly="true" id="persona_patronimico" label="Patronimico"/>
+      <glz:Input readOnly="true" id="persona_nomeAvo" label="Nome dell’avo"/>
+      <glz:Input readOnly="true" id="persona_pseudonimo" label="Pseudonimo"/>
+      <glz:Input readOnly="true" id="persona_soprannome" label="Soprannome"/>
+      <glz:Input readOnly="true" id="persona_linguaDenominazione" label="Lingua di denominazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="persona_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="persona_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_DATA_QUALIFICA"/>
+        <glz:Input readOnly="true" id="persona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+      <glz:List id="persona_qualifica" label="Qualifica" emptyValue=" - ">
+        <glz:ListItem value="Denominazione principale"/>
+        <glz:ListItem value="Altre denominazioni"/>
+      </glz:List>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoEnte" label="Luogo Ente" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input readOnly="true" id="luogoEnte_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input readOnly="true" id="luogoEnte_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input readOnly="true" id="luogoEnte_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input readOnly="true" id="luogoEnte_qualificaLuogo" label="Qualifica luogo" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoEnte_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="luogoEnte_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="luogoEnte_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoFamiglia" label="Luogo Famiglia" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input readOnly="true" id="luogoFamiglia_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input readOnly="true" id="luogoFamiglia_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input readOnly="true" id="luogoFamiglia_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input readOnly="true" id="luogoFamiglia_qualificaLuogo" label="Qualifica luogo" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_FAMIGLIA_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoFamiglia_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="luogoFamiglia_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="luogoFamiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="luogoPersona" label="Luogo Persona" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+      <glz:Input readOnly="true" id="luogoPersona_nomeLuogo" label="Nome luogo/Toponimo"/>
+      <glz:Input readOnly="true" id="luogoPersona_comuneAttuale" label="Comune Attuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+      <glz:Input readOnly="true" id="luogoPersona_denominazioneStorica" label="Denominazione storica"/>
+      <glz:Input readOnly="true" id="luogoPersona_qualificaLuogo" label="Qualifica luogo" required="true" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_LUOGO_QUALIFICA"/>
+      <glz:Fieldset id="luogoPersona_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="luogoPersona_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="luogoPersona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaEnte" label="Estremi cronologici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input readOnly="true" id="Ente_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ENTE_DATA_QUALIFICA"/>
+      <glz:Input readOnly="true" id="Ente_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaFamiglia" label="Estremi cronologici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input readOnly="true" id="Famiglia_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_FAMIGLIA_DATA_QUALIFICA"/>
+      <glz:Input readOnly="true" id="Famiglia_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="cronologiaPersona" label="Estremi cronologici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+      <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+        <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+        <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+        <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+        <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+        <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+        <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+        <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:FieldSet>
+      <glz:Input readOnly="true" id="Persona_qualificaData" cssClass="js-archive-cronologia-qualifica-data form-control" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_PERSONA_DATA_QUALIFICA"/>
+      <glz:Input readOnly="true" id="Persona_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Input readOnly="true" id="noteEntita" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    <glz:Fieldset id="contestoStatuale" label="Contesto statuale" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="inputConstestoStatuale" label="Contesto statuale" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONTESTO_STATUALE"/>
+      <glz:Fieldset id="cont_stat_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="cont_stat_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="cont_stat_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="titoloEntita" label="Titolo" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="inputTitolo" label="Titolo"/>
+      <glz:Fieldset id="titolo_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control select2-container" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="titolo_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="titolo_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="attivitaProfessioneQualifica" label="Attività, professione o qualifica" data="readOnly=true;type=repeat;noEmptyMessage=true">
+      <glz:Input readOnly="true" id="inputAttivitaProfessioneQualifica" label="Attività, professione o qualifica"/>
+      <glz:Fieldset id="att_prof_qual_cronologia" label="Estremi cronologici" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+        <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+        <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+          <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+          <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+          <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+          <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+          <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+          <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+          <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:FieldSet>
+        <glz:Input readOnly="true" id="att_prof_qual_qualificaData" label="Qualifica della data"/>
+        <glz:Input readOnly="true" id="att_prof_qual_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabSoggettoProduttore" label="Soggetto produttore" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="sog_prod_descrizione" label="Descrizione">
+      <glz:Input readOnly="true" id="storiaBiografiaStrutturaAmministrativa" label="Storia / Biografia / Struttura amministrativa" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamentiProduttore" label="Collegamenti">
+      <glz:Fieldset id="complessiArchivisticiProduttore" label="Complessi archivistici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputComplessiArchivistici" label="Complesso" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ComplessoArchivistico;return_object=true;textfield=_denominazione"/>
+        <glz:Fieldset id="cronologia" label="Estremi cronologici della relazione" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input readOnly="true" id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+          <glz:Input readOnly="true" id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+      <glz:Fieldset id="soggettiProduttori" label="Soggetti produttori" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputSoggettiProduttori" label="Collegamento Soggetto Produttore" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ProduttoreConservatore;return_object=true;textfield=_denominazione"/>
+        <glz:Input readOnly="true" id="sog_prod_qualifica" label="Qualifica"/>
+        <glz:Fieldset id="sog_prod_cronologia" label="Estremi cronologici della relazione" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input readOnly="true" id="sog_prod_qualificaData" label="Qualifica della data"/>
+          <glz:Input readOnly="true" id="sog_prod_notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiFontiProduttore" label="Riferimenti e fonti">
+      <glz:Fieldset id="riferimentiBibliograficiProduttore" label="Riferimenti bibliografici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+        <glz:Input readOnly="true" id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="fontiArchivisticheProduttore" label="Fonti archivistiche" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentiWebProduttore" label="Riferimenti web" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input readOnly="true" id="rifWeb_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input readOnly="true" id="rifWeb_dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input readOnly="true" id="rifWeb_url" label="URL" data="type=url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="compilazione" label="Compilazione" required="true">
+      <glz:Input readOnly="true" id="linguaDescrizioneRecordProduttore" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="compilazioneProduttore" label="Compilazione" required="true" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="redattore" label="Redattore"/>
+        <glz:Input readOnly="true" id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+        <glz:Input readOnly="true" id="note" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input readOnly="true" id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data" data="type=date"/>
+      </glz:Fieldset>
+      <glz:Input readOnly="true" id="osservazioniProduttore" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+<glz:JSTab id="tabSoggettoConservatore" label="Soggetto conservatore" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Fieldset id="sog_cons_descrizione" label="Descrizione">
+      <glz:Input readOnly="true" id="cenniStoriciIstituzionali" label="Cenni storici istituzionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="sog_cons_patrimonio" label="Patrimonio e politiche di gestione e di acquisizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+      <glz:Input readOnly="true" id="sog_cons_note" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="sog_cons_contattiSedi" label="Contatti e sedi">
+      <glz:Fieldset id="sog_cons_contatti" label="Contatti">
+        <glz:Input readOnly="true" id="sog_cons_mail" label="Mail"/>
+        <glz:Input readOnly="true" id="sog_cons_pec" label="PEC"/>
+        <glz:Input readOnly="true" id="sog_cons_url" label="URL" data="type=url"/>
+        <glz:Input readOnly="true" id="sog_cons_telefono" label="Telefono"/>
+        <glz:Input readOnly="true" id="sog_cons_fax" label="Fax"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="sog_cons_sedi" label="Sedi" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="sog_cons_sedi_denominazione" label="Denominazione"/>
+        <glz:Input readOnly="true" id="sog_cons_sedi_tipologia" label="Tipologia" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_CONSERV_SEDI_TIPOLOGIA"/>
+        <glz:Input readOnly="true" id="sog_cons_sedi_telefono" label="Telefono"/>
+        <glz:Input readOnly="true" id="sog_cons_sedi_fax" label="Fax"/>
+        <glz:Input readOnly="true" id="sog_cons_sedi_mail" label="Mail"/>
+        <glz:Fieldset id="sog_cons_sedi_indirizzo" label="Indirizzo">
+          <glz:Input readOnly="true" id="sog_cons_sedi_stato" label="Stato" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct1##};dictId=VC_Localizzazione"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_regione" label="Regione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct2##};dictId=VC_Localizzazione"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_provincia" label="Provincia" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct3##};dictId=VC_Localizzazione"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_comune" label="Comune" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##Direct4##};dictId=VC_Localizzazione"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_localita" label="Località"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_via" label="Via"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_numero" label="Numero"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_cap" label="CAP"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_indirizzoTestuale" label="Indirizzo testuale"/>
+          <glz:List id="sog_cons_sedi_accessoDisabili" label="Accesso disabili" emptyValue=" - ">
+            <glz:ListItem value="Sì"/>
+            <glz:ListItem value="No"/>
+          </glz:List>
+          <glz:Input readOnly="true" id="sog_cons_sedi_noteIndirizzo" label="Note indirizzo"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_coordinatePuntoAccesso" label="Coordinate punto di accesso" data="type=googlemaps"/>
+        </glz:Fieldset>
+        <glz:Fieldset id="sog_cons_sedi_giornoApertura" label="Giorno di apertura" data="readOnly=true;type=repeat;noEmptyMessage=true">
+          <glz:List id="sog_cons_sedi_giornoSettimana" label="Giorno della settimana" emptyValue=" - ">
+            <glz:ListItem value="Lunedì"/>
+            <glz:ListItem value="Martedì"/>
+            <glz:ListItem value="Mercoledì"/>
+            <glz:ListItem value="Giovedì"/>
+            <glz:ListItem value="Venerdì"/>
+            <glz:ListItem value="Sabato"/>
+            <glz:ListItem value="Domenica"/>
+          </glz:List>
+          <glz:Fieldset id="sog_cons_sedi_tempoApertura" label="Tempo di apertura">
+            <glz:Input readOnly="true" id="orarioInizio" label="Orario inizio"/>
+            <glz:Input readOnly="true" id="sog_cons_sedi_orarioFine" label="Orario fine"/>
+            <glz:Input readOnly="true" id="sog_cons_sedi_note" label="Note" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:Fieldset>
+          <glz:Input readOnly="true" id="sog_cons_sedi_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset id="sog_cons_sedi_servizi" label="Servizi" data="readOnly=true;type=repeat;noEmptyMessage=true">
+          <glz:Input readOnly="true" id="denominazione" label="Denominazione"/>
+          <glz:Input readOnly="true" id="sog_cons_sedi_noteErogazioneServizio" label="Note su erogazione servizio" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="fieldsetCondizioniAccesso" label="Condizioni di accesso">
+      <glz:Input readOnly="true" id="condizioniAccesso" label="Condizioni di accesso" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+    <glz:Fieldset id="collegamentiConservatore" label="Collegamenti">
+      <glz:Fieldset id="complessiArchivisticiConservatore" label="Complessi archivistici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="linkComplessiArchivistici" label="Complesso" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.ComplessoArchivistico;return_object=true;textfield=_denominazione"/>
+        <glz:Fieldset id="cronologia" label="Estremi cronologici della relazione" data="readOnly=true;type=repeat;repeatMin=0;repeatMax=1;noEmptyMessage=true;customAddRowLabel=Aggiungi">
+          <glz:Input readOnly="true" id="estremoCronologicoTestuale" cssClass="js-archive-cronologia-concatText form-control" label="Estremo cronologico testuale"/>
+          <glz:FieldSet id="estremoRemoto" cssClass="js-archive-cronologia-remotoRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRemoto_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRemoto_specifica"/>
+            <glz:Input readOnly="true" id="estremoRemoto_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRemoto_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRemoto_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRemoto_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:FieldSet id="estremoRecente" cssClass="js-archive-cronologia-recenteRoot js-archive-cronologia-estremo">
+            <glz:Input readOnly="true" id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data"/>
+            <glz:Input readOnly="true" id="estremoRecente_secolo" cssClass="js-archive-cronologia-century form-control" label="Secolo" data="type=conditionalSelectFrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SECOLO;target=*`--&gt;estremoRecente_specifica"/>
+            <glz:Input readOnly="true" id="estremoRecente_specifica" label="Specifica" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_SPEC_SECOLO"/>
+            <glz:Input readOnly="true" id="estremoRecente_validita" cssClass="js-archive-cronologia-valid-data form-control" label="Validità" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_VALIDITA_DATA"/>
+            <glz:Input readOnly="true" id="estremoRecente_codificaData" label="Codifica della data" cssClass="js-archive-cronologia-codificaText form-control"/>
+            <glz:Input readOnly="true" id="estremoRecente_noteData" label="Note alla data" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+          </glz:FieldSet>
+          <glz:Input readOnly="true" id="qualificaData" label="Qualifica della data" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_QUALIFICA_DATA"/>
+          <glz:Input readOnly="true" id="notaDatazione" label="Nota alla datazione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="riferimentiFontiConservatore" label="Riferimenti e fonti">
+      <glz:Fieldset id="riferimentiBibliograficiConvervatore" label="Riferimenti bibliografici" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputRiferimentiBibliografici" label="Riferimenti bibliografici" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.SchedaBibliografica;return_object=true;textfield=_denominazione"/>
+        <glz:Input readOnly="true" id="indicazioniSpecifiche" label="Indicazioni specifiche"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="fontiArchivisticheConvervatore" label="Fonti archivistiche" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="inputFontiArchivistiche" label="Fonti archivistiche" data="type=dynamicselectfrom;proxy=archivi.models.ModelProxy;controller=archivi.controllers.ajax.GetFieldValueFromId;model=archivi.models.FonteArchivistica;return_object=true;textfield=_denominazione"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="riferimentiWebConvervatore" label="Riferimenti web" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="rifWeb_Conserv_denominazioneSitoWeb" label="Denominazione sito o pagina web"/>
+        <glz:Input readOnly="true" id="rifWeb_Conserv_descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input readOnly="true" id="rifWeb_Conserv_dataInserimento" cssClass="js-archive-dateTextBox form-control" label="Data di inserimento"/>
+        <glz:Input readOnly="true" id="rifWeb_Conserv_url" label="URL" data="type=url"/>
+      </glz:Fieldset>
+    </glz:Fieldset>
+    <glz:Fieldset id="conserv_compilazione" label="Compilazione">
+      <glz:Input readOnly="true" id="linguaDescrizioneRecordConvervatore" label="Lingua di descrizione del record" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3"/>
+      <glz:Fieldset id="compilazioneConvervatore" label="Compilazione" required="true" data="readOnly=true;type=repeat;noEmptyMessage=true">
+        <glz:Input readOnly="true" id="redattore" label="Redattore"/>
+        <glz:Input readOnly="true" id="azione" label="Azione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-produttoreconservatore&quot;,##level##:##1##};dictId=VC_ARCHIVE_COMPILAZIONE_AZIONE"/>
+        <glz:Input readOnly="true" id="note" label="Note redazionali" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+        <glz:Input readOnly="true" id="data" cssClass="js-archive-dateTextBox form-control js-archive-dateCompilazione" label="Data"/>
+      </glz:Fieldset>
+      <glz:Input readOnly="true" id="osservazioniConvervatore" label="Osservazioni" type="multiline" rows="5" wrap="on" htmlEditor="true"/>
+    </glz:Fieldset>
+  </glz:Panel>
+</glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="archivi.controllers.*"/>
+    </mvc:State>
+
+    <mvc:State name="toggleFEVisibility">
+        <glz:Hidden controllerName="archivi.controllers.ToggleFEVisibility"/>
+    </mvc:State>
+
+    <mvc:State id="stateHistory" name="history" label="{i18n:Storico}" url="linkHistory">
+      <glz:JSTabGroup id="innerTabs">
+        <glz:JSTab id="historyTab" label="{i18n:Storico}" cssClassTab="pull-right">
+          <cms:FormEdit addValidationJs="false" controllerName="archivi.controllers.*">
+            <boards:ShowHistory id="history" model="archivi.models.ProduttoreConservatore"/>
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-glizycms-history" data="action=add" />
+            </cms:FormButtonsPanel>
+          </cms:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+      </glz:JSTabGroup>
+    </mvc:State>
+</mvc:Page>

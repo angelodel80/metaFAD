@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.ecommerce.orders.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php"
+          controllerName="metafad.ecommerce.orders.controllers.*">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+      <com:DataGridAjax id="dataGridForms" recordClassName="metafad.ecommerce.orders.models.Model"
+                        cssClass="table table-bordered table-striped"
+                        fullTextSearch="true">
+        <glz:DataGridColumn columnName="order_date" headerText="{i18n:Data}"/>
+        <glz:DataGridColumn columnName="order_user_name" headerText="{i18n:Utente}"/>
+        <glz:DataGridColumn columnName="order_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellShow" />
+      </com:DataGridAjax>
+    </mvc:State>
+
+    <mvc:State name="edit">
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.ecommerce.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.ecommerce.orders.models.Model"/>
+
+        <glz:Fieldset id="user" label="Dati dell'utente" cssClass="ecommerce-fieldset">
+          <glz:Input id="userName" label="{i18n:Nome}" readOnly="true"/>
+          <glz:Input id="userLastname" label="{i18n:Cognome}" readOnly="true"/>
+          <glz:Input id="userEmail" label="{i18n:Email}" readOnly="true"/>
+          <glz:Input id="userAddress" label="{i18n:Indirizzo}" readOnly="true"/>
+          <glz:Input id="userCity" label="{i18n:Citt&#224;}" readOnly="true"/>
+          <glz:Input id="userProvince" label="{i18n:Provincia}" readOnly="true"/>
+          <glz:Input id="userZipcode" label="{i18n:CAP}" readOnly="true"/>
+          <glz:Input id="userState" label="{i18n:Nazione}" readOnly="true"/>
+          <glz:Input id="userVat" label="{i18n:Partita IVA}" readOnly="true"/>
+          <glz:Input id="userCode" label="{i18n:Codice fiscale}" readOnly="true"/>
+        </glz:Fieldset>
+
+        <glz:Fieldset id="transaction" label="Dati della transazione" cssClass="ecommerce-fieldset">
+          <glz:Input id="transactionCode" label="{i18n:Codice della transazione}" readOnly="true"/>
+          <glz:Input id="transactionNumber" label="{i18n:Numero della transazione}" readOnly="true"/>
+          <glz:Input id="document_creationDate" label="{i18n:Data}" readOnly="true"/>
+        </glz:Fieldset>
+
+        <glz:Fieldset id="objects" label="Oggetti acquistati" cssClass="ecommerce-fieldset">
+          <cmp:OrderObjects id="orderObjects" />
+        </glz:Fieldset>
+
+        <cms:FormButtonsPanel>
+          <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+          <glz:HtmlButton label="{i18n:Stampa}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-print" data="action=print" />
+        </cms:FormButtonsPanel>
+      </c:FormEdit>
+
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.ecommerce.controllers.*" />
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="metafad.tei.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <com:ModalConfirm label="Aspetta" message="Sicuro di voler proseguire?"/>
+    <com:ModalAlert label="Aspetta" message="Operazione non corretta"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Manoscritti}" url="Manoscritto">
+        <com:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="metafad.tei.models.Manoscritto"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="metafad.tei.controllers.*" fullTextSearch="true"
+                          JQueryUI="true">
+            <glz:DataGridColumn columnName="comune_s" headerText="{i18n:Città}"/>
+            <glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione istituto}"/>
+            <glz:DataGridColumn columnName="segnatura_s" headerText="{i18n:Segnatura}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.tei.views.renderer.CellSelectEditDraftDelete"/>
+        </com:DataGridSolr>
+        <cmp:AddButton label="Manoscritto unitario,Manoscritto composito" acl="*,new" type="manoscritto-unitario,manoscritto-composito" routeUrl="archiviMVCAdd" editableRegion="actions"
+                       recordClassName="metafad.tei.models.Manoscritto" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="metafad/tei/js" enabled="true"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="metafad.tei.controllers.*">
+
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.tei.models.Manoscritto"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Hidden id="sectionType" value="{php:__Request::get('sectionType')}"/>
+            <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
+
+            <glz:Hidden id="isTemplate"/>
+            <glz:Input id="templateTitle" label="{i18n:Titolo template}"/>
+            <glz:Link cssClass="tree openTree fa fa-list" enabled="true"/>
+
+<glz:JSTabGroup id="Manoscritto" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+  <glz:Panel cssClass="col-md-4 gerarchia no-padding" text="Gerarchia: " enabled="true">
+      <cmp:Tree id="treeview" startId="0" title="" controllerName="metafad.tei.controllers.Gerarchia"/>
+  </glz:Panel>
+
+  <glz:JSTab id="tabIdentificazione" label="Identificazione" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Fieldset id="istituto" label="Istituto">
+        <glz:Input id="codice" label="Codice" />
+        <glz:Input id="denominazione" label="Denominazione" required="true"/>
+        <glz:Input id="indirizzo" label="Indirizzo"/>
+        <glz:Input id="paese" label="Paese" data="type=selectfrom;min_input_length=2;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##tei-Manoscritto##,##level##:##1##};dictId=VC_Localizzazione"/>
+        <glz:Input id="regione" label="Regione" data="type=selectfrom;min_input_length=2;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##tei-Manoscritto##,##level##:##2##};dictId=VC_Localizzazione"/>
+        <glz:Input id="comune" label="Comune" required="true" data="type=selectfrom;min_input_length=2;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##tei-Manoscritto##,##level##:##4##};dictId=VC_Localizzazione"/>
+      </glz:Fieldset>
+      <glz:Fieldset id="fondo" label="Fondo">
+        <glz:Input id="denominazione-fondo" label="Denominazione" />
+        <glz:Input id="storia" label="Storia" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        <glz:Input id="segnatura" label="Segnatura" required="true"/>
+        <glz:Input id="inventario" label="Inventario"/>
+        <glz:Input id="cnms" label="CNMS"/>
+      </glz:Fieldset>
+    </glz:Panel>
+  </glz:JSTab>
+
+  <glz:JSTab id="tabDescrizioneInterna" label="Descrizione interna" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Input id="sommario" label="Sommario"/>
+      <cmp:ListTextualUnits id="textualUnits" skin="ListTextualUnits.html"/>
+    </glz:Panel>
+  </glz:JSTab>
+
+  <glz:JSTab id="tabDescrizioneEsterna" label="Descrizione esterna" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Fieldset label="Composizione materiale">
+        <glz:Input id="numeroElementi" label="Numero elementi" />
+        <glz:Input id="numeroVolumi" label="Numero volumi"/>
+        <glz:Checkbox id="fascicoliLegati" label="Fascicoli legati"/>
+        <glz:Input id="note-composito" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+      <glz:Fieldset label="Palinsesto">
+        <glz:Checkbox id="palinsesto" label="Palinsesto" data="type=conditionalCheckBox;target=area-palinsesto"/>
+        <glz:Fieldset id="area-palinsesto">
+          <glz:Input id="carte-palinsesto" label="Carte" />
+          <glz:Input id="note-palinsesto" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+      <glz:Fieldset label="Materia">
+        <glz:Fieldset label="Corpo del codice">
+          <glz:List id="materia-corpo-codice" label="Materia" emptyValue=" - ">
+            <glz:ListItem value="membranaceo"/>
+            <glz:ListItem value="cartaceo"/>
+            <glz:ListItem value="misto"/>
+          </glz:List>
+          <glz:Input id="descrizione-corpo-codice" label="Descrizione" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Guardia">
+          <glz:List id="materia-guardia" label="Materia" emptyValue=" - ">
+            <glz:ListItem value="membranaceo"/>
+            <glz:ListItem value="cartaceo"/>
+            <glz:ListItem value="misto"/>
+          </glz:List>
+          <glz:Input id="descrizione-guardia" label="Descrizione" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Note">
+          <glz:Input id="note-materia" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Carte">
+          <glz:Input id="guardieIniziali" label="Guardie iniziali"/>
+          <glz:Input id="corpo" label="Corpo"/>
+          <glz:Input id="guardieFinali" label="Guardie finali"/>
+          <glz:Input id="mancanze" label="Mancanze" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+          <glz:Input id="frammenti" label="Frammenti" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+          <glz:Input id="partiStampa" label="Parti a stampa" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+          <glz:Input id="note-carte" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Dimensioni">
+          <glz:Input id="altezza" label="Altezza"/>
+          <glz:Input id="larghezza" label="Larghezza"/>
+          <glz:List id="unitaMisura" label="Unità di Misura" emptyValue=" - ">
+            <glz:ListItem value="mm"/>
+            <glz:ListItem value="cm"/>
+          </glz:List>
+          <glz:Input id="carte-dimensioni" label="Carte"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Decorazione">
+          <glz:List id="formato-datazione" label="Formato datazione" emptyValue=" - ">
+            <glz:ListItem value="aaaa"/>
+            <glz:ListItem value="aaaa-aaaa"/>
+            <glz:ListItem value="aaaa-mm-gg"/>
+            <glz:ListItem value="aaaa-mm"/>
+          </glz:List>
+          <glz:Input id="datazione" label="Datazione"/>
+          <glz:Input id="noteAllaDatazione" label="Note alla datazione" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+          <glz:Checkbox id="stemmi" label="Stemmi"/>
+          <glz:Input id="carte-datazione" label="Carte"/>
+          <glz:Input id="descrizione-decorazione" label="Descrizione" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Iniziali">
+          <glz:Checkbox id="semplici" label="Semplici"/>
+          <glz:List id="colore" label="Colore" emptyValue=" - ">
+            <glz:ListItem value="rosso"/>
+            <glz:ListItem value="verde"/>
+            <glz:ListItem value="blu"/>
+            <glz:ListItem value="oro"/>
+            <glz:ListItem value="lilla"/>
+            <glz:ListItem value="arancione"/>
+            <glz:ListItem value="altro"/>
+          </glz:List>
+          <glz:Checkbox id="filigranate" label="Filigranate"/>
+          <glz:Checkbox id="penna" label="Penna"/>
+          <glz:Checkbox id="pennello" label="Pennello"/>
+          <glz:Input id="note-iniziali" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Scuola/Autore">
+          <glz:Input id="scuolaAutore" label="Scuola/Autore" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+      </glz:Fieldset>
+      <glz:Fieldset label="Legatura">
+        <glz:List id="formato-datazione-legatura" label="Formato datazione" emptyValue=" - ">
+          <glz:ListItem value="aaaa"/>
+          <glz:ListItem value="aaaa-aaaa"/>
+          <glz:ListItem value="aaaa-mm-gg"/>
+          <glz:ListItem value="aaaa-mm"/>
+        </glz:List>
+        <glz:Input id="datazione-legatura" label="Datazione"/>
+        <glz:Input id="origine" label="Origine" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      </glz:Fieldset>
+    </glz:Panel>
+  </glz:JSTab>
+
+  <glz:JSTab id="tabStoria" label="Storia" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Fieldset label="Datazione">
+        <glz:Fieldset label="Data del manoscritto">
+          <glz:List id="formato-dataDelManoscritto" label="Formato data" emptyValue=" - ">
+            <glz:ListItem value="aaaa"/>
+            <glz:ListItem value="aaaa-aaaa"/>
+            <glz:ListItem value="aaaa-mm-gg"/>
+            <glz:ListItem value="aaaa-mm"/>
+          </glz:List>
+          <glz:Input id="dataDelManoscritto" label="Data" />
+          <glz:List id="tipoDiData" label="Tipo di data" emptyValue=" - ">
+            <glz:ListItem value="espressa"/>
+            <glz:ListItem value="desumibile"/>
+            <glz:ListItem value="stimata"/>
+          </glz:List>
+          <glz:Input id="carta-manoscritto" label="Carta"/>
+          <glz:Input id="note-manoscritto" label="Note" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        </glz:Fieldset>
+        <glz:Fieldset label="Data di entrata del ms">
+          <glz:List id="formato-data" label="Formato data" emptyValue=" - ">
+            <glz:ListItem value="aaaa"/>
+            <glz:ListItem value="aaaa-aaaa"/>
+            <glz:ListItem value="aaaa-mm-gg"/>
+            <glz:ListItem value="aaaa-mm"/>
+          </glz:List>
+          <glz:Input id="dataDiEntrataDelMs" label="Data di entrata del ms" />
+        </glz:Fieldset>
+      </glz:Fieldset>
+      <glz:Fieldset label="Trascrizione/descrizione">
+        <glz:Input id="trascrizioneElementiStorici" label="Trascrizione/descrizione di elementi storici" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+        <glz:Fieldset label="Nomi">
+          <glz:Fieldset id="antroponimi" label="Antroponimi" data="type=repeat;noEmptyMessage=true">
+            <glz:Input id="intestazione" label="intestazione" data="type=modalPage;pageId=archivi-Antroponimi_popup;controller=archivi_controllers_popup_ajax_FindTerm;model=archivi.models.Antroponimi"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="enti" label="Enti" data="type=repeat;noEmptyMessage=true">
+            <glz:Input id="intestazione" label="intestazione" data="type=modalPage;pageId=archivi-Enti_popup;controller=archivi_controllers_popup_ajax_FindTerm;model=archivi.models.Enti"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="toponimi" label="Toponimi" data="type=repeat;noEmptyMessage=true">
+            <glz:Input id="intestazione" label="intestazione" data="type=modalPage;pageId=archivi-Toponimi_popup;controller=archivi_controllers_popup_ajax_FindTerm;model=archivi.models.Toponimi"/>
+          </glz:Fieldset>
+        </glz:Fieldset>
+      </glz:Fieldset>
+    </glz:Panel>
+  </glz:JSTab>
+
+  <glz:JSTab id="tabBibliografia" label="Bibliografia" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Input id="bibliografiaStampa" label="Bibliografia a stampa" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      <glz:Input id="bibliografiaNonStampa" label="Bibliografia non a stampa" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      <glz:Input id="riproduzioni" label="Riproduzioni" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      <glz:Input id="fonti" label="Fonti" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+      <glz:Input id="osservazioni-bibliografia" label="Osservazioni" type="multiline" rows="1" wrap="on" htmlEditor="true"/>
+    </glz:Panel>
+  </glz:JSTab>
+
+  <glz:JSTab id="linkeMedia_tab" label="{i18n:Media}" dropdown="true">
+    <glz:Panel cssClass="col-md-8 active text-tab">
+      <glz:Input id="linkedStruMag" label="Metadato strutturale collegato" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" />
+      <glz:Fieldset cssClass="linkedMediaRepeater" id="linkedMedia" label="Media collegati a scheda" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+        <glz:Input data="type=mediapicker;preview=true" id="media" required="false" />
+      </glz:Fieldset>
+    </glz:Panel>
+  </glz:JSTab>
+</glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.tei.controllers.*"/>
+    </mvc:State>
+
+    <glz:JSscript><![CDATA[
+    $( document ).ready( function(){
+        $('.openTree').removeAttr('href');
+        $('.tree').click(function(){
+            if($('.tree').hasClass('openTree')){
+                $('.tree').removeClass('openTree');
+                $('.tree').addClass('closeTree');
+                $('.gerarchia').hide();
+                $('.text-tab').addClass('col-md-12')
+                $('.text-tab').removeClass('col-md-8');
+            } else {
+                $('.tree').addClass('openTree');
+                $('.tree').removeClass('closeTree');
+                $('.gerarchia').show();
+                $('.text-tab').removeClass('col-md-12')
+                $('.text-tab').addClass('col-md-8');
+            }
+        });
+
+        $('a[title="Cancella"]').attr('data-toggle', "modal").attr('data-target', "#myModalConfirm");
+        $('a[title="Cancella"]').attr('onclick', "$('.ok').click( function(){ location.href='" + $('a[title="Cancella"]').attr('href') + "'; $('#wrapper').attr('class', 'wrapper disabled');});");
+        $('a[title="Cancella"]').removeAttr('href');
+    });
+]]></glz:JSscript>
+</mvc:Page>

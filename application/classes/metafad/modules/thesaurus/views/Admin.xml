@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:iccd="metafad.modules.thesaurus.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php"
+          controllerName="metafad.modules.thesaurus.controllers.*">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+        <glz:Form id="editForm" enctype="multipart/form-data">
+
+            <iccd:DataGridAjax id="dataGridForms" recordClassName="metafad.modules.thesaurus.models.Thesaurus"
+                               cssClass="table table-bordered table-striped"
+                               controllerName="metafad.modules.thesaurus.controllers.*"
+                               JQueryUI="true" query="getThesauri" dbDebug="false">
+                <glz:DataGridColumn columnName="thesaurus_name" headerText="{i18n:Nome}"/>
+                <glz:DataGridColumn columnName="thesaurus_code" headerText="{i18n:Codice}"/>
+                <glz:DataGridColumn columnName="thesaurusforms_name" width="350px" searchable="false" headerText="{i18n:Schede collegate}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.Form"/>
+                <glz:DataGridColumn columnName="thesaurus_id" width="150px" sortable="false" searchable="false" headerText="{i18n:Termini}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.Count"/>
+                <glz:DataGridColumn columnName="thesaurus_id" sortable="false" searchable="false" cssClass="actions"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.CellEditDeleteImport"/>
+            </iccd:DataGridAjax>
+            <glz:EmptyComponent editableRegion="actions">
+              <iccd:AddButton buttonId="dataGridAddButton" label="" acl="*,new" routeUrl="actionsMVCAdd" add="Aggiungi dizionario" cssClass="inline" recordClassName="metafad.modules.thesaurus.models.ThesaurusForms" dataGridAjaxId="dataGridForms"/>
+              <iccd:AddButton id="importButton" label="" acl="*,edit" noLink="true" routeUrl="actionsMVCImport" buttonId="import-massive" cssClass="button-import inline" add="Importa pacchetto dizionari" recordClassName="metafad.modules.thesaurus.models.ThesaurusForms"/>
+            </glz:EmptyComponent>
+            <com:ModalAlert message="massiveImportICCD" label="Importazione Pacchetto Dizionari" id="importDataAlert"/>
+
+        </glz:Form>
+    </mvc:State>
+
+    <mvc:State name="edit" id="stateEdit">
+        <cms:FormEdit id="editForm" newCode="true"
+                      controllerName="metafad.modules.thesaurus.controllers.formEdit.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.modules.thesaurus.models.Thesaurus"/>
+            <glz:Input id="thesaurus_name" label="{i18n:Nome}" size="90" required="true"/>
+            <glz:Input id="thesaurus_code" label="{i18n:Codice}" size="90" required="false"/>
+
+
+            <com:ModalAlert message="importICCD" label="Importazione Dizionario" id="importDataAlert"/>
+            <glz:Link id="importData" icon="fa fa-upload" label="Importa dati" editableRegion="actions"
+                      cssClass="import link"/>
+            <com:ModalAlert message='' label="Etichetta" id="exportDataAlert"/>
+            <glz:Link id="exportData" icon="fa fa-download" label="Esporta dati" editableRegion="actions"
+                      cssClass="export link"/>
+
+            <glz:Fieldset data="type=repeat;collapsable=false; repeatMin=0" id="relatedBoardIccd"
+                          label="{i18n:Schede collegate}" required="true">
+                <glz:Hidden id="thesaurusFormsId"/>
+                <com:Container cssClass="userInstitute col-lg-4 col-md-4 col-sm-4">
+                    <glz:Input
+                            data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusModulesProxy;return_object=true"
+                            id="boardName" label="" required="true"/>
+                </com:Container>
+                <com:Container cssClass="col-lg-4 col-md-4 col-sm-4 thesaurusModel">
+                    <glz:Input
+                            data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusModulesModelProxy;return_object=true"
+                            id="thesaurusName" label="" required="true"/>
+                </com:Container>
+                <com:Container cssClass="renderLevel col-lg-3 col-md-2 col-sm-4">
+                    <glz:Hidden id="boardLevel" label="{i18n:Livello}" size="90" required="true"/>
+                    <iccd:RenderLevel/>
+                </com:Container>
+            </glz:Fieldset>
+
+            <iccd:DataGridAjax id="dataGrid2" recordClassName="metafad.modules.thesaurus.models.ThesaurusDetails"
+                               cssClass="table table-bordered table-striped"
+                               JQueryUI="true">
+                <glz:DataGridColumn cssClass="col-lg-3 col-md-3 col-sm-3" columnName="thesaurusdetails_value" width="350px" headerText="{i18n:Etichetta}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.CellValue"/>
+                <glz:DataGridColumn cssClass="col-lg-3 col-md-3 col-sm-3" columnName="thesaurusdetails_key" width="350px" headerText="{i18n:Codice}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.CellKey"/>
+                <glz:DataGridColumn cssClass="buttons-level col-lg-2 col-md-2 col-sm-2" columnName="thesaurusdetails_level" width="350px" headerText="{i18n:Livello}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.CellLevel"/>
+                <glz:DataGridColumn cssClass="col-lg-4 col-md-4 col-sm-4" columnName="thesaurusdetails_parent" width="350px" headerText="{i18n:Figlio di}"
+                                    renderCell="metafad.modules.thesaurus.views.renderer.CellParent"/>
+                <glz:DataGridColumn columnName="thesaurusdetails_id" sortable="false" searchable="false"
+                                    cssClass="actions" renderCell="metafad.modules.thesaurus.views.renderer.CellDelete"/>
+            </iccd:DataGridAjax>
+            <cmp:AddRecord label="" routeUrl="actionsMVCAdd" editableRegion="actions" dropdown="false" recordClassName="metafad.modules.thesaurus.models.ThesaurusDetails" dataGridAjaxId="dataGrid2"/>
+
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save"
+                                data="action=save" acl="*,edit"/>
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save"
+                                data="action=saveClose"/>
+
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="import">
+        <glz:Form id="myForm" removeGetValues="false">
+            <glz:Panel cssClass="formButtons">
+                <glz:HtmlButton id="btnBack" label="Indietro" value="index" name="action" cssClass="btn btn-primary"/>
+            </glz:Panel>
+        </glz:Form>
+    </mvc:State>
+
+    <mvc:State name="delete">
+    </mvc:State>
+
+    <glz:JSscript folder="metafad/modules/thesaurus/js"/>
+
+</mvc:Page>

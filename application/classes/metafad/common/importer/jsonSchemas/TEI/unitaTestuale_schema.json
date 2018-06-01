@@ -1,0 +1,110 @@
+{
+  "__model": {
+    "type": "constant",
+    "value": "metafad.tei.models.UnitaTestuale"
+  },
+  "pageId": {
+    "type": "constant",
+    "value": "tei-UnitaTestuale"
+  },
+  "sectionType": {
+    "type": "constant",
+    "value": "unita-testuale"
+  },
+  "parent": {
+    "type": "composite",
+    "repeatable": false,
+    "xpath": ".",
+    "struct": {
+      "id": {
+        "type": "simple",
+        "xpath": "./@idparent"
+      },
+      "text": {
+        "type": "simple",
+        "xpath": "./@textparent"
+      }
+    }
+  },
+  "carte": {
+    "type": "simple",
+    "xpath": "./x:locus"
+  },
+  "ordinamento": {
+    "type": "simple",
+    "xpath": "./@n"
+  },
+  "titolo": {
+    "type": "simple",
+    "xpath": "./x:title"
+  },
+  "carta-titolo": {
+    "type": "simple",
+    "xpath": "./x:title/x:locus"
+  },
+  "tipologia": {
+    "type": "simple",
+    "xpath": "./x:title/@type"
+  },
+  "nomeNelTitoloRep": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./x:respStmt",
+    "struct": {
+      "nomeNelTitolo": {
+        "type": "simple",
+        "xpath": "./x:resp='nomeCitatoNelTitolo'"
+      }
+    }
+  },
+  "incipit": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./x:incipit",
+    "struct": {
+      "tipologia-incipit": {
+        "type": "simple",
+        "xpath": "./@type"
+      },
+      "carte-incipit": {
+        "type": "simple",
+        "xpath": "./x:locus"
+      },
+      "descrizione-incipit": {
+        "type": "simple",
+        "xpath": "."
+      },
+      "note-incipit": {
+        "type": "simple",
+        "xpath": "../x:note[@type='incipit']"
+      }
+    }
+  },
+  "explicit": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./x:explicit",
+    "struct": {
+      "tipologia-explicit": {
+        "type": "simple",
+        "xpath": "./@type"
+      },
+      "carte-explicit": {
+        "type": "simple",
+        "xpath": "./x:locus"
+      },
+      "descrizione-explicit": {
+        "type": "simple",
+        "xpath": "."
+      },
+      "note-explicit": {
+        "type": "simple",
+        "xpath": "../x:note[@type='explicit']"
+      }
+    }
+  },
+  "osservazioni": {
+    "type": "simple",
+    "xpath": "./x:note[@type='osservazioni']"
+  }
+}

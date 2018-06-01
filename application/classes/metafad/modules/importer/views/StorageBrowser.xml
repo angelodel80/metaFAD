@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="metafad.modules.importer.views.components.*"
+    controllerName="storageBrowser"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Popup.php">
+
+    <mvc:State name="index">
+        <cmp:CustomStorageBrowser id="storageBrowser" />
+    </mvc:State>
+</mvc:Page>

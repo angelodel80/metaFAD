@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="instanceActivities"
+        model:usePrefix="false"
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <!-- instanza attività -->
+        <model:Field name="processId" type="int" index="true"/>
+        <model:Field name="processTitle" type="string"/>
+        <model:Field name="processStatus" type="int" index="true"/>
+        <model:Field name="activity" type="object" readFormat="false"/>
+        <model:Field name="deadlineDate" type="datetime"/>
+        <model:Field name="boardType" type="string"/>
+        <model:Field name="startingBoardId" type="int"/>
+        <model:Field name="endingBoardId" type="int"/>
+        <model:Field name="notes" type="array"/>
+        <model:Field name="status" type="int" index="true"/>
+        <model:Field name="percentage" type="int" index="true"/>
+        <model:Field name="assignements" type="array_id" index="true"/>
+
+    </model:Define>
+
+    <model:Query name="getFromProcessId" type="function" arguments="id">
+        <![CDATA[
+        $expr = $iterator->expr();
+
+        $iterator->select('*')
+            ->where("processId", $id);
+                ]]>
+    </model:Query>
+
+    <model:Query name="getFromProcessStatus" type="function">
+        <![CDATA[
+        $expr = $iterator->expr();
+
+        $iterator->select('*')
+            ->where('processStatus', 1);
+                ]]>
+    </model:Query>
+
+    <model:Query name="getFromUserAndProcessStatus" type="function" arguments="id">
+        <![CDATA[
+        $expr = $iterator->expr();
+        if($id){
+            $iterator->select('*')
+              ->where('assignements', $id)
+              ->where('status', 1);
+       }
+       else{
+            $iterator->select('*')
+            ->where('assignements', $this->getUserId())
+            ->where('status', 1);
+       }
+                ]]>
+    </model:Query>
+
+
+</model:Model>

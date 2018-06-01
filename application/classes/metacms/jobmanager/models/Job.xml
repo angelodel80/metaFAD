@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+	model:tableName="jobs_tbl" model:usePrefix="true">
+
+  <model:Query name="searchForm">
+  <![CDATA[
+      SELECT * 
+      FROM ##TABLE_NAME##
+      WHERE job_description LIKE :titolo AND
+            job_name LIKE :name AND 
+            (##job_params##) AND
+            job_creationDate <= :dateto
+            AND job_creationDate >= :datefrom
+  ]]>
+  </model:Query>
+
+</model:Model>

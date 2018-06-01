@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:c="metafad.modules.iccd.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Popup.php">
+
+<glz:Import src="_common.xml"/>
+
+<mvc:State name="edit">
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.MAG.controllers.media.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.teca.MAG.models.Dis"/>
+
+        <glz:Fieldset id="dis_item" label="{i18n:DIS Item}" data="type=repeat;collapsable=false;repeatMin=0">
+          <glz:Input id="file" label="{i18n:File}" required="true"/>
+          <glz:List id="preview" label="{i18n:Preview}" emptyValue="">
+              <glz:ListItem key="thumbnail" value="thumbnail"/>
+              <glz:ListItem key="sample" value="sample"/>
+          </glz:List>
+          <glz:Input id="available" label="{i18n:Available}" />
+        </glz:Fieldset>
+
+        <cms:FormButtonsPanel id="formButtons">
+          <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-primary js-glizycms-save"
+                          data="action=save" acl="*,edit" />
+        </cms:FormButtonsPanel>
+    </c:FormEdit>
+    </mvc:State>
+</mvc:Page>

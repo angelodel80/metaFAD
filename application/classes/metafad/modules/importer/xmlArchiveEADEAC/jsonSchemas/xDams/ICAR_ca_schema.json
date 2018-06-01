@@ -1,0 +1,256 @@
+{
+  "pageId": {
+    "type": "constant",
+    "value": "archivi-complessoarchivistico"
+  },
+  "codiceIdentificativoPrecedente": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": [
+      "./did/unitid/text()",
+      "./@id"
+    ],
+    "struct": {
+      "codice": {
+        "type": "simple",
+        "xpath": "."
+      }
+    },
+    "commenti generali": "L'ordine delle funzioni è JOIN > SOLVE > TRANSFORM",
+    "commenti sul joiner": "Il joiner è default, ovvero fa il merging degli array, in caso di multipli",
+    "commenti sul solver": "Il solver è default, ovvero si prende la prima occorrenza di eventuali valori multipli",
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    }
+  },
+  "denominazione": {
+    "type": "simple",
+    "xpath": "./did/unittitle/text()",
+    "trim": "advanced"
+  },
+  "cronologia": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": [
+      "./did/unittitle/unitdate/text()",
+      "./did/unittitle/num/unitdate"
+    ],
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    },
+    "struct": {
+      "estremoCronologicoTestuale": {
+        "type": "simple",
+        "xpath": "./@normal",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_ExtractFromNormal",
+          "params": {
+            "fieldType": "ESTREMO_TESTUALE"
+          }
+        }
+      },
+      "estremoRemoto_data": {
+        "type": "simple",
+        "xpath": "./@normal",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_ExtractFromNormal",
+          "params": {
+            "fieldType": "REMOTO_DATA"
+          }
+        }
+      },
+      "estremoRemoto_codifica": {
+        "type": "simple",
+        "xpath": "./@normal",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_ExtractFromNormal",
+          "params": {
+            "fieldType": "REMOTO_CODIFICA"
+          }
+        }
+      },
+      "estremoRecente_data": {
+        "type": "simple",
+        "xpath": "./@normal",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_ExtractFromNormal",
+          "params": {
+            "fieldType": "RECENTE_DATA"
+          }
+        }
+      },
+      "estremoRecente_codifica": {
+        "type": "simple",
+        "xpath": "./@normal",
+        "transform": {
+          "classname": "metafad_common_importer_functions_transformers_ExtractFromNormal",
+          "params": {
+            "fieldType": "RECENTE_CODIFICA"
+          }
+        }
+      },
+      "notaDatazione": {
+        "type": "simple",
+        "xpath": "./text()"
+      }
+    }
+  },
+  "consistenza": {
+    "type": "composite",
+    "repeatable": true,
+    "xpath": "./did/physdesc",
+    "struct": {
+      "tipologia": {
+        "type": "simple",
+        "xpath": "./genreform/text()"
+      },
+      "quantita": {
+        "type": "simple",
+        "xpath": "./extent/text()"
+      }
+    }
+  },
+  "descrizioneContenuto": {
+    "type": "composite",
+    "xpath": "./descgrp",
+    "struct": {
+      "StoriaBibliografica": {
+        "type": "simple",
+        "xpath": ["./scopecontent/text()", "./scopecontent/p/text()"],
+        "solver": {
+          "classname": "metafad_common_importer_functions_solvers_Implode",
+          "params": {
+          }
+        },
+        "joiner": {
+          "classname": "metafad_common_importer_functions_joiners_HorizontalImplode",
+          "params": {
+          }
+        }
+      },
+      "StoriaArchivistica": {
+        "type": "simple",
+        "xpath": "./bibliography/bibref/text()"
+      }
+    },
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+      "params": {
+        "separator": "\r\n====================\r\n",
+        "internalSeparator": "\r\n\r\n"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    }
+  },
+  "storiaArchivistica": {
+    "type": "composite",
+    "xpath": ".",
+    "struct": {
+      "StoriaArchivistica": {
+        "type": "simple",
+        "xpath": "./descgrp/custodhist[contains(@encodinganalog,'archival history')]/text()"
+      },
+      "NoteArchivistiche": {
+        "type": "simple",
+        "xpath": "./processinfo[contains(@encodinganalog,'archivist note')]/text()"
+      }
+    },
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+      "params": {
+        "separator": "\r\n====================\r\n",
+        "internalSeparator": "\r\n\r\n"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    }
+  },
+  "criteriOrdinamento": {
+    "type": "composite",
+    "xpath": ".",
+    "struct": {
+      "Ordinamento": {
+        "type": "simple",
+        "xpath": "./did/unittitle/num[contains(@type,'ordinamento')]/text()"
+      },
+      "Materiale": {
+        "type": "simple",
+        "xpath": "./did/langmaterial[contains(@encodinganalog,'scripts of material')]/text()"
+      },
+      "Note": {
+        "type": "simple",
+        "xpath": "./note[contains(@encodinganalog,'note')]/text()"
+      }
+    },
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+      "params": {
+        "separator": "\r\n====================\r\n",
+        "internalSeparator": "\r\n\r\n"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    }
+  },
+  "condizioniAccesso": {
+    "type": "composite",
+    "xpath": "./descgrp",
+    "struct": {
+      "Causa": {
+        "type": "simple",
+        "xpath": "./phystech[@type='causa']/text()"
+      },
+      "Danno": {
+        "type": "simple",
+        "xpath": "./phystech[@type='danno']/text()"
+      }
+    },
+    "solver": {
+      "classname": "metafad_common_importer_functions_solvers_ToStringImplode",
+      "params": {
+        "separator": "\r\n====================\r\n",
+        "internalSeparator": "\r\n\r\n"
+      }
+    },
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    }
+  },
+  "soggettoProduttore": {
+    "type": "simple",
+    "repeatable": false,
+    "xpath": "./did/origination/persname/@authfilenumber",
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_LinkFromExternalID",
+      "params": {
+        "models": ["archivi.models.ProduttoreConservatore"]
+      }
+    }
+  },
+  "compilazione": {
+    "type": "composite",
+    "xpath": "./processinfo/list/item",
+    "repeatable": true,
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_PurgeVoids"
+    },
+    "struct": {
+      "redattore": {
+        "type": "simple",
+        "xpath": "./persname/text()"
+      },
+      "azione": {
+        "type": "simple",
+        "xpath": "./text()"
+      },
+      "data": {
+        "type": "simple",
+        "xpath": "./date/text()"
+      }
+    }
+  }
+}

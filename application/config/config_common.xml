@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Config xmlns:glz="http://www.glizy.org/dtd/1.0/">
+    <glz:Param name="CHARSET" value="UTF-8"/>
+    <glz:Param name="APP_NAME" value="Metafad"/>
+    <glz:Param name="APP_VERSION" value="0.8"/>
+    <glz:Param name="APP_AUTHOR">
+        <![CDATA[Gruppo Meta <http://www.gruppometa.it>]]>
+    </glz:Param>
+
+    <glz:Param name="SANITIZE_URL" value="false"/>
+
+    <glz:Param name="SEF_URL" value="full"/>
+    <glz:Param name="USER_LOG" value="false"/>
+    <glz:Param name="DEFAULT_LANGUAGE" value="it"/>
+    <glz:Param name="SESSION_PREFIX" value="metafad"/>
+	<glz:Param name="SESSION_TIMEOUT" value="1000000000"/>
+    <glz:Param name="CACHE_CODE" value="-1"/>
+    <glz:Param name="GLZ_HOST" value="{{env:METAFAD_URL}}"/>
+
+    <glz:Param name="DB_TYPE" value="mysql" />
+    <glz:Param name="DB_HOST" value="{{env:MYSQL_HOST}}" />
+    <glz:Param name="DB_NAME" value="{{env:MYSQL_DB_NAME_BE}}" />
+    <glz:Param name="DB_USER" value="{{env:MYSQL_USERNAME}}" />
+    <glz:Param name="DB_PSW" value="{{env:MYSQL_PASSWORD}}" />
+    <glz:Param name="DB_PREFIX" value="" />
+
+    <glz:Param name="DB_TYPE#3" value="mysql" />
+    <glz:Param name="DB_HOST#3" value="{{env:MYSQL_HOST}}" />
+    <glz:Param name="DB_NAME#3" value="{{env:MYSQL_DB_NAME_ECOMMERCE}}" />
+    <glz:Param name="DB_USER#3" value="{{env:MYSQL_USERNAME}}" />
+    <glz:Param name="DB_PSW#3" value="{{env:MYSQL_PASSWORD}}" />
+    <glz:Param name="DB_PREFIX#3" value="" />
+
+    <glz:Param name="SMTP_HOST" value="{{env:SMTP_HOST}}" />
+    <glz:Param name="SMTP_USER" value="{{env:SMTP_USER}}" />
+    <glz:Param name="SMTP_PSW" value="{{env:SMTP_PSW}}" />
+    <glz:Param name="SMTP_SENDER" value="{{env:SMTP_SENDER}}" />
+    <glz:Param name="SMTP_EMAIL" value="{{env:SMTP_EMAIL}}" />
+    <glz:Param name="SMTP_PORT" value="{{env:SMTP_PORT}}" />
+
+    <glz:Param name="BASE_REGISTRY_PATH" value="metafad"/>
+    <glz:Param name="TEMPLATE_FOLDER" value="application/template/"/>
+
+    <glz:Param name="ACL_ENABLED" value="true" />
+    <glz:Param name="ACL_ROLES" value="true" />
+    <glz:Param name="ACL_MODULES" value="true" />
+    <glz:Param name="ACL_CLASS" value="metafad.usersAndPermissions.roles.Acl" />
+    <glz:Param name="SITEMAP_ID" value="glizycms_ContentsEdit" />
+    <glz:Param name="PERMISSION_CLASS" value="metafad.usersAndPermissions.roles.services.SiteMapPermissionService" />
+    <glz:Param name="PERMISSION_PARAMS" value="permissions.xml" />
+
+    <glz:Param name="DATASOURCE_MODE" value="xml"/>
+    <glz:Param name="START_PAGE" value="Login"/>
+
+    <glz:Param name="GLIZY_ADD_JQUERY_JS" value="true"/>
+    <glz:Param name="GLIZY_JQUERY" value="jquery-2.1.4.min.js"/>
+    <glz:Param name="GLIZY_ADD_JQUERYUI_JS" value="true"/>
+    <glz:Param name="GLIZY_JQUERYUI_THEME" value="jquery-ui-bootstrap/jquery-ui-1.10.0.custom.css"/>
+    <glz:Param name="GLIZY_JQUERYUI" value="jquery-ui-1.10.4.custom.min.js"/>
+
+    <glz:Param name="glizy.form.cssClass" value="form-horizontal row-fluid stickyForm form-max-width"/>
+    <glz:Param name="glizy.formElement.cssClassLabel" value="col-sm-3 control-label"/>
+    <glz:Param name="glizy.formElement.admCssClass" value="form-control"/>
+    <glz:Param name="glizy.formElement.cssClass" value="form-control"/>
+    <glz:Param name="glizycms.content.history" value="true"/>
+    <glz:Param name="glizy.dataAccess.validate" value="false"/>
+    <glz:Param name="glizy.dataAccess.document.enableComment" value="true"/>
+
+    <glz:Param name="FORM_ITEM_TEMPLATE"><![CDATA[
+    <div class="form-group">
+        ##FORM_LABEL##
+        <div class="col-sm-9">
+            ##FORM_ITEM##
+        </div>
+    </div>
+    ]]></glz:Param>
+    <glz:Param name="FORM_ITEM_RIGHT_LABEL_TEMPLATE"><![CDATA[
+    <div class="form-group">
+        ##FORM_LABEL##
+        <div class="col-sm-9">
+            ##FORM_ITEM##
+        </div>
+    </div>
+    ]]></glz:Param>
+    <glz:Param name="glizycms.form.buttonsPanel"><![CDATA[
+    <div class="formButtons" id="##ID##">
+        <div class="content">
+            ##CONTENT##
+        </div>
+    </div>
+    ]]></glz:Param>
+
+    <glz:Param name="glizy.datagrid.action.editCssClass" value="btn btn-info btn-flat fa fa-pencil"/>
+    <glz:Param name="glizy.datagrid.action.showOnlyCssClass" value="btn btn-success btn-flat fa fa-search"/>
+    <glz:Param name="glizy.datagrid.action.editDraftCssClass" value="btn btn-default btn-flat fa fa-wrench"/>
+    <glz:Param name="glizy.datagrid.action.deleteCssClass" value="btn btn-danger btn-flat fa fa-trash"/>
+    <glz:Param name="glizy.datagrid.action.normalizeCssClass" value="btn btn-success btn-flat fa fa-cog"/>
+    <glz:Param name="glizy.datagrid.action.hideCssClass" value="btn btn-default btn-flat fa fa-eye-slash"/>
+    <glz:Param name="glizy.datagrid.action.downloadCssClass" value="btn btn-default btn-flat fa fa-download"/>
+    <glz:Param name="glizy.datagrid.action.showCssClass" value="btn btn-default btn-flat fa fa-eye"/>
+    <glz:Param name="glizy.datagrid.action.startCssClass" value="btn btn-success btn-flat fa fa-play"/>
+    <glz:Param name="glizy.datagrid.action.copyCssClass" value="btn btn-default btn-flat fa fa-copy"/>
+    <glz:Param name="glizy.datagrid.action.copyWithoutValueCssClass" value="btn btn-default btn-flat fa fa-file"/>
+    <glz:Param name="glizy.datagrid.action.detailCssClass" value="btn btn-default btn-flat fa fa-bars"/>
+    <glz:Param name="glizy.datagrid.action.validateCssClass" value="btn btn-success btn-flat fa fa-magic"/>
+    <glz:Param name="glizy.datagrid.action.ecommerceCssClass" value="btn btn-success btn-flat fa fa-eur"/>
+    <glz:Param name="glizy.datagrid.checkbox.on" value="fa fa-check-square text-dark-gray"/>
+    <glz:Param name="glizy.datagrid.checkbox.off" value="fa fa-square-o"/>
+    <glz:Param name="glizycms.form.actionLink.cssClass" value="btn btn-info btn-flat"/>
+
+    <glz:Param name="glizy.maps.google.apiKey" value="{{env:GOOGLE_API_KEY}}"/>
+
+    <glz:Param name="metafad.log.group" value="metafad"/>
+    <glz:Param name="metafad.log.level" value="{{env:METAFAD_LOG_LEVEL}}"/>
+
+    <glz:Param name="metafad.solr.base.url" value="{{env:SOLR_HOST}}"/>
+    <glz:Param name="metafad.search.base.url" value="{{env:SEARCH_SERVICES_HOST}}"/>
+
+    <glz:Param name="solr.core.be" value="{{env:SOLR_CORE_BE}}"/>
+    <glz:Param name="solr.core.fe" value="{{env:SOLR_CORE_FE}}"/>
+    <glz:Param name="solr.core.fe_iccd" value="{{env:SOLR_CORE_FE_ICCD}}"/>
+    <glz:Param name="solr.core.fe_iccd_aut" value="{{env:SOLR_CORE_FE_ICCD_AUT}}"/>
+    <glz:Param name="solr.core.fe_archive" value="{{env:SOLR_CORE_FE_ARCHIVE}}"/>
+    <glz:Param name="solr.core.fe_archive_aut" value="{{env:SOLR_CORE_FE_ARCHIVE_AUT}}"/>
+    <glz:Param name="solr.core.metaindice" value="{{env:SOLR_CORE_METAINDICE}}"/>
+    <glz:Param name="solr.core.metaindice_aut" value="{{env:SOLR_CORE_METAINDICE_AUT}}"/>
+    <glz:Param name="solr.core.dam" value="{{env:SOLR_CORE_DAM}}"/>
+
+    <glz:Param name="metafad.solr.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.be}}/"/>
+    <glz:Param name="metafad.solr.url.fe" value="{{metafad.solr.base.url}}/solr/{{solr.core.fe}}/"/>
+    <glz:Param name="metafad.sbnToMag.url" value="{{metafad.search.base.url}}/sbnmarc/mag?bid="/>
+    <glz:Param name="metafad.solr.iccd.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.fe_iccd}}/"/>
+    <glz:Param name="metafad.solr.iccdaut.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.fe_iccd_aut}}/"/>
+    <glz:Param name="metafad.solr.archive.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.fe_archive}}/"/>
+    <glz:Param name="metafad.solr.archiveaut.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.fe_archive_aut}}/"/>
+    <glz:Param name="metafad.solr.metaindice.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.metaindice}}/"/>
+    <glz:Param name="metafad.solr.metaindiceaut.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.metaindice_aut}}/"/>
+    <glz:Param name="metafad.kardex.url" value="{{metafad.search.base.url}}/kardex/search?"/>
+    <glz:Param name="metafad.opac.fields.url" value="{{metafad.search.base.url}}/opac/fields" />
+    <glz:Param name="metafad.opac.archive.fields.url" value="{{metafad.search.base.url}}/archivio-ca/fields" />
+    <glz:Param name="metafad.opac.iccd.fields.url" value="{{metafad.search.base.url}}/iccd/fields" />
+    <glz:Param name="metafad.opac.metaindice.fields.url" value="{{metafad.search.base.url}}/metaindice/fields" />
+    <glz:Param name="metafad.opac.metaindice-au.fields.url" value="{{metafad.search.base.url}}/metaindice-au/fields" />
+
+    <glz:Param name="metafad.sbnmarc.url" value="{{metafad.search.base.url}}/sbnmarc/iccd?"/>
+    <glz:Param name="metafad.mets.import.url" value="{{metafad.search.base.url}}/mets/mag" />
+    <glz:Param name="metafad.metaindice.detail.url" value="{{metafad.search.base.url}}/metaindice/resource"/>
+    <glz:Param name="metafad.service.updateSbnDigitale" value="{{metafad.search.base.url}}/opac/updateSbnDigitale"/>
+    <glz:Param name="metafad.service.updateSbnToIccd" value="{{metafad.search.base.url}}/opac/updateSbnToIccd"/>
+    <glz:Param name="metafad.service.updateSbnToIccdAut" value="{{metafad.search.base.url}}/opac-au/updateSbnToIccd"/>
+    <glz:Param name="metafad.service.updateSbnEcommerce" value="{{metafad.search.base.url}}/opac/updateEcommerce"/>
+    <glz:Param name="metafad.service.updateSbnVisibility" value="{{metafad.search.base.url}}/opac/updateVisibility"/>
+
+    <glz:Param name="glizycms.mediaArchive.bridge" value="metacms.dam.Bridge"/>
+    <glz:Param name="gruppometa.dam.instance" value="{{env:DAM_INSTANCE}}"/>
+    <glz:Param name="gruppometa.dam_fe.url_env" value="{{env:DAM_FE_URL}}"/>
+    <glz:Param name="gruppometa.dam_fe.url" value="{{gruppometa.dam_fe.url_env}}/#/tecadam"/>
+	<glz:Param name="gruppometa.dam.url" value="{{env:METAFAD_URL}}/rest/dam/"/>
+	<glz:Param name="gruppometa.dam.url.local" value="{{env:DAM_REST_URL}}"/>
+    <glz:Param name="gruppometa.dam.cmsIntegration" value="false"/>
+    <glz:Param name="gruppometa.dam.solr.url" value="{{metafad.solr.base.url}}/solr/{{solr.core.dam}}/"/>
+
+    <glz:Param name="gruppometa.dam.upload.folder" value="{{env:DAM_UPLOAD_FOLDER}}"/>
+    <glz:Param name="gruppometa.dam.storage.folder" value="{{env:DAM_STORAGE_FOLDER}}"/>
+    <glz:Param name="gruppometa.dam.timeout" value="3600" />
+    <glz:Param name="gruppometa.dam.maxResizeWidth" value="1200"/>
+    <glz:Param name="gruppometa.dam.resizeStreamS" value="800"/>
+
+    <glz:Param name="metafad.url" value="{{env:METAFAD_URL}}"/>
+    <glz:Param name="metafad.FE.url" value="{{env:METAFAD_FE_URL}}"/>
+    <glz:Param name="metafad.strumag.url" value="{{env:METAFAD_STRUMAG_URL}}"/>
+    <glz:Param name="metafad.tecadam" value="{{gruppometa.dam_fe.url_env}}#/tecadam?setState=true"/>
+    <glz:Param name="metafad.strumag" value="{{metafad.strumag.url}}" />
+
+    <glz:Param name="metafad.modules.iccd.hasList" value="false" />
+    <glz:Param name="metafad.modules.importer.uploadFolder" value="{{env:METAFAD_IMPORT_FOLDER}}"/>
+    <glz:Param name="metafad.modules.importer.storageFolder" value="{{env:METAFAD_STORAGE_FOLDER}}"/>
+    <glz:Param name="metafad.modules.importer.iccd.services.ImmftanFromDB.folder" value="{{env:METAFAD_IMPORT_FOLDER}}"/>
+    <glz:Param name="metafad.MAG.folder" value="{{env:METAFAD_MAG_FOLDER}}"/>
+    <glz:Param name="metafad.MAG.export.folder" value="{{env:METAFAD_MAG_EXPORT_FOLDER}}" />
+
+    <glz:Param name="metafad.sbn.upload.web.folder" value="{{env:METAFAD_SBN_FOLDER}}"/>
+    <glz:Param name="metafad.sbn.upload.solr.folder" value="{{env:METAFAD_SBN_FOLDER}}"/>
+    <glz:Param name="metafad.sbn.uploadFolder.web" value="{{metafad.sbn.upload.web.folder}}/sbn"/>
+    <glz:Param name="metafad.sbn.uploadFolder.solr" value="{{metafad.sbn.upload.solr.folder}}/sbn"/>
+    <glz:Param name="metafad.sbn.outputFolder.web" value="{{metafad.sbn.upload.web.folder}}/output-sbn"/>
+    <glz:Param name="metafad.sbn.outputFolder.solr" value="{{metafad.sbn.upload.solr.folder}}/output-sbn"/>
+    <glz:Param name="metafad.sbnaut.uploadFolder.web" value="{{metafad.sbn.upload.web.folder}}/sbnaut"/>
+    <glz:Param name="metafad.sbnaut.uploadFolder.solr" value="{{metafad.sbn.upload.solr.folder}}/sbnaut"/>
+    <glz:Param name="metafad.sbnaut.outputFolder.web" value="{{metafad.sbn.upload.web.folder}}/output-sbnaut"/>
+    <glz:Param name="metafad.sbnaut.outputFolder.solr" value="{{metafad.sbn.upload.solr.folder}}/output-sbnaut"/>
+    <glz:Param name="metafad.sbn.import" value="{{metafad.search.base.url}}/jobs/import/start?filename=##filename##&amp;directory=##directory##" />
+    <glz:Param name="metafad.sbn.import.status" value="{{metafad.search.base.url}}/jobs/import/status" />
+    <glz:Param name="metafad.iccd.uniqueIccdId.useESC" value="true" />
+
+    <glz:Param name="oaipmh.protocolVersion" value="2.0" />
+	<glz:Param name="oaipmh.granularity" value="YYYY-MM-DDThh:mm:ssZ" />
+	<glz:Param name="oaipmh.delimiter" value="{{env:METAFAD_OAIPMH_DELIMITER}}" />
+	<glz:Param name="oaipmh.idPrefix" value="{{env:METAFAD_OAIPMH_ID_PREFIX}}" />
+	<glz:Param name="oaipmh.maxRecords" value="{{env:METAFAD_OAIPMH_MAX_RECORDS}}" />
+	<glz:Param name="oaipmh.maxIds" value="{{env:METAFAD_OAIPMH_MAX_IDS}}" />
+	<glz:Param name="oaipmh.title" value="{{env:METAFAD_OAIPMH_TITLE}}" />
+	<glz:Param name="oaipmh.adminEmail" value="{{env:METAFAD_OAIPMH_EMAIL}}" />
+	<glz:Param name="oaipmh.earliestDatestamp" value="{{env:METAFAD_OAIPMH_EARLY_DATE}}" />
+	<glz:Param name="oaipmh.repositoryIdentifier" value="{{env:METAFAD_OAIPMH_IDENTIFIER}}" />
+	<glz:Param name="oaipmh.oaiPrefix" value="oai{{oaipmh.delimiter}}{{oaipmh.repositoryIdentifier}}{{oaipmh.delimiter}}{{oaipmh.idPrefix}}" />
+
+    <!-- i seguenti parametri avere valore true, false o demo -->
+    <glz:Param name="metafad.installation.name" value="{{env:METAFAD_NAME}}"/>
+    <glz:Param name="metafad.be.hideFieldMassive" value="false" />
+    <glz:Param name="metafad.be.hasFE" value="{{env:METAFAD_FLAG_FE}}"/>
+    <glz:Param name="metafad.be.hasSBN" value="{{env:METAFAD_FLAG_SBN}}"/>
+	<glz:Param name="metafad.be.hasICCD" value="{{env:METAFAD_FLAG_ICCD}}"/>
+	<glz:Param name="metafad.be.hasArchive" value="{{env:METAFAD_FLAG_ARCHIVE}}"/>
+	<glz:Param name="metafad.be.hasInstitutes" value="true" />
+	<glz:Param name="metafad.be.hasImport" value="true" />
+	<glz:Param name="metafad.be.hasExport" value="true" /><!-- true ! false | demo -->
+	<glz:Param name="metafad.be.hasMag" value="true" />
+	<glz:Param name="metafad.be.hasMets" value="true" />
+	<glz:Param name="metafad.be.hasIccdGenerator" value="true" />
+	<glz:Param name="metafad.be.hasDictionaries" value="true" />
+    <glz:Param name="metafad.be.hasEcommerce" value="true" />
+	<glz:Param name="metafad.fe.hasMetaindice" value="true" />
+    <glz:Param name="metafad.dam.hasDownload" value="true" />
+	<glz:Param name="metafad.fe.search.hasCustomServices" value="true" />
+	<glz:Param name="metafad.dataGridSolr.autoComplete" value="20" />
+
+	<!-- Lista dei campi del profilo di ricerca ICCD da salvare in solr FE -->
+	<glz:Param name="metafad.iccd.solr.commonFields">
+	<![CDATA[
+    	[
+			"PVCS","PVCR","PVCC","PVCF","PVCL","LDCM","LDCN","LDCC","LDCS",
+			"OGTD","SGTI","SGTT","OGTN","NCTN","NCTR","NAC","MTC",
+			"ROZ","RVEL","AUTN","ATBD","FTAN","DTSI","DTSF", "DTZG",
+			"INVN","BIBA","TSK"
+		]
+	]]>
+	</glz:Param>
+
+	<glz:Param name="metafad.iccd.solr.sortingFields">
+	<![CDATA[
+    	[
+			"AUTN","OGTD","SGTI","NCTN"
+		]
+	]]>
+	</glz:Param>
+
+	<glz:Param name="metafad.archive.solr.sortingFields">
+	<![CDATA[
+    	[
+			"produttore","conservatore","livello_descrizione"
+		]
+	]]>
+	</glz:Param>
+</glz:Config>

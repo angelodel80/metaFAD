@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.modules.importer.views.components.*"
+          xmlns:iccd="metafad.modules.iccd.views.components.*"
+          controllerName="metafad.modules.importer.controllers.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml" />
+
+    <mvc:StateTabNavigation id="tab" cssClass="nav nav-tabs" cssClassCurrent="active" visible="false" />
+
+    <mvc:State name="index" label="Importa file">
+        <glz:Modifier target="tab" attribute="visible" value="true" />
+        <cms:FormEdit id="editForm" enctype="multipart/form-data">
+            <iccd:Input id="module" parentId="gestione-dati/patrimonio,gestione-dati/authority,gestione-dati-bibliografico,gestione-dati/tei,gestione-dati/authority/iccd" label="Tipo di scheda" defaultValue="gestione-dati/patrimonio" required="true"/>
+            <glz:Input id="fileuploader" label="{i18n:Pacchetto zip}" data="type=file;fieldsetid=medias;maxfiles=1;acceptedfiles=.zip;maxfilesize=2048;maxlabel=2048 MB;" />
+            <glz:Fieldset id="medias" label="File caricato su server" data="type=repeat;collapsable=false;noAddRowButton=true">
+                <glz:Hidden id="__uploadFilename" />
+                <glz:Hidden id="__originalFileName" />
+            </glz:Fieldset>
+            <cmp:FolderList id="sbnFolder" moduleRef="metafad.sbn.modules.sbnunimarc" cssClass="hide" pathFromConfig="metafad.sbn.outputFolder.web" label="Cartella SBN Unimarc"/>
+            <cmp:FolderList id="sbnAutFolder" moduleRef="AuthoritySBNModuleName" cssClass="hide" pathFromConfig="metafad.sbnaut.outputFolder.web" label="Cartella SBN AUT"/>
+            <glz:List id="uploadType" label="{i18n:Tipo di caricamento}" size="90" >
+                <glz:ListItem key="increment" value="Aggiornamento (upload incrementale)" />
+                <glz:ListItem key="delete" value="Cancella e reimporta (attenzione, cancella TUTTO l'indice SBN!)" />
+            </glz:List>
+            <glz:List id="format" label="{i18n:Formato}" size="90" required="true">
+                <glz:ListItem key="trc" value="ICCD 92" />
+                <glz:ListItem key="iccdxml" value="ICCD XML" />
+                <glz:ListItem key="sbn" value="SBN" />
+                <glz:ListItem key="tei" value="TEI" />
+                <glz:ListItem key="eadeac" value="EAD/EAC" />
+            </glz:List>
+            <glz:Checkbox id="overwriteScheda" label="Sovrascrivi schede se già presenti"/>
+            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities collegati se già presenti"/>
+            <cms:FormButtonsPanel id="formButtons">
+                <glz:HtmlButton label="{i18n:Import}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=import" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+        <glz:JSscript folder="metafad/modules/importer/js"/>
+    </mvc:State>
+
+    <mvc:State id="addFromServer" name="addFromServer" label="Importa da server">
+        <glz:Modifier target="tab" attribute="visible" value="true" />
+        <cms:FormEdit id="editForm" enctype="multipart/form-data">
+            <iccd:Input id="module" parentId="gestione-dati/patrimonio,gestione-dati/authority,gestione-dati-bibliografico,gestione-dati/tei,gestione-dati/authority/iccd" label="Tipo di scheda" defaultValue="gestione-dati/patrimonio" required="true"/>
+            <cmp:FilePicker id="fileFromServer" customPath="{config:metafad.modules.importer.storageFolder}" label="{i18n:File}" required="true"/>
+            <cmp:FolderList id="sbnFolder" moduleRef="metafad.sbn.modules.sbnunimarc" cssClass="hide" pathFromConfig="metafad.sbn.outputFolder.web" label="Cartella SBN Unimarc"/>
+            <cmp:FolderList id="sbnAutFolder" moduleRef="AuthoritySBNModuleName" cssClass="hide" pathFromConfig="metafad.sbnaut.outputFolder.web" label="Cartella SBN AUT"/>
+            <glz:List id="uploadType" label="{i18n:Tipo di caricamento}" size="90" >
+                <glz:ListItem key="increment" value="Aggiornamento (upload incrementale)" />
+                <glz:ListItem key="delete" value="Cancella e reimporta (attenzione, cancella TUTTO l'indice SBN!)" />
+            </glz:List>
+            <glz:List id="format" label="{i18n:Formato}" size="90" required="true">
+                <glz:ListItem key="trc" value="ICCD 92" />
+                <glz:ListItem key="iccdxml" value="ICCD XML" />
+                <glz:ListItem key="sbn" value="SBN" />
+                <glz:ListItem key="tei" value="TEI" />
+                <glz:ListItem key="eadeac" value="EAD/EAC" />
+            </glz:List>
+            <glz:Checkbox id="overwriteScheda" label="Sovrascrivi schede se già presenti"/>
+            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities collegati se già presenti"/>
+            <cms:FormButtonsPanel id="formButtons">
+                <glz:HtmlButton label="{i18n:Import}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=import" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+        <glz:JSscript folder="metafad/modules/importer/js"/>
+    </mvc:State>
+
+    <mvc:State name="import">
+    </mvc:State>
+</mvc:Page>

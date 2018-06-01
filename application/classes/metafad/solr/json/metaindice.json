@@ -1,0 +1,45 @@
+{
+  "iccd" : {
+    "digitale" : ["digitale_s"],
+    "denominazione_titolo" : ["soggetto_identificazione_ss","soggetto_titolo_ss"],
+    "responsabilita" : ["definizione_culturale_autore_ss"],
+    "ruolo" : ["definizione_culturale_ruolo_ss"],
+    "estremo_remoto" : ["cronologia_cronologia_specifica_da_ss"],
+    "estremo_recente" : ["cronologia_cronologia_specifica_a_ss"],
+    "cronologia_range" : ["cronologia_cronologia_specifica_da_ss","cronologia_cronologia_specifica_a_ss"],
+    "soggetto" : ["soggetto_f__ss"],
+    "chi" : ["responsabilita_chi__s"],
+    "cosa" : ["bene_cosa__s"],
+    "quando" : ["cronologia_quando__s"],
+    "dove" : ["localizzazione_dove__s"]
+  },
+  "archive" : {
+    "localizzazione" : ["ca_conservatore_ss"],
+    "digitale" : ["digitale_s"],
+    "denominazione_titolo" : ["un_intestazione_ss"],
+    "responsabilita" : ["ud_autore_responsabile_ss"],
+    "ruolo" : ["un_ruolo_ss"],
+    "estremo_remoto" : ["un_cronologia_principale_estremo_remoto_ss"],
+    "estremo_recente" : ["un_cronologia_principale_estremo_recente_ss"],
+    "cronologia_range" : ["un_cronologia_datazione_ECT_ss"],
+    "soggetto" : ["un_descrittori_ss"],
+    "lingua" : ["ud_lingua_ss"],
+    "chi" : ["un_antroponimi_ss","ud_autore_responsabile_ss"],
+    "cosa" : ["un_descrizione_regesto_ss"],
+    "quando" : ["un_cronologia_datazione_ECT_ss"],
+    "dove" : ["ud_data_topica_ss","un_toponimi_ss"]
+  },
+  "archiveaut" : {
+    "identificativi" : ["identificativo"],
+    "datada" : ["cronologiaEnte.Ente_remoto_data","cronologiaPersona.estremoRemoto_data","cronologiaFamiglia.estremoRemoto_data"],
+    "dataa" : ["cronologiaEnte.Ente_recente_data","cronologiaPersona.estremoRecente_data","cronologiaFamiglia.estremoRecente_data"],
+    "datazione" : ["cronologiaEnte.estremoCronologicoTestuale","cronologiaPersona.estremoCronologicoTestuale","cronologiaFamiglia.estremoCronologicoTestuale"]
+  },
+  "iccdaut" : {
+	"denominazione_nome_ricerca" : ["AUTN","AUTC","AUTO","AUTP","AUTE","AUTV","AUV"],
+    "datada" : ["AUTD"],
+    "dataa" : ["AUTT"],
+    "datazione" : ["AUTD","AUTT","AUTA"],
+    "ruolo" : ["AUTQ"]
+  }
+}

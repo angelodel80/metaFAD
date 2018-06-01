@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="archivi.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Popup.php"
+    defaultAction="edit">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.Enti"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+
+            <glz:JSscript folder="userModules/archivi/js"/>
+
+            <glz:JSTabGroup id="Enti" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+<glz:JSTab id="tabEnti" label="Enti" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input id="intestazione" readOnly="true" label="Intestazione"/>
+    <glz:Input id="denominazioneEnte" label="Denominazione" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-enti&quot;,##code##:##VA_ARCHIVE_VOCI_ENTE_DENOMINAZIONE##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_ENTE_DENOMINAZIONE"/>
+    <glz:Input id="dateEsistenza" label="Date di esistenza"/>
+    <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+  </glz:Panel>
+</glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+        <glz:JSscript><![CDATA[
+        $( document ).ready( function(){
+            $('.js-glizycms-save').data('trigger',function (e, data) {
+
+                var msg = {
+                    type: 'save',
+                    id: $('#__id').val(),
+                    text: $('#intestazione').val()
+                }
+
+                Glizy.events.broadcast("glizy.FormEdit.modalPage.message", msg);
+            });
+
+            $('.js-glizycms-cancel').click(function (e) {
+                parent.postMessage('{"type":"cancel"}', parent.location.origin);
+            });
+        });
+        ]]></glz:JSscript>
+    </mvc:State>
+</mvc:Page>

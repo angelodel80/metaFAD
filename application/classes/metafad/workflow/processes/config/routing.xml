@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+    <glz:Route name="metafad.workflow.processes"
+               value="{pageId=metafad.workflow.processes.views.Admin}/{action=edit}/{value=id}/"/>
+</glz:Routing>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:iccd="metafad.modules.thesaurus.views.components.*"
+          xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
+          xmlns:mag="metafad.teca.MAG.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          xmlns:ss="metafad.gestioneDati.schedeSemplificate.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+      <mag:DataGridSolr id="dataGridForms" recordClassName="metafad.opac.models.Model"
+                        cssClass="table table-bordered table-striped"
+                        fullTextSearch="true" filterByInstitute="true" >
+        <glz:DataGridColumn columnName="name" headerText="{i18n:Nome}" sortable="false" />
+        <glz:DataGridColumn columnName="section" headerText="{i18n:Sezione}" sortable="false" />
+        <glz:DataGridColumn id="instituteColumn" columnName="instituteKey_s" headerText="{i18n:Istituto}" sortable="false" searchable="false"
+                            renderCell="metafad.opac.views.renderer.InstituteCell"/>
+        <glz:DataGridColumn columnName="document_detail_status" width="150px" sortable="false" searchable="false"
+                            headerText="{i18n:Pubblicata}" cssClass="center"
+                            renderCell="metafad.common.views.renderer.CellDocPublished"/>
+        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDraftDelete" />
+      </mag:DataGridSolr>
+      <iccd:AddButton buttonId="dataGridAddButton" label="" acl="*,edit" routeUrl="actionsMVCAdd" editableRegion="actions" add="Aggiungi ricerca" recordClassName="metafad.opac.models.Model" dataGridAjaxId="dataGridForms"/>
+    </mvc:State>
+
+    <mvc:State name="edit">
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.opac.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.opac.models.Model"/>
+
+        <glz:Input id="name" label="{i18n:Nome}" required="true"/>
+
+        <glz:Input id="labelFE" label="{i18n:Etichetta (Front End)}"/>
+
+        <glz:List id="section" label="{i18n:Sezione}" required="true" emptyValue="">
+          <glz:ListItem key="bibliografico" value="Bibliografico" selected="true"/>
+          <glz:ListItem key="archivi" value="Archivi"/>
+          <glz:ListItem key="patrimonio" value="Patrimonio"/>
+          <glz:ListItem key="metaindice" value="Metaindice"/>
+          <glz:ListItem key="metaindiceau" value="Metaindice AU"/>
+        </glz:List>
+
+        <glz:Input id="form" label="Tipo di scheda" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.opac.models.proxy.FormProxy;return_object=true"/>
+
+        <glz:List id="archiveType" label="{i18n:Tipologia}">
+          <glz:ListItem key="ca" value="Complessi Archivistici" selected="true"/>
+          <glz:ListItem key="ud" value="UN Archivistiche e Documentarie"/>
+        </glz:List>
+
+        <glz:Fieldset id="fields" label="Campi" data="type=repeat;collapsable=false;sortable=true;repeatMin=0;customAddRowLabel=Aggiungi riga">
+            <glz:Input id="label" label="Etichetta" maxLength="250"/>
+            <glz:Input id="linkedFields" label="Campi collegati" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.opac.models.proxy.OpacFieldProxy;return_object=false"/>
+            <glz:Input id="accordion" label="Accordion" maxLength="250"/>
+            <glz:List id="fieldType" label="{i18n:Tipo di campo}" emptyValue="">
+              <glz:ListItem key="open" value="Campo dizionario aperto" selected="true"/>
+              <glz:ListItem key="closed" value="Campo dizionario chiuso"/>
+              <glz:ListItem key="list" value="Lista"/>
+              <glz:ListItem key="text" value="Testo libero"/>
+              <glz:ListItem key="checkbox" value="Checkbox"/>
+            </glz:List>
+        </glz:Fieldset>
+
+        <cms:FormButtonsPanel>
+          <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,edit" />
+          <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,edit" />
+          <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+          <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+          <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+        </cms:FormButtonsPanel>
+      </c:FormEdit>
+
+      <glz:JSscript folder="metafad/opac/js"/>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.opac.controllers.*" />
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:dam="metacms.dam.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Popup.php">
+    <glz:Import src="_common.xml" />
+
+    <dam:DAM editableRegion="content" damParams="/list?cms=true&amp;singleSelection=true" />
+
+</mvc:Page>

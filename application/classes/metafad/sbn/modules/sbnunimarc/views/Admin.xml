@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:cmp="metafad.sbn.modules.sbnunimarc.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php"
+          controllerName="metafad.sbn.modules.sbnunimarc.controllers.*">
+    <glz:Import src="_common.xml"/>
+    
+    <mvc:State name="index">
+        <cmp:DataGridSolr id="dataGrid" enableSorting="true" label="{i18n: Elenco Testate}"
+                          recordClassName="metafad.sbn.modules.sbnunimarc.model.Model"
+                          cssClass="table table-bordered table-striped" fullTextSearch="true"
+                          docType="unimarcSBN"
+                          autocompleteController="metafad.sbn.modules.sbnunimarc.controllers.ajax.AutoComplete">
+            <glz:DataGridColumn columnName="Titolo_s" width="40%" headerText="{i18n:Titolo}"/>
+            <glz:DataGridColumn columnName="Autore_sintetico_s" width="25%" headerText="{i18n:Autore}"/>
+            <glz:DataGridColumn columnName="Data_s" width="15%" headerText="{i18n:Data Pubblicazione}"/>
+            <glz:DataGridColumn columnName="Tipo_documento_s" width="15%" headerText="{i18n:Tipo documento}"/>
+            <glz:DataGridColumn columnName="document_id_nxs" width="5%" align="center" sortable="false" searchable="false" cssClass="actions"
+                                headerText="{i18n:Azioni}"
+                                renderCell="metafad.sbn.modules.sbnunimarc.views.renderers.CellAction"/>
+        </cmp:DataGridSolr>
+
+    </mvc:State>
+
+    <mvc:State name="show">
+        <glz:JSscript folder="metafad/sbn/modules/sbnunimarc/js" editableRegion="tail"/>
+        <cmp:LinkedImages id="linkedImages" model="metafad.sbn.modules.sbnunimarc.model.Model"/>
+        <glz:JSscript folder="metafad/gestioneDati/showImages/js"/>
+        <glz:Link id="link-show-images" icon="fa fa-picture-o" label="Mostra immagini" editableRegion="actions" cssClass="link showImages"/>
+        
+        <cmp:FormEdit id="editForm" newCode="true" controllerName="metafad.sbn.modules.sbnunimarc.controllers.*">
+            
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.sbn.modules.sbnunimarc.model.Model"/>
+            <glz:Input enabled="false"
+                       data="type=modalPage;pageid=metafad.sbn.unimarcSBN_popup;controller=metafad.gestioneDati.schedaAUT.controllers.ajax.FindTerm"
+                       id="popup" label=""/>
+
+            <glz:JSTabGroup showNav="true">
+                <glz:JSTab dropdown="true" visible="false" id="bibliographicLevel_tab"
+                           label="{i18n:Guida e identificazione}" enabled="false">
+
+                    <cmp:Input enabled="false" id="bibliographicLevel"
+                               label="{i18n:Livello bibliografico}"/>
+
+                    <cmp:Input enabled="false" id="documentType"
+                               label="{i18n:Tipo documento}"/>
+
+                    <cmp:Input enabled="false" id="identificationCode"
+                               label="{i18n:Codice identificativo}" readOnly="true"/>
+
+                    <!--<cmp:Input enabled="false" id="versionId"
+                               label="{i18n:Identificativo di versione}"/>-->
+
+                    <cmp:Input enabled="false" id="ISBN"
+                               label="{i18n:ISBN}"/>
+
+                    <cmp:Input enabled="false" id="ISSN"
+                               label="{i18n:ISSN}"/>
+
+                    <cmp:Input enabled="false" id="print"
+                               label="{i18n:Impronta}"/>
+
+                    <cmp:Input enabled="false" id="ISMN"
+                               label="{i18n:ISMN}"/>
+
+                    <cmp:Input enabled="false" id="otherStandardNum"
+                               label="{i18n:Altri numeri standard}"/>
+
+                    <cmp:Input enabled="false" id="NBN"
+                               label="{i18n:Numero Bibliografica Nazionale}"/>
+
+                    <cmp:Input enabled="false" id="musicEditorialNumber" label="{i18n:Numero editoriale (musica)}"/>
+
+                    <cmp:Input enabled="false" id="ean" label="{i18n:Numero internazionale articolo (ean)}"/>
+
+                    <glz:Fieldset cssClass="fieldsetDescriptive" label="{i18n: Informazioni descrittive}">
+                      <cmp:Input enabled="false" id="title" label="{i18n:Titolo}"/>
+
+                      <cmp:Input enabled="false" id="edition" label="{i18n:Edizione}"/>
+
+                      <cmp:Input enabled="false" id="numeration" label="{i18n:Numerazione}"/>
+
+                      <cmp:Input enabled="false" id="presentation" label="{i18n:Presentazione}"/>
+
+                      <cmp:Input enabled="false" id="publication" label="{i18n:Pubblicazione}"/>
+
+                      <!--<cmp:Input enabled="false" id="location" label="{i18n:Luogo}"/>-->
+
+                      <cmp:Input enabled="false" id="phisicalDescription" label="{i18n:Descrizione fisica}"/>
+
+                      <cmp:Input enabled="false" id="seriesCollectionDescription"
+                                 label="{i18n:Descrizioni delle serie / collezioni}"
+                      />
+
+                      <cmp:Input enabled="false" id="generalNotes" label="{i18n:Note generali}"/>
+
+                      <cmp:Input enabled="false" id="titlesNotes"
+                                 label="{i18n:Note tra titoli}"/>
+
+                      <cmp:Input enabled="false" id="responsabilityNotes"
+                                 label="{i18n:Note relative alla responsabilita'}"
+                      />
+
+                      <cmp:Input enabled="false" id="exampleNotes" label="{i18n:Note relative all'esemplare}"/>
+
+                      <cmp:Input enabled="false" id="periodicityNote"
+                                 label="{i18n:Note relative alla periodicita' di pubblicazione}"
+                      />
+
+                      <cmp:Input enabled="false" id="contentNotes" label="{i18n:Note di contenuto}"/>
+
+                      <cmp:Input enabled="false" id="abstract" label="{i18n:Abstract}"/>
+
+                      <cmp:Input enabled="false" id="electronicResourceNotes"
+                                 label="{i18n:Note sulla risorsa elettronica}"
+                      />
+                    </glz:Fieldset>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="elaborationType_tab" label="{i18n:Qualificazione }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="elaborationType" label="{i18n:Dati per la elaborazione}"/>
+
+                    <cmp:Input enabled="false" id="language" label="{i18n:Lingua}"/>
+
+                    <cmp:Input enabled="false" id="country" label="{i18n:Paese}"/>
+
+                    <cmp:Input enabled="false" id="cdMonographic" label="{i18n:Dati codificati: monografie}"/>
+
+                    <cmp:Input enabled="false" id="cdPeriodic" label="{i18n:Dati codificati: periodici}"/>
+
+                    <cmp:Input enabled="false" id="codedDataGraphic" label="{i18n:Dati codificati: materiale grafico}"/>
+
+                    <cmp:Input enabled="false" id="codedDataCartographic"
+                               label="{i18n:Dati codificati: materiale cartografico - dati generali}"/>
+
+                    <cmp:Input enabled="false"
+                               id="codedDataCartographicCar"
+                               label="{i18n:Dati codificati: materiale cartografico - caratteristiche fisiche}"
+                    />
+
+                    <cmp:Input enabled="false" id="cdMusicPrint"
+                               label="{i18n:Dati codificati: musica a stampa - designazione specifica del materiale}"
+                    />
+
+                    <cmp:Input enabled="false" id="cdElaboration"
+                               label="{i18n:Dati codificati: elaborazioni musicali (elaborazione)}"
+                    />
+
+                    <cmp:Input enabled="false" id="cdOldMaterial" label="{i18n:Dati codificati: materiale antico}"/>
+
+                    <cmp:Input enabled="false"
+                               id="cdExpressionContent"
+                               label="{i18n:Dati codificati: contenuto caratteristico dell'espressione}"/>
+
+                    <cmp:Input enabled="false" id="mediationType" label="{i18n:Tipo di mediazione}"/>
+
+                    <cmp:Input enabled="false" id="cdSupportType" label="{i18n:Dati codificati: tipo di supporto}"/>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="collection_tab" label="{i18n:Record collegati }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="collection" label="{i18n:Collezione}"/>
+
+                    <cmp:Input enabled="false" id="continuationOf" label="{i18n:Continuazione di}"/>
+
+                    <cmp:Input enabled="false" id="continuationInPartOf" label="{i18n:Continuazione in parte di}"/>
+
+                    <cmp:Input enabled="false" id="continueWith" label="{i18n:Continua con}"/>
+
+                    <cmp:Input enabled="false" id="splitIn" label="{i18n:Si scinde in}"/>
+
+                    <cmp:Input enabled="false" id="attachedTo" label="{i18n:Fuso con}"/>
+
+                    <cmp:Input enabled="false" id="otherEditionSameSupport"
+                               label="{i18n:Altra edizione su stesso supporto}"
+                    />
+
+                    <cmp:Input enabled="false" id="translationOf" label="{i18n:Traduzione di}"/>
+
+                    <cmp:Input enabled="false" id="set" label="{i18n:Legame al livello piu' elevato (set)}"/>
+
+                    <cmp:Input enabled="false" id="subset" label="{i18n:Legame a livelli intermedi (subset)}"/>
+
+                    <cmp:Input enabled="false" id="analiticPartBond" label="{i18n:Legame parte analitica - padre}"/>
+
+                    <cmp:Input enabled="false" id="examinationBond" label="{i18n:Legame allo spoglio}"/>
+
+                    <cmp:Input enabled="false" id="otherTitleRelated" label="{i18n:Altri titolo correlati}"/>
+
+                    <!-- Lorenzo RelatedGrid -->
+
+                    <glz:Text text="Spogli collegati" html="true" wrapTag="span"
+                              cssClass="relatedBoardLink labelLink col-sm-2" enabled="false"
+                              id="textBoardLink"/>
+                    <glz:Link icon="fa fa-ellipsis-h" cssClass="col-sm-3 OpenGrid relatedBoardLink"
+                              label="Vedi" enabled="false" id="relatedBoardLink"/>
+
+                    <cmp:RelatedBoardGrid label="{i18n: Spogli collegati}" bid="" id="relatedBoardGrid"
+                                          numRows="10" enabled="false">
+                        <glz:DataGridColumn columnName="id" width="15"
+                                            headerText="{i18n:Identificativo}"
+                                            renderCell="metafad.sbn.modules.sbnunimarc.views.renderers.CellLink"/>
+                        <glz:DataGridColumn columnName="Titolo_s" width="40" headerText="{i18n:Titolo}"/>
+                        <glz:DataGridColumn columnName="Autore_sintetico_s" width="25" headerText="{i18n:Autore}"/>
+                        <glz:DataGridColumn columnName="Tipo_documento_s" width="20"
+                                            headerText="{i18n:Tipo documento}"/>
+                    </cmp:RelatedBoardGrid>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="titleUniform_tab" label="{i18n:Altri titoli }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="titleUniform" label="{i18n:Titolo uniforme}"/>
+
+                    <cmp:Input enabled="false" id="titleParallel" label="{i18n:Titolo parallelo}"/>
+
+                    <cmp:Input enabled="false" id="titleAlternative" label="{i18n:Titolo alternativo}"/>
+
+                    <cmp:Input enabled="false" id="titleKey" label="{i18n:Titolo chiave}"/>
+
+                    <cmp:Input enabled="false" id="titleFictitious" label="{i18n:Titolo di raccolta fattizia}"/>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="subject_tab" label="{i18n:Soggetti e classi }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="subject" label="{i18n:Soggetto}"/>
+
+                    <cmp:Input enabled="false" id="publicationLocationNormalized"
+                               label="{i18n:Luogo di pubblicazione normalizzato}"
+                    />
+
+                    <cmp:Input enabled="false" id="deweyClassification" label="{i18n:Classificazione Dewey}"/>
+
+                    <cmp:Input enabled="false" id="deweyCode" label="{i18n:Codice Dewey}"/>
+
+                    <cmp:Input enabled="false" id="deweyDescription" label="{i18n:Descrizione Dewey}"/>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="pnMainResponsability_tab" label="{i18n:Responsabilita' }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="pnMainResponsability"
+                               label="{i18n:Nome di persona: responsabilita' principale}"
+                    />
+
+                    <cmp:Input enabled="false"
+                               id="pnAlternativeResponsability"
+                               label="{i18n:Nome di persona: responsabilita' alternativa}"
+                    />
+
+                    <cmp:Input enabled="false" id="pnSecondaryResponsability"
+                               label="{i18n:Nome di persona: responsabilita' secondaria}"
+                    />
+
+                    <cmp:Input enabled="false" id="gnMainResponsability"
+                               label="{i18n:Nome di gruppo(ente): responsabilita' principale}"
+                    />
+
+                    <cmp:Input enabled="false" id="gnAlternativeResponsability"
+                               label="{i18n:Nome di gruppo(ente): responsabilita' alternativa}"/>
+
+                    <cmp:Input enabled="false" id="gnSecondaryResponsability"
+                               label="{i18n:Nome di gruppo(ente): responsabilita' secondaria}"/>
+
+                    <cmp:Input enabled="false" id="pnNotAccepted" label="{i18n:Nome di persona: forma non accettata}"/>
+
+                    <cmp:Input enabled="false" id="gnNotAccepted" label="{i18n:Nome di gruppo: forma non accettata}"/>
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="recordOrigin_tab" label="{i18n:Dati gestionali }"
+                           enabled="false">
+
+                    <!--<cmp:Input enabled="false" id="recordOrigin" label="{i18n:Origine del record}"/>-->
+
+                    <!--<cmp:Input enabled="false" id="istitution" label="{i18n:Istituzione}"/>-->
+
+                    <!--<cmp:Input enabled="false" id="electronicLocalization"
+                               label="{i18n:Localizzazione delle copie in formato elettronico}"/>-->
+
+                    <cmp:Input enabled="false" id="inventoryCollectionCopiesBE"
+                               label="{i18n:Inventari e collocazioni delle copie}"
+                    />
+
+                    <cmp:KardexGrid label="{i18n: Kardex}" kardexParam="" id="kardexGrid">
+                        <glz:DataGridColumn columnName="annata" headerText="{i18n:Anno/i}"/>
+                        <glz:DataGridColumn columnName="volume" headerText="{i18n:Volume}"/>
+                        <glz:DataGridColumn columnName="numerazione" headerText="{i18n:N. Fasc.}"/>
+                        <glz:DataGridColumn columnName="dataPubblicazione" headerText="{i18n:Data conv.}"/>
+                        <glz:DataGridColumn columnName="tipo" headerText="{i18n:Tipo}"/>
+                        <glz:DataGridColumn columnName="descrizione" headerText="{i18n:Descrizione}"/>
+                        <glz:DataGridColumn columnName="linkedStruMag" headerText="{i18n:Metadato struttrale collegato}" renderCell="metafad.sbn.modules.sbnunimarc.views.renderers.CellSelect"/>
+                    </cmp:KardexGrid>
+
+                    <!-- <cmp:Input enabled="false" id="localization" label="{i18n:Localizzazione}"/> -->
+
+                    <cmp:Input enabled="false" id="originNotes" label="{i18n:Note relative alla provenienza}"/>
+
+                    <cmp:Input enabled="false" id="monographyNumber"
+                               label="{i18n:Numero di monografie e spogli collegati}"
+                    />
+
+
+                    <!--<cmp:Input enabled="false" id="inventory" label="{i18n:Inventario}"/>-->
+
+                </glz:JSTab>
+                <glz:JSTab dropdown="true" visible="false" id="editorialMark_tab" label="{i18n:Identificazione }"
+                           enabled="false">
+
+                    <cmp:Input enabled="false" id="editorialMark" label="{i18n:Marca editoriale}"/>
+
+                    <cmp:Input enabled="false" id="rapresentation" label="{i18n:Rappresentazione (mat. musicale)}"/>
+
+                    <cmp:Input enabled="false" id="interpreters" label="{i18n:Personaggi e interpreti (mat. musicale)}"
+                    />
+
+                    <cmp:Input enabled="false" id="cdUniformTitleMusic"
+                               label="{i18n:Dati codificati per titolo uniforme musicale}"
+                    />
+
+                    <cmp:Input enabled="false" id="composition" label="{i18n:Composizione (mat. musicale)}"/>
+
+                </glz:JSTab>
+
+                <glz:JSTab dropdown="true" visible="true" id="linkeMedia_tab" label="{i18n:Media}"
+                           enabled="true">
+                   <glz:List id="visibility" label="Visibilit&#224; FE" >
+                     <glz:ListItem key="rdv" value="Completa (RDV)" selected="true"/>
+                     <glz:ListItem key="rd" value="Visibile in ricerca e dettaglio, no viewer (RD)"/>
+                     <glz:ListItem key="r" value="Visibile in ricerca, no dettaglio e viewer (R)" />
+                   </glz:List>
+                  <glz:Fieldset>
+                    <glz:EmptyComponent skin="ecommerceOptions.html" />
+                    <glz:Input id="ecommerceLicenses" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true" label="Opzioni Ecommerce"/>
+                  </glz:Fieldset>
+                  <glz:Input id="linkedStruMag" label="Metadato strutturale collegato" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" />
+
+                  <glz:Fieldset cssClass="linkedMediaRepeater" id="linkedMedia" label="Media collegati a scheda" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+                    <glz:Input data="type=mediapicker;preview=true" id="media" required="false" />
+                    <glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+                    <glz:Input id="instituteKey" required="false" cssClass="hide"/>
+                  </glz:Fieldset>
+
+                  <glz:Fieldset id="linkedInventoryMedia" label="Media collegati a inventari" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+                    <glz:Input data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.sbn.modules.sbnunimarc.model.proxy.InventoryProxy;return_object=false" id="inventoryNumber" label="{i18n:Inventario}" required="true"/>
+                    <glz:Fieldset cssClass="linkedMediaRepeater" id="media" label="Media" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+                      <glz:Input data="type=mediapicker;preview=true" id="mediaInventory" required="false" />
+                      <glz:Input id="linkedMediaEcommerce" cssClassLabel="col-sm-12 control-label" label="Ecommerce" maxLength="100" data="type=selectfrom;multiple=true;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.LicensesProxy;return_object=true;"/>
+                    </glz:Fieldset>
+                    <glz:Input id="instituteKey" required="false" cssClass="hide"/>
+                  </glz:Fieldset>
+
+                  <glz:Fieldset id="linkedInventoryStrumag" label="Metadati strutturali collegati a inventari" data="type=repeat;collapsable=false;repeatMin=0" required="true">
+                    <glz:Input data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.sbn.modules.sbnunimarc.model.proxy.InventoryProxy;return_object=false" id="strumagInventoryNumber" label="{i18n:Inventario}" required="true"/>
+                    <glz:Input id="linkedStruMagToInventory" label="Metadato strutturale collegato" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" required="true"/>
+                    <glz:Input id="instituteKey" required="false" cssClass="hide"/>
+                  </glz:Fieldset>
+
+                </glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Salva}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link"
+                                cssClass="btn btn-flat js-glizycms-cancel chViewerReturn" data="action=cancel"/>
+            </cms:FormButtonsPanel>
+
+        </cmp:FormEdit>
+
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+        <cms:FormEdit id="editForm" newCode="true"
+                      controllerName="metafad.sbn.modules.sbnunimarc.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="metafad.sbn.modules.sbnunimarc.model.Model"/>
+
+            <glz:JSTabGroup id="unimarc" showNav="true">
+                <glz:JSTab id="identificazione" label="{i18n:Identificazione}" dropdown="true">
+                    <glz:Input enabled="false" cssClass="readOnly form-control" id="publicationDate_string"
+                               label="{i18n:Anno}"
+                               readOnly="true"/>
+                    <glz:Input enabled="false" cssClass="readOnly form-control" id="documentType_string"
+                               label="{i18n:Tipo}"
+                               readOnly="true"/>
+                    <glz:Input enabled="false" cssClass="readOnly form-control" id="title_string" label="{i18n:Titolo}"
+                               readOnly="true"/>
+                </glz:JSTab>
+
+            </glz:JSTabGroup>
+        </cms:FormEdit>
+
+        <cms:FormButtonsPanel>
+            <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link"
+                            cssClass="btn btn-flat js-glizycms-cancel chViewerReturn" data="action=cancel"/>
+        </cms:FormButtonsPanel>
+    </mvc:State>
+
+</mvc:Page>

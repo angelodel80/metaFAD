@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="archive_types" model:usePrefix="true">
+
+    <model:Query name="mysql_selectType">
+    <![CDATA[
+        SELECT * FROM archive_types WHERE archive_type_order >= (
+            SELECT archive_type_order FROM archive_types WHERE archive_type_key = :typeId
+        )
+        ORDER BY archive_type_order
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_selectTypeUD">
+    <![CDATA[
+        SELECT * FROM archive_types WHERE archive_type_key = 'documento-allegato'
+    ]]>
+    </model:Query>
+
+     <model:Query name="mysql_allTypes">
+    <![CDATA[
+        SELECT *
+        FROM archive_types
+        ORDER BY archive_type_order
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_truncate">
+    <![CDATA[
+        TRUNCATE TABLE archive_types
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_checkLevel">
+    <![CDATA[
+        SELECT child.archive_type_order >= parent.archive_type_order AS constraintOK
+        FROM archive_types child, archive_types parent
+        WHERE child.archive_type_key = :childType AND parent.archive_type_key = :parentType
+    ]]>
+    </model:Query>
+</model:Model>

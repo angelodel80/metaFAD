@@ -1,0 +1,264 @@
+{
+  "id": "SchedaBibliografica",
+  "tabs": [
+    {
+      "id": "tabIdentificazione",
+      "label": "Identificazione",
+      "fields": [
+        {
+          "id": "codici",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Codici"
+          },
+          "children": [
+            {
+              "id": "acronimoSistema",
+              "type": "Input",
+              "label": "Acronimo di sistema",
+              "solr": {
+                "field": "acronimoSistema_s"
+              }
+            },
+            {
+              "id": "identificativo",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Identificativo per la Scheda Bibliografica",
+              "gridField": true,
+              "solr": {
+                "field": "identificativo_s"
+              }
+            },
+            {
+              "id": "codiceIdentificativoSistema",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "type": "Input",
+              "label": "Codice identificativo di sistema"
+            },
+            {
+              "id": "codiceIdentificativoPrecedente",
+              "type": "Repeater",
+              "label": "Codice identificativo precedente",
+              "required": "true"
+            },
+            {
+              "id": "externalID",
+              "type": "Hidden",
+              "label": "ID importazione",
+              "attributes": {
+                "readOnly": "true"
+              },
+              "model": {
+                "type": "string",
+                "index": "true"
+              },
+              "solr": {
+                "field": "externalID_s"
+              }
+            }
+          ]
+        },
+        {
+          "id": "tipologiaESpecifiche",
+          "type": "Fieldset",
+          "attributes": {
+            "label": "Tipologia e specifiche"
+          },
+          "children": [
+            {
+              "id": "autore",
+              "type": "Input",
+              "label": "Autore"
+            },
+            {
+              "id": "curatore",
+              "type": "Input",
+              "label": "Curatore"
+            },
+            {
+              "id": "tipologiaSpecifica",
+              "type": "OpenDictionary",
+              "dictionaryId": "VA_BIBF_BIB",
+              "label": "Tipologia Specifica",
+              "required": "true"
+            },
+            {
+              "id": "titoloLibroORivista",
+              "type": "Input",
+              "label": "Titolo libro o rivista",
+              "required": "true",
+              "gridField": true,
+              "solr": {
+                "field": "denominazione_s"
+              }
+            },
+            {
+              "id": "titoloContributo",
+              "type": "Input",
+              "label": "Titolo contributo"
+            },
+            {
+              "id": "luogoDiEdizione",
+              "type": "Input",
+              "label": "Luogo di edizione"
+            },
+            {
+              "id": "editore",
+              "type": "Input",
+              "label": "Editore"
+            },
+            {
+              "id": "annoDiEdizione",
+              "type": "Input",
+              "label": "Anno di edizione",
+              "required": "true",
+              "gridField": true,
+              "solr": {
+                "field": "cronologia_s"
+              }
+            },
+            {
+              "id": "numeroDiEdizione",
+              "type": "Input",
+              "label": "Numero di edizione"
+            },
+            {
+              "id": "specifiche",
+              "type": "Input",
+              "label": "Specifiche"
+            },
+            {
+              "id": "volume",
+              "type": "Input",
+              "label": "Volume"
+            },
+            {
+              "id": "pagineNumeroCatalogo",
+              "type": "Input",
+              "label": "Pagine / Numero catalogo"
+            },
+            {
+              "id": "siglaPerCitazione",
+              "type": "Input",
+              "label": "Sigla per citazione"
+            },
+            {
+              "id": "abstract",
+              "type": "RichText",
+              "label": "Abstract"
+            }
+          ]
+        },
+        {
+          "id": "riferimenti",
+          "type": "Fieldset",
+          "label": "Riferimenti",
+          "children": [
+            {
+              "id": "riferimentiWeb",
+              "type": "Fieldset",
+              "label": "Riferimenti Web",
+              "required": "true",
+              "children": [
+                {
+                  "id": "denominazioneSitoOPaginaWeb",
+                  "type": "Input",
+                  "label": "Denominazione sito o pagina web"
+                },
+                {
+                  "id": "descrizione",
+                  "type": "RichText",
+                  "label": "Descrizione"
+                },
+                {
+                  "id": "dataDiInserimento",
+                  "attributes": {
+                    "cssClass": "js-archive-dateTextBox form-control"
+                  },
+                  "type": "Input",
+                  "label": "Data di inserimento"
+                },
+                {
+                  "id": "url",
+                  "type": "Input",
+                  "label": "Url"
+                }
+              ]
+            },
+            {
+              "id": "riferimentoSbn",
+              "type": "Fieldset",
+              "label": "Riferimento SBN",
+              "children": [
+                {
+                  "id": "identificativoBid",
+                  "type": "Input",
+                  "label": "Identificativo (BID)"
+                },
+                {
+                  "id": "rifSBN_url",
+                  "type": "Input",
+                  "label": "Url"
+                }
+              ]
+            }
+          ]
+        }
+
+      ]
+    },
+    {
+      "id": "tabCompilazione",
+      "label": "Compilazione",
+      "fields": [
+        {
+          "id": "linguaDescrizioneRecord",
+          "type": "ClosedDictionary",
+          "label": "Lingua di descrizione del record",
+          "dictionaryId": "VC_ARCHIVE_ISO_639_3"
+        },
+        {
+          "id": "compilazione",
+          "type": "Repeater",
+          "label": "Compilazione",
+          "children": [
+            {
+              "id": "redattore",
+              "type": "Input",
+              "label": "Redattore"
+            },
+            {
+              "id": "azione",
+              "type": "ClosedDictionary",
+              "label": "Azione",
+              "dictionaryId": "VC_ARCHIVE_COMPILAZIONE_AZIONE"
+            },
+            {
+              "id": "noteRedazionali",
+              "type": "RichText",
+              "label": "Note redazionali"
+            },
+            {
+              "id": "data",
+              "attributes": {
+                "cssClass": "js-archive-dateTextBox form-control js-archive-dateCompilazione"
+              },
+              "type": "Input",
+              "label": "Data"
+            }
+          ]
+        },
+        {
+          "id": "osservazioni",
+          "type": "RichText",
+          "label": "Osservazioni"
+        }
+      ]
+    }
+  ]
+}

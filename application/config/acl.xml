@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Acl>
+    <glz:AclService name="archivio-storico" default="false">
+        <glz:AclAction name="new" allowGroups="1,2,3" allowUsers="" />
+        <glz:AclAction name="edit" allowGroups="1,2,3" allowUsers="" />
+        <glz:AclAction name="view" allowGroups="1,2,3" allowUsers="" />
+        <glz:AclAction name="delete" allowGroups="1,2,3" allowUsers="" />
+    </glz:AclService>
+</glz:Acl>

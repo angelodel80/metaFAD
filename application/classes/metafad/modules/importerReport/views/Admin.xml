@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:evc="metafad.modules.importerReport.views.components.*"
+    xmlns:c="metafad.modules.iccd.views.components.*"
+    controllerName="metafad.modules.importerReport.controllers.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <glz:Import src="_common.xml" />
+
+    <mvc:State name="index" >
+       <!-- la classe import-export è una classe d'apoggio momentanea. 
+            Da eliminare non appena sistemata questa parte > MFADEV-373 -->
+      <c:FormEdit id="filterForm" newCode="true" cssClass="import-export">
+        <glz:Input id="titolo" label="" placeholder="Filtra elenco..."/>
+        <glz:List id="show" label="" >
+            <glz:ListItem key="all" value="Mostra tutto"/>
+            <glz:ListItem key="import" value="Importazioni"/>
+            <glz:ListItem key="export" value="Esportazioni"/>
+        </glz:List>
+        <glz:Panel cssClass="export-option">
+        <glz:Date id="dateFrom" label="" defaultNow="true" cssClass="short" />
+        <glz:Date id="dateTo"   label="" defaultNow="true" cssClass="short" />
+        </glz:Panel>
+         <glz:HtmlButton label="Cerca" name="action" id="action" cssClass="btn btn-flat btn-info"/>
+        <glz:Panel cssClass="export-option">
+          <glz:Panel cssClass="export-option-checkbox">
+            <glz:Checkbox id="done" label="Eseguito" cssClassLabel="" applyFormItemTemplate="false" />
+          </glz:Panel>
+          <glz:Panel cssClass="export-option-checkbox">
+            <glz:Checkbox id="inExecution" label="Esecuzione in corso" cssClassLabel="" applyFormItemTemplate="false" defaultValue="true"/>
+          </glz:Panel>
+          <glz:Panel cssClass="export-option-checkbox">
+            <glz:Checkbox id="error" label="Errore" cssClassLabel="" applyFormItemTemplate="false" defaultValue="true"/>
+          </glz:Panel>
+        </glz:Panel>
+      </c:FormEdit>
+
+        <evc:PluginsReport id="report" paginate="{paginate}"/>
+        <glz:PaginateResult id="paginate" pageLength="10" cssClass="pagination" skin="PaginateResult.html" />
+
+<!-- <glz:JSscript><![CDATA[
+$( document ).ready( function(){
+    // aggiorna il report ogni secondo
+    var UPDATE_INTERVAL = 1;
+
+    setInterval(updateReport, UPDATE_INTERVAL*1000);
+
+    function updateReport() {
+        $.ajax( {
+            url: Glizy.ajaxUrl+"updateReport",
+            success: function( data ) {
+        	    $( "#report" ).html( data );
+                $( "#report" ).show( );
+            }
+	    });
+    }
+});
+]]></glz:JSscript> -->
+    </mvc:State>
+
+</mvc:Page>

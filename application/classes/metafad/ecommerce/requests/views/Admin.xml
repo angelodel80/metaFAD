@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.ecommerce.requests.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+      <com:DataGridAjax id="dataGridForms" recordClassName="metafad.ecommerce.requests.models.Model"
+                        cssClass="table table-bordered table-striped"
+                        fullTextSearch="true"
+                        query="filterInstitute">
+        <glz:DataGridColumn columnName="request_date" headerText="{i18n:Data}"/>
+        <glz:DataGridColumn width="30" columnName="request_title" headerText="{i18n:Richiesta}"/>
+        <glz:DataGridColumn columnName="request_operator" headerText="{i18n:Assegnata}"/>
+        <glz:DataGridColumn columnName="request_type" headerText="{i18n:Tipologia}" renderCell="metafad.ecommerce.requests.views.renderers.RenderTranslate"/>
+        <glz:DataGridColumn columnName="request_state" headerText="{i18n:Stato}" renderCell="metafad.ecommerce.requests.views.renderers.RenderTranslate"/>
+        <glz:DataGridColumn columnName="request_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDeleteRequest" />
+      </com:DataGridAjax>
+    </mvc:State>
+
+    <mvc:State name="edit" controllerName="metafad.ecommerce.requests.controllers.*">
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.ecommerce.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.ecommerce.requests.models.Model"/>
+
+        <glz:Fieldset id="user" label="Dati dell'utente" cssClass="ecommerce-fieldset">
+          <glz:Input id="request_title" label="{i18n:Titolo}" readOnly="true"/>
+          <glz:Input id="request_text" label="{i18n:Messaggio}" readOnly="true" wrap="true" type="multiline" rows="5"/>
+          <glz:Input id="request_user_firstName" label="{i18n:Nome}" readOnly="true"/>
+          <glz:Input id="request_user_lastName" label="{i18n:Cognome}" readOnly="true"/>
+          <glz:Input id="userEmail" label="{i18n:Email}" readOnly="true"/>
+          <glz:Input id="userPhone" label="{i18n:Telefono}" readOnly="true"/>
+        </glz:Fieldset>
+
+        <glz:Fieldset id="user" label="Stato della richiesta" cssClass="ecommerce-fieldset">
+          <cmp:ManageState id="manageState" />
+          <glz:List id="request_notify" label="{i18n:Notifica all'utente}" emptyValue="Nessuna notifica">
+            <glz:ListItem key="notifyBuy" value="Notifica per email all'utente solo quando il prodotto &#232; acquistabile/fruibile" />
+            <glz:ListItem key="notifyState" value="Notifica per email all'utente ogni cambio di stato"/>
+          </glz:List>
+          <glz:Input
+                  data="type=selectfrom;add_new_values=false;proxy=metafad.usersAndPermissions.users.models.proxy.UsersProxy;return_object=true"
+                  id="request_operator" label="{i18n:Assegna ad operatore}" />
+        </glz:Fieldset>
+
+        <glz:Fieldset id="user" label="Oggetti della richiesta" cssClass="ecommerce-fieldset">
+          <cmp:RequestObjects id="requestObjects" />
+        </glz:Fieldset>
+
+        <glz:JSscript folder="metafad/ecommerce/requests/js"/>
+
+        <cms:FormButtonsPanel>
+          <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+          <glz:HtmlButton label="{i18n:Stampa}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-print" data="action=print" />
+        </cms:FormButtonsPanel>
+      </c:FormEdit>
+
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.ecommerce.controllers.*" />
+    </mvc:State>
+</mvc:Page>

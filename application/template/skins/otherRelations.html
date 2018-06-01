@@ -1,0 +1,18 @@
+<ul class="entities">
+  <div class="title-relation">Altre relazioni (ROZ)</div>
+  <div class="relationsDiv">
+    <span tal:omit-tag="" tal:repeat="item Component/records">
+      <li>
+        <h5 tal:content="item/title"></h5>
+        <div class="relation-type" tal:content="php: 'TSK: ' . item.tsk"></div>
+        <div class="relation-type" tal:content="item/relation_type"></div>
+        <div class="actions">
+          <span tal:omit-tag="" tal:condition="php: item.relation_FK_related_document_id != 0">
+            <span tal:omit-tag="" ><a class="button-go" tal:attributes="href structure item/link"><i class="fa fa-eye" aria-hidden="true"></i> Vedi</a></span>
+            <span tal:omit-tag="" ><a tal:attributes="href structure item/link"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Vai</a></span>
+          </span>
+        </div>
+      </li>
+    </span>
+  </div>
+</ul>

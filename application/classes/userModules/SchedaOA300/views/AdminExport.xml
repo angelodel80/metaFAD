@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:include
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    src="metafad.views.TemplateModuleAdminExport">
+
+    <glz:template name="model" value="SchedaOA300.models.Model"/>
+    <glz:template name="autocompleteController" value="metafad.common.controllers.ajax.AutoComplete"/>
+    <glz:template name="grid_fields">
+		<glz:DataGridColumn columnName="NCTN_s" headerText="{i18n:NCTN}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="OGTD_s" headerText="{i18n:OGTD}" renderCell="metafad.common.views.renderer.ShortField"/>
+		<glz:DataGridColumn columnName="SGTI_s" headerText="{i18n:SGTI}" renderCell="metafad.common.views.renderer.ShortField"/>
+    </glz:template>
+</glz:include>

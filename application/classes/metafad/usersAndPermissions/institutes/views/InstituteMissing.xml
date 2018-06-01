@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.usersAndPermissions.institutes.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Authenticator accessPageId="Login" label="" logoutPageId="Logout" cssClass="logout" editableRegion="logout" icon="btn btn-info btn-flat fa fa-power-off" />
+
+    <mvc:State name="index" label="{i18n:Elenco}">
+        <glz:LongText><![CDATA[
+            L'utenza non è associata a nessun istituto, contattare l'amministratore di sistema.
+        ]]></glz:LongText>
+    </mvc:State>
+</mvc:Page>

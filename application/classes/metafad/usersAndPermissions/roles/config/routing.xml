@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+    <glz:Route name="metafad.usersAndPermissions.roles" value="{pageId=metafad.usersAndPermissions.roles.views.Admin}/{action=edit}/{value=id}" />
+    <glz:Route name="metafad.usersAndPermissions.roles#list" value="{pageId=metafad.usersAndPermissions.roles.views.Admin}/{action=index}/{value=id}" parseUrl="false" />
+    <glz:Route name="metafad.usersAndPermissions.roles#delete" value="{pageId=metafad.usersAndPermissions.roles.views.Admin}/{action=delete}/{value=id}" parseUrl="false" />
+
+    <glz:Route value="utenti-e-permessi-ruoli" pageId="utenti-e-permessi-ruoli" />
+    <glz:Route value="utenti-e-permessi-ruoli/{value=action}/{value=id}" pageId="utenti-e-permessi-ruoli" />
+</glz:Routing>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="massiveEdit" model:usePrefix="false" model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Script parent="model">
+      <![CDATA[
+      public function getSolrDocument()
+      {
+          $solrModel = array(
+              '__id' => 'id',
+              'metafad.gestioneDati.massiveEdit.models.Model' => 'document_type_t',
+              'updateDateTime' => 'update_at_s',
+              'document' => 'doc_store',
+              'isValid' => 'isValid_i',
+          );
+
+          $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+          return $solrModel;
+      }
+
+      public function getBeAdvancedSearchFields()
+      {
+          $searchFields = array(
+      			'groupName' => 'groupName_t',
+      			'model' => 'model_t',
+          );
+          return $searchFields;
+      }
+      ]]>
+    </model:Script>
+    <model:Define>
+        <model:Field name="groupName" type="string" index="true"/>
+        <model:Field name="idList" type="string" index="true" />
+        <model:Field name="model" type="string" index="true"/>
+        <model:Field name="routing" type="string" index="true"/>
+    </model:Define>
+</model:Model>

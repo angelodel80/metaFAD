@@ -1,0 +1,284 @@
+/* BEGIN Media Queries */
+
+@media screen and (max-width: 992px) {
+    .table-container {
+        overflow: auto;
+    }
+}
+
+@media screen and (max-width: 1250px) {
+    #dataGridAddButton a span,
+    #dataGridEditButton a span,
+    #dataGridExportButton a span {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .widget-box {
+        p {
+            font-size: 50px !important;
+            &.small {
+                font-size: 18px !important;
+            }
+        }
+        .left-part {
+            width: 94px;
+        }
+    }
+    div.dataTables_wrapper {
+      .dataTables_filter {
+        label {
+          float: none;
+          display: block;
+          &:not(:first-child) {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+    .form-group-ecommerce {
+        width: 45%!important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+	.content-wrapper {
+		margin-left: 0;
+	}
+	.main-sidebar {
+		-webkit-transform: translate(-230px, 0);
+		-ms-transform: translate(-230px, 0);
+		-o-transform: translate(-230px, 0);
+		transform: translate(-230px, 0);
+	}
+    .skin-blue-light {
+        .content-header {
+            h1 {
+                font-size: 28px;
+            }
+        }
+    }
+    .widget-box {
+        .left-part {
+            width: 74px;
+            i {
+                font-size: 50px;
+                margin-top: 25px;
+            }
+        }
+    }
+    .content {
+        .advancedSearch,
+        .advancedSearchButton {
+            display: none!important;
+        }
+        .dataTables_wrapper {
+            .filter-box {
+                width: 100%;
+                .dataTables_paginate {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+            }
+        }
+        .table-container {
+            table {
+                margin-bottom: 0;
+            }
+        }
+    }
+    #instituteAndRole {
+        .GFERowContainer {
+            margin-right: 0!important;
+            .trashButtonDiv {
+                width: 99%!important;
+            }
+            .form-group {
+                padding-left: 0;
+            }
+            .instituteLabel {
+                margin-bottom: 7px;
+            }
+            .userRole {
+                padding-left: 0;
+            }
+        }
+    }
+    #ComplessoArchivistico_content,
+    #UnitaArchivistica_content {
+        .active.text-tab {
+            border-left: none;
+        }
+    }
+    .form-group-ecommerce {
+        width: 55%!important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main-header {
+        .sidebar-toggle {
+            display: block;
+        }
+    }
+    .filter-box {
+        .dataTables_paginate {
+            .pagination {
+                width: 100%;
+            }
+            .input-goto {
+                left: -2px;
+                margin-top: 20px;
+            }
+        }
+    }
+    .stickyForm {
+        .formButtons {
+            .content {
+                left: 0 !important;
+            }
+        }
+    }
+    #instituteAndRole {
+        .GFERowContainer {
+            margin-left: 0;
+        }
+    }
+    .btn-export-mag {
+        margin-right: 20px!important;
+    }
+    .form-group .col-sm-9 {
+        padding: 0;
+    }
+    #manageState {
+        .stateLink {
+            margin: 0;
+            display: block;
+            margin-bottom: -35px;
+        }
+        .stateCaret {
+            padding: 0 15px;
+            position: relative;
+            right: 36px;
+            top: 38px;
+        }
+        > div {
+            bottom: 50px;
+        }
+    }
+
+}
+
+@media screen and (max-width: 575px) {
+    .content {
+        padding: 15px;
+    }
+    .label {
+        white-space: normal;
+    }
+    #editForm {
+        margin-bottom: 150px !important;
+        fieldset.GFEFieldset {
+            fieldset.GFEFieldset {
+                margin-left: 0!important;
+            }
+        }
+    }
+    .stickyForm {
+        .formButtons {
+            .content {
+                min-width: auto !important;
+            }
+        }
+    }
+    .filter-box {
+        .dataTables_filter {
+            label {
+                width: 100%;
+                .form-control {
+                    width: 100%;
+                    margin: 10px 0 0;
+                }
+            }
+            input,
+            select {
+                width: 210px!important;
+            }
+        }
+        .dataTables_length {
+            label {
+                float: none!important;
+            }
+        }
+        .dataTables_paginate {
+            .pagination {
+                height: 37px;
+                .pagination-button.prev,
+                .pagination-button.next,
+                .pagination-button.first,
+                .pagination-button.last {
+                    position: absolute;
+                    left: 81px;
+                    margin-top: 45px;
+                }
+                .pagination-button.next {
+                    left: 122px !important;
+                }
+                .pagination-button.first {
+                    left: 44px !important;
+                }
+                .pagination-button.last {
+                    left: 163px !important;
+                }
+            }
+            .input-goto {
+                margin-top: 16px;
+                margin-left: 170px;
+            }
+        }
+    }
+    .GFEFieldset .GFERowContainer {
+        margin-left: 10px;
+    }
+    .nav-tabs {
+        border-bottom: none;
+        >li {
+            float: none;
+        }
+        li {
+            &.pull-right a {
+                padding: 8px;
+                position: relative;
+                top: 10px;
+            }
+        }
+        .dropdown-menu {
+            width: 100%;
+            height: 300px;
+            overflow: auto;
+            a {
+                white-space: normal;
+            }
+        }
+        .tab-navigation {
+            width: 35px;
+            float: left;
+            position: relative;
+            right: 10px;
+            top: 10px;
+            span {
+                position: relative;
+                right: 4px;
+            }
+        }
+    }
+    .ecommerce-tab {
+        .ecommerce-info {
+            margin-top: 20px;
+        }
+    }
+}
+
+
+/* END Media Queries */

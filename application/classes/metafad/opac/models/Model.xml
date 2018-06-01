@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="configRicerche" 
+        model:usePrefix="false"
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+
+    <model:Define>
+        <model:Field name="name" type="string" index="true"/>
+        <model:Field name="labelFE" type="string" />
+        <model:Field name="section" type="string" />
+        <model:Field name="fields" type="object" readFormat="false"/>
+        <model:Field name="form" type="object" readFormat="false"/>
+        <model:Field name="archiveType" type="string"/>
+    </model:Define>
+
+    <model:Script parent="model">
+    <![CDATA[
+    public function getSolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'metafad.opac.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'name' => 'name',
+            'labelFE' => 'labelFE',
+            'section' => 'section',
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array(
+        'name' => 'name',
+        'section' => 'section',
+        'labelFE' => 'labelFE'
+        );
+
+        return $searchFields;
+    }
+
+    public function getTitle()
+    {
+        return $this->name;
+    }
+
+    public function getRecordId()
+    {
+      return $this->getTitle();
+    }
+    ]]>
+    </model:Script>
+</model:Model>

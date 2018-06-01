@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://san.mibac.it/ead-san/"
+	 xsi:schemaLocation="http://www.san.beniculturali.it/tracciato http://www.san.beniculturali.it/tracciato/schemaead.xsd">
+	<archdesc level="otherlevel" otherlevel="">
+		<did>
+			<unitid type="PDN" identifier=""></unitid>
+			<unittitle type="principale"></unittitle>
+			<unitdate datechar="principale" normal=""></unitdate>
+			<physdesc>
+				<extent></extent>
+			</physdesc>
+			<abstract></abstract>
+		</did>
+		<processinfo>scheda pubblicata</processinfo>
+		<relatedmaterial>
+			<archref></archref>
+		</relatedmaterial>
+	</archdesc>
+</ead>

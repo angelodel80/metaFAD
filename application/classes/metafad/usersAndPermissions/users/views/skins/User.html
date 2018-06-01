@@ -1,0 +1,11 @@
+<div id="chat-box" class="box-body chat">
+    <div class="item" tal:repeat="item Component/records">
+        <img class="online" alt="user image" src="application/template/img/avatar.png"/>
+        <p class="message">
+            <a class="name" href="#">
+                <span tal:content="structure item/user_firstName"/><span> </span><span tal:content="structure item/user_lastName"></span><span> </span><span tal:content="structure item/user_email"></span>
+            </a>
+        </p>
+    </div>
+</div>
+

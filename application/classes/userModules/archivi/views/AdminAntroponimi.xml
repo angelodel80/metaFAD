@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:cms="org.glizycms.views.components.*"
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:cmp="archivi.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:boards="metafad.gestioneDati.boards.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <com:ModalConfirm label="Attenzione" message="Sicuro di voler proseguire?"/>
+    <com:ModalAlert label="Attenzione" message="Operazione non corretta"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Antroponimi}" url="archivi-Antroponimi">
+        <cmp:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="false" recordClassName="archivi.models.Antroponimi"
+                          cssClass="table table-bordered table-striped"
+                          controllerName="archivi.controllers.*" fullTextSearch="true"
+                          JQueryUI="true" 
+                          autocompleteController="archivi.controllers.ajax.AutoComplete">
+<glz:DataGridColumn columnName="intestazione_s" headerText="{i18n:Intestazione}"/>
+
+            <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
+                                renderCell="metafad.common.views.renderer.authority.CellEditDraftDelete"/>
+        </cmp:DataGridSolr>
+        <cmp:AddButton label="Antroponimi" acl="*,new" type="Antroponimi" routeUrl="archiviMVCAdd" editableRegion="actions"
+                       recordClassName="archivi.models.Antroponimi" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State id="stateEdit" name="edit,editDraft" label="{i18n:Scheda}" draw="false" cssClass="editState">
+
+
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+        <glz:JSscript folder="userModules/archivi/js/Antroponimi" editableRegion="tail"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.Antroponimi"/>
+			<glz:Hidden id="instituteKey" />
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
+
+            <glz:Hidden id="isTemplate"/>
+            <glz:Input id="templateTitle" label="{i18n:Titolo template}"/>
+            <glz:Link cssClass="tree openTree fa fa-list" enabled="false"/>
+            <glz:JSTabGroup id="Antroponimi" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+
+            <glz:Panel cssClass="col-md-4 gerarchia no-padding" text="Gerarchia: " enabled="false">
+                <cmp:Tree id="treeview" startId="0" title="" controllerName="archivi.controllers.Gerarchia"/>
+            </glz:Panel>
+
+
+<glz:JSTab id="tabAntroponimi" label="Antroponimi" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input id="intestazione" readOnly="true" label="Intestazione"/>
+    <glz:Input id="cognome" label="Cognome" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_COGNOME##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_COGNOME"/>
+    <glz:Input id="nome" label="Nome" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_NOME##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_NOME"/>
+    <glz:Input id="qualificazione" label="Qualificazione" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_QUALIFICA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_QUALIFICA"/>
+    <glz:Input id="dateAttivita" label="Date di attività"/>
+    <glz:Input id="dataNascita" cssClass="js-archive-dateTextBox form-control" label="Data di nascita"/>
+    <glz:Input id="dataMorte" cssClass="js-archive-dateTextBox form-control" label="Data di morte"/>
+    <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+  </glz:Panel>
+</glz:JSTab>
+
+
+                <glz:JSTab id="history" label="{i18n:Storico}" cssClassTab="pull-right"
+                           routeUrl="archivihistory"/>
+                <glz:JSTab id="edit" label="{i18n:Scheda}" cssClassTab="fake-active pull-right"/>
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel"/>
+                
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="show,showDraft" label="{i18n:Show}" draw="false">
+        <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                                addQueryString="true" visible="false"/>
+
+        <glz:JSscript folder="userModules/archivi/js" editableRegion="tail"/>
+
+        <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
+            <glz:Hidden id="__id"/>
+            <glz:Hidden id="__model" value="archivi.models.Antroponimi"/>
+            <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+
+            <glz:JSTabGroup id="Antroponimi" showNav="true" cssClass="nav nav-tabs js-tab-section">
+
+<glz:JSTab id="tabAntroponimi" label="Antroponimi" dropdown="true">
+  <glz:Panel cssClass="col-md-8 active text-tab">
+    <glz:Input readOnly="true" id="intestazione" label="Intestazione"/>
+    <glz:Input readOnly="true" id="cognome" label="Cognome" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_COGNOME##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_COGNOME"/>
+    <glz:Input readOnly="true" id="nome" label="Nome" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_NOME##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_NOME"/>
+    <glz:Input readOnly="true" id="qualificazione" label="Qualificazione" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-antroponimi&quot;,##code##:##VA_ARCHIVE_VOCI_PERSONA_QUALIFICA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_VOCI_PERSONA_QUALIFICA"/>
+    <glz:Input readOnly="true" id="dateAttivita" label="Date di attività"/>
+    <glz:Input readOnly="true" id="dataNascita" cssClass="js-archive-dateTextBox form-control" label="Data di nascita"/>
+    <glz:Input readOnly="true" id="dataMorte" cssClass="js-archive-dateTextBox form-control" label="Data di morte"/>
+    <glz:Hidden id="externalID" readOnly="true" label="ID importazione"/>
+  </glz:Panel>
+</glz:JSTab>
+
+
+            </glz:JSTabGroup>
+
+            <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:Indietro}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" />
+            </cms:FormButtonsPanel>
+        </com:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="archivi.controllers.*"/>
+    </mvc:State>
+
+    <mvc:State name="toggleFEVisibility">
+        <glz:Hidden controllerName="archivi.controllers.ToggleFEVisibility"/>
+    </mvc:State>
+
+    <mvc:State id="stateHistory" name="history" label="{i18n:Storico}" url="linkHistory">
+      <glz:JSTabGroup id="innerTabs">
+        <glz:JSTab id="historyTab" label="{i18n:Storico}" cssClassTab="pull-right">
+          <cms:FormEdit addValidationJs="false" controllerName="archivi.controllers.*">
+            <boards:ShowHistory id="history" model="archivi.models.Antroponimi"/>
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-glizycms-history" data="action=add" />
+            </cms:FormButtonsPanel>
+          </cms:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+      </glz:JSTabGroup>
+    </mvc:State>
+</mvc:Page>

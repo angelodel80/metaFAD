@@ -1,0 +1,36 @@
+{
+  "externalID": {
+    "type": "simple",
+    "xpath": "./@id"
+  },
+  "parent": {
+    "type": "simple",
+    "xpath": "./@metafad_parentExternalId",
+    "transform": {
+      "classname": "metafad_common_importer_functions_transformers_LinkFromExternalID",
+      "params": {
+        "models": [
+          "archivi.models.ComplessoArchivistico",
+          "archivi.models.UnitaArchivistica",
+          "archivi.models.UnitaDocumentaria"
+        ]
+      }
+    }
+  },
+  "acronimoSistema": {
+    "type": "simple",
+    "xpath": "./@metafad_acronimoSistema"
+  },
+  "livelloDiDescrizione": {
+    "type": "simple",
+    "xpath": "./@metafad_livelloDiDescrizione"
+  },
+  "__model": {
+    "type": "simple",
+    "xpath": "./@metafad_model"
+  },
+  "model": {
+    "type": "simple",
+    "xpath": "./@metafad_model"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "d" : {
+    "toRead" : "da leggere",
+    "red" : "letta",
+    "waiting" : "attesa di lavorazione",
+    "working" : "in lavorazione",
+    "completed" : "completata",
+    "get" : "fruibile"
+  },
+  "v" : {
+    "toRead" : "da leggere",
+    "red" : "letta",
+    "waiting" : "attesa di lavorazione",
+    "working" : "in lavorazione",
+    "completed" : "completata",
+    "get" : "fruibile"
+  },
+  "a" : {
+    "toRead" : "da leggere",
+    "red" : "letta",
+    "waiting" : "attesa di lavorazione",
+    "working" : "in lavorazione",
+    "completed" : "completata",
+    "buyable" : "acquistabile"
+  },
+  "dig" : {
+    "toRead" : "da leggere",
+    "red" : "letta",
+    "waiting" : "attesa di lavorazione",
+    "working" : "in lavorazione",
+    "completed" : "completata",
+    "digitalized" : "digitalizzato"
+  }
+}

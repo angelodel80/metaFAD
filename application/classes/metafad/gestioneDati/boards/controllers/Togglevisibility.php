@@ -1,0 +1,5 @@
+<?php
+class metafad_gestioneDati_boards_controllers_Togglevisibility extends org_glizycms_contents_controllers_moduleEdit_Togglevisibility
+{
+
+}

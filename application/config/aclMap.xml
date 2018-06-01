@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:AclMap>
+    <glz:AclService id="dam" adm:aclLabel="DAM" adm:acl="a" />
+    <glz:AclService id="dam_add" adm:aclLabel="DAM: caricamento immagini" adm:acl="a" />
+    <glz:AclService id="dam_massive_add" adm:aclLabel="DAM: caricamento massivo" adm:acl="a" />
+    <glz:AclService id="dam_editing" adm:aclLabel="DAM: editing immagine" adm:acl="a,m,b,n,c,p,v" />
+    <glz:AclService id="activity_management" adm:aclLabel="Processi: gestione attività" adm:acl="a,m,b,n,c,p,v" />
+    <glz:AclService id="process_management" adm:aclLabel="Processi: gestione processi" adm:acl="a,m,b,n,c,p,v" />
+    <glz:AclService id="process_assignement" adm:aclLabel="Processi: assegnazione" adm:acl="a,m,b,n,c,p,v" />
+    <glz:AclService id="user" adm:aclLabel="Utenti e permessi: utenti" adm:acl="a,m,b,n,c,p,v" />
+    <glz:AclService id="role" adm:aclLabel="Utenti e permessi: ruoli" adm:acl="a,m,b,n,c,p,v" />
+</glz:AclMap>

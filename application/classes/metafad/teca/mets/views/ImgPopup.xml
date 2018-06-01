@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+  xmlns:glz="http://www.glizy.org/dtd/1.0/"
+  xmlns:cms="org.glizycms.views.components.*"
+  xmlns:mvc="org.glizy.mvc.components.*"
+  xmlns:c="metafad.modules.iccd.views.components.*"
+  defaultEditableRegion="content"
+  templateType="php"
+  templateFileName="Popup.php">
+
+<glz:Import src="_common.xml"/>
+
+<mvc:State name="edit">
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.mets.controllers.media.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.teca.mets.models.Img"/>
+
+        <!-- <glz:Input id="imggroupID" label="{i18n:Group}"/> -->
+        <glz:Input id="sequence_number" label="{i18n:Sequence number}" type="number" required="true"/>
+        <glz:Input id="nomenclature" label="{i18n:Nomenclature}" required="true"/>
+        <glz:Fieldset id="usage" label="{i18n:Usage}" data="type=repeat;collapsable=false;repeatMin=1">
+          <glz:List id="usage_value" label="{i18n:Usage}" emptyValue="">
+              <glz:ListItem key="1" value="1 (master)"/>
+              <glz:ListItem key="2" value="2 (alta risoluzione)"/>
+              <glz:ListItem key="3" value="3 (bassa risoluzione)"/>
+              <glz:ListItem key="4" value="4 (preview)"/>
+              <glz:ListItem key="a" value="a (no copyright)"/>
+              <glz:ListItem key="b" value="b (ha copyright)"/>
+          </glz:List>
+        </glz:Fieldset>
+        <!-- <glz:Input id="side" label="{i18n:Side}"/>
+        <glz:Input id="scale" label="{i18n:Scale}" type="number"/> -->
+        <glz:Input id="file" label="{i18n:File}" required="true"/>
+        <glz:Input id="md5" label="{i18n:Message Digest}" required="true"/>
+        <glz:List id="md5_algo" label="{i18n:Message Digest Algorithm}" emptyValue="" required="true">
+            <glz:ListItem key="1" value="Adler-32"/>
+            <glz:ListItem key="2" value="CRC32"/>
+            <glz:ListItem key="3" value="HAVAL"/>
+            <glz:ListItem key="4" value="MD5"/>
+            <glz:ListItem key="5" value="MNP"/>
+            <glz:ListItem key="6" value="SHA-1"/>
+            <glz:ListItem key="7" value="SHA-256"/>
+            <glz:ListItem key="8" value="SHA-384"/>
+            <glz:ListItem key="9" value="SHA512"/>
+            <glz:ListItem key="10" value="TIGER"/>
+            <glz:ListItem key="11" value="WHIRLPOOL"/>
+        </glz:List>
+        <glz:Input id="filesize" label="{i18n:Filesize}" required="true"/>
+        <glz:Fieldset id="image_dimensions" required="true" label="{i18n:Image Dimensions}">
+          <glz:Input id="imagelength" label="{i18n:Image Length}" type="number" required="true"/>
+          <glz:Input id="imagewidth" label="{i18n:Image Width}" type="number" required="true"/>
+          <glz:Input id="source_xdimension" label="{i18n:Source x Dimension}" type="number"/>
+          <glz:List id="source_xdimension_unit" label="{i18n:Source x Dim. Unit}" emptyValue="">
+              <glz:ListItem key="1" value="in."/>
+              <glz:ListItem key="2" value="mm"/>
+          </glz:List>
+          <glz:Input id="source_ydimension" label="{i18n:Source y Dimension}" type="number"/>
+          <glz:List id="source_ydimension_unit" label="{i18n:Source y Dim. Unit}" emptyValue="">
+              <glz:ListItem key="1" value="in."/>
+              <glz:ListItem key="2" value="mm"/>
+          </glz:List>
+        </glz:Fieldset>
+        <glz:Fieldset id="image_metrics" label="{i18n:Image Metrics}">
+          <glz:List id="samplingfrequencyunit" label="{i18n:Sampling Frequency Unit}" emptyValue="">
+              <glz:ListItem key="1" value="1 (no absolute unit of measurement)"/>
+              <glz:ListItem key="2" value="2 (in.)"/>
+              <glz:ListItem key="3" value="3 (cm)"/>
+          </glz:List>
+          <glz:List id="samplingfrequencyplane" label="{i18n:Sampling Frequency Plane}" emptyValue="">
+              <glz:ListItem key="1" value="1 (camera/scanner focal plane)"/>
+              <glz:ListItem key="2" value="2 (object plane)"/>
+              <glz:ListItem key="3" value="3 (source object plane)"/>
+          </glz:List>
+          <glz:Fieldset id="samplingfrequencyx" label="">
+            <glz:Input id="xsamplingfrequency_num" label="{i18n:X Sampling Frequency numerator}"/>
+            <glz:Input id="xsamplingfrequency_den" label="{i18n:X Sampling Frequency denominator}"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="samplingfrequencyy" label="">
+            <glz:Input id="ysamplingfrequency_num" label="{i18n:Y Sampling Frequency numerator}"/>
+            <glz:Input id="ysamplingfrequency_den" label="{i18n:Y Sampling Frequency denominator}"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="sampling" label="">
+            <glz:List id="bitpersample" label="{i18n:Bit per Sample}" emptyValue="" required="true">
+                <glz:ListItem key="1" value="1 (bitonale, bianco e nero)"/>
+                <glz:ListItem key="4" value="4 (4-bit scala di grigi)"/>
+                <glz:ListItem key="8" value="8 (8-bit scala di grigi o gamma di 256 colori)"/>
+                <glz:ListItem key="8,8,8" value="8,8,8 (24-bit RGB)"/>
+                <glz:ListItem key="16,16,16" value="16,16,16 (48-bit TIFF, HDR)"/>
+                <glz:ListItem key="8,8,8,8" value="8,8,8,8 (32-bit CMYK)"/>
+            </glz:List>
+            <glz:List id="bitpersample_unit" label="{i18n:Bit per Sample Unit}" emptyValue="" required="true">
+                <glz:ListItem key="1" value="integer"/>
+                <glz:ListItem key="2" value="floating point"/>
+            </glz:List>
+          </glz:Fieldset>
+          <glz:Input id="samplesxpixel" label="{i18n:Samples per pixel}" type="number" required="true"/>
+          <glz:List id="photometricinterpretation" label="{i18n:Photometric Interpretation}" emptyValue="" required="true">
+              <glz:ListItem key="WhiteIsZero" value="WhiteIsZero"/>
+              <glz:ListItem key="BlackIsZero" value="BlackIsZero"/>
+              <glz:ListItem key="RGB" value="RGB"/>
+              <glz:ListItem key="Palette color" value="Palette color"/>
+              <glz:ListItem key="Transparency Mask" value="Transparency Mask"/>
+              <glz:ListItem key="CMYK" value="CMYK"/>
+              <glz:ListItem key="YcbCr" value="YcbCr"/>
+              <glz:ListItem key="CIELab" value="CIELab"/>
+          </glz:List>
+        </glz:Fieldset>
+        <!-- <glz:Input id="ppi" label="{i18n:PPI}" type="number"/>
+        <glz:Input id="dpi" label="{i18n:DPI}" type="number"/> -->
+        <glz:Fieldset id="format" label="{i18n:Format}" required="true" emptyValue="">
+          <glz:Input id="name" label="{i18n:Name}"/>
+          <glz:Fieldset id="mime_f" label="">
+            <glz:List id="mime" label="{i18n:Format (MIME)}" required="true" emptyValue="">
+                <glz:ListItem key="image/jpeg" value="image/jpeg"/>
+                <glz:ListItem key="image/tiff" value="image/tiff"/>
+                <glz:ListItem key="image/gif" value="image/gif"/>
+                <glz:ListItem key="image/png" value="image/png"/>
+                <glz:ListItem key="image/vnd.djvu" value="image/vnd.djvu"/>
+                <glz:ListItem key="application/pdf" value="application/pdf"/>
+            </glz:List>
+            <glz:Input id="mime_ver" label="{i18n:Format (Version)}"/>
+          </glz:Fieldset>
+          <glz:List id="compression" label="{i18n:Compression Scheme}" required="true" emptyValue="">
+              <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+              <glz:ListItem key="CCITT 1D" value="CCITT 1D"/>
+              <glz:ListItem key="CCITT Group 3" value="CCITT Group 3"/>
+              <glz:ListItem key="CCITT Group 4" value="CCITT Group 4"/>
+              <glz:ListItem key="LZW" value="LZW"/>
+              <glz:ListItem key="JPG" value="JPG"/>
+              <glz:ListItem key="PNG" value="PNG"/>
+              <glz:ListItem key="DJVU" value="DJVU"/>
+          </glz:List>
+        </glz:Fieldset>
+        <glz:Fieldset id="scanning" label="{i18n:Scanning}" emptyValue="">
+          <glz:Input id="sourcetype" label="{i18n:Source Type}"/>
+          <glz:Input id="scanningagency" label="{i18n:Scanning Agency}"/>
+          <glz:Input id="devicesource" label="{i18n:Device source}"/>
+          <glz:Fieldset id="scanningsystem" label="{i18n:Scanning System}" emptyValue="">
+            <glz:Input id="manufacturer" label="{i18n:Scanner manufacturer}"/>
+            <glz:Input id="model" label="{i18n:Scanner Model}"/>
+            <glz:Fieldset id="software_f" label="">
+              <glz:Input id="software" label="{i18n:Capture software}"/>
+              <glz:Input id="software_ver" label="{i18n:Capture software version}"/>
+            </glz:Fieldset>
+          </glz:Fieldset>
+        </glz:Fieldset>
+        <glz:Input id="datetimecreated" type="datetime" label="{i18n:DateTime Created}"/>
+        <glz:Fieldset id="target" label="{i18n:Target}" emptyValue="" data="type=repeat;collapsable=false;repeatMin=0">
+          <glz:List id="targetType" label="{i18n:Target Type}" required="true" emptyValue="">
+              <glz:ListItem key="0" value="0 (external)"/>
+              <glz:ListItem key="1" value="1 (internal)"/>
+          </glz:List>
+          <glz:Fieldset id="target_f" label="">
+            <glz:Input id="targetID" required="true" label="{i18n:Target ID Name}"/>
+            <glz:Input id="targetID_manu" required="true" label="{i18n:Target ID Manufacturer}"/>
+            <glz:Input id="targetID_num" required="true" label="{i18n:Target ID Number}"/>
+            <glz:Input id="targetID_med" required="true" label="{i18n:Target ID Media}"/>
+          </glz:Fieldset>
+          <!-- <glz:Input id="imageData" label="{i18n:Image Data}"/> -->
+          <glz:Input id="performanceData" label="{i18n:Performance Data}"/>
+          <!-- <glz:Input id="profiles" label="{i18n:Profiles}"/> -->
+        </glz:Fieldset>
+
+        <!-- TODO questo fieldset genera un bug, causato probabilmente dai campi che si ripetono -->
+        <!-- <glz:Fieldset id="altimg" label="{i18n:Alt IMG}" emptyValue="" data="type=repeat;collapsable=false;repeatMin=0">
+          <glz:Input id="altimg_imggroupID" label="{i18n:IMG Group ID}" />
+          <glz:Fieldset id="altimg_usage" label="{i18n:Usage}" data="type=repeat;collapsable=false;repeatMin=0">
+            <glz:List id="altimg_usage_value" label="{i18n:Usage}" emptyValue="">
+                <glz:ListItem key="1" value="1 (master)"/>
+                <glz:ListItem key="2" value="2 (alta risoluzione)"/>
+                <glz:ListItem key="3" value="3 (bassa risoluzione)"/>
+                <glz:ListItem key="4" value="4 (preview)"/>
+                <glz:ListItem key="a" value="a (no copyright)"/>
+                <glz:ListItem key="b" value="b (ha copyright)"/>
+            </glz:List>
+          </glz:Fieldset>
+          <glz:Input id="altimg_file" label="{i18n:File}" required="true"/>
+          <glz:Input id="altimg_md5" label="{i18n:MD5}" required="true"/>
+          <glz:Input id="altimg_filesize" label="{i18n:Filesize}"/>
+          <glz:Fieldset id="altimg_image_dimensions" required="true" label="{i18n:Image Dimensions}">
+            <glz:Input id="altimg_imagelength" label="{i18n:Image Length}" type="number" required="true"/>
+            <glz:Input id="altimg_imagewidth" label="{i18n:Image Width}" type="number" required="true"/>
+            <glz:Input id="altimg_source_xdimension" label="{i18n:Source x Dimension}" type="number"/>
+            <glz:Input id="altimg_source_ydimension" label="{i18n:Source y Dimension}" type="number"/>
+          </glz:Fieldset>
+          <glz:Fieldset id="altimg_image_metrics" label="{i18n:Image Metrics}">
+            <glz:Input id="altimg_samplingfrequencyunit" label="{i18n:Sampling Frequency Unit}" type="number" required="true"/>
+            <glz:Input id="altimg_samplingfrequencyplane" label="{i18n:Sampling Frequency Plane}" type="number" required="true"/>
+            <glz:Input id="altimg_xsamplingfrequency" label="{i18n:x Sampling Frequency}" type="number"/>
+            <glz:Input id="altimg_ysamplingfrequency" label="{i18n:y Sampling Frequency}" type="number"/>
+            <glz:Input id="altimg_bitpersample" label="{i18n:Bit per sample}" required="true"/>
+            <glz:Input id="altimg_photometricinterpretation" label="{i18n:Photometric interpretation}" required="true"/>
+          </glz:Fieldset>
+          <glz:Input id="altimg_ppi" label="{i18n:PPI}" type="number"/>
+          <glz:Input id="altimg_dpi" label="{i18n:DPI}" type="number"/>
+          <glz:Fieldset id="altimg_format" label="{i18n:Format}" required="true" emptyValue="">
+            <glz:Input id="altimg_name" label="{i18n:Name}"/>
+            <glz:List id="altimg_mime" label="{i18n:Mime}" required="true" emptyValue="">
+                <glz:ListItem key="image/jpeg" value="image/jpeg"/>
+                <glz:ListItem key="image/tiff" value="image/tiff"/>
+                <glz:ListItem key="image/gif" value="image/gif"/>
+                <glz:ListItem key="image/png" value="image/png"/>
+                <glz:ListItem key="image/vnd.djvu" value="image/vnd.djvu"/>
+                <glz:ListItem key="application/pdf" value="application/pdf"/>
+            </glz:List>
+            <glz:List id="altimg_compression" label="{i18n:Compression}" required="true" emptyValue="">
+                <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+                <glz:ListItem key="CCITT 1D" value="CCITT 1D"/>
+                <glz:ListItem key="CCITT Group 3" value="CCITT Group 3"/>
+                <glz:ListItem key="CCITT Group 4" value="CCITT Group 4"/>
+                <glz:ListItem key="LZW" value="LZW"/>
+                <glz:ListItem key="JPG" value="JPG"/>
+                <glz:ListItem key="PNG" value="PNG"/>
+                <glz:ListItem key="DJVU" value="DJVU"/>
+            </glz:List>
+          </glz:Fieldset>
+          <glz:Fieldset id="altimg_scanning" label="{i18n:Scanning}" emptyValue="">
+            <glz:Input id="altimg_sourcetype" label="{i18n:Source Type}"/>
+            <glz:Input id="altimg_scanningagency" label="{i18n:Scanning Agency}"/>
+            <glz:Input id="altimg_devicesource" label="{i18n:Device source}"/>
+            <glz:Fieldset id="altimg_scanningsystem" label="{i18n:Scanning System}" emptyValue="">
+              <glz:Input id="altimg_manufacturer" label="{i18n:Scanner manufacturer}"/>
+              <glz:Input id="altimg_model" label="{i18n:Scanner Model}"/>
+              <glz:Input id="altimg_software" label="{i18n:Capture software}"/>
+            </glz:Fieldset>
+          </glz:Fieldset>
+          <glz:Input id="altimg_datetimecreated" type="datetime" label="{i18n:DateTime Created}"/>
+          <glz:Input id="altimg_note" label="{i18n:Note}"/>
+        </glz:Fieldset>
+        <glz:Input id="note" label="{i18n:Note}"/> -->
+
+        <glz:Panel cssClass="formButtons">
+            <glz:HtmlButton label="{i18n:GLZ_SAVE}" type="button" cssClass="btn btn-primary js-glizycms-save"
+                            data="action=save" acl="*,edit" />
+            <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link"
+                            cssClass="btn js-glizycms-cancel button-margin" data="action=close"/>
+        </glz:Panel>
+    </c:FormEdit>
+    </mvc:State>
+</mvc:Page>

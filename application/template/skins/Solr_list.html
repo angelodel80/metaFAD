@@ -1,0 +1,15 @@
+<div class="solr solrResults searchResults" tal:condition="php: !is_null(Component.records)">
+    <span tal:omit-tag="" tal:condition="php: count(Component.records)">
+        <h2><span tal:omit-tag="" tal:content="php: __T('Search results')" /></h2>
+
+        <p class="solrTotal"><span tal:omit-tag="" tal:content="php: __T('Document founds:')" /> <span tal:content="Component/total" /></p>
+
+        <div tal:repeat="item Component/records" tal:attributes="class item/__cssClass__">
+            <h4><a tal:attributes="href item/id"><span tal:content="structure item/title_t" /> (<span tal:content="structure item/type_t" />)</a></h4>
+       </div>
+	</span>
+    <span tal:omit-tag="" tal:condition="php: !count(Component.records)">
+        <p tal:content="php:__T('MW_NO_RECORD_FOUND')"></p>
+    </span>
+</div>
+

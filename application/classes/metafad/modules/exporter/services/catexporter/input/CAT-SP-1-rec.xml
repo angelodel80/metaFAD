@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eac-cpf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns="http://san.mibac.it/eac-san/"
+	     xsi:schemaLocation="http://www.san.beniculturali.it/tracciato http://www.san.beniculturali.it/tracciato/schemaeac.xsd">
+	<control>
+		<otherRecordId localType="PDN"></otherRecordId>
+		<maintenanceStatus>scheda pubblicata</maintenanceStatus>
+		<sources>
+			<source />
+		</sources>
+	</control>
+	<cpfDescription>
+		<identity>
+		</identity>
+		<description>
+			<existDates>
+				<dateSet></dateSet>
+			</existDates>
+			<placeDates>
+			</placeDates>
+			<descriptiveEntries>
+			</descriptiveEntries>
+			<biogHist>
+				<abstract></abstract>
+			</biogHist>
+		</description>
+		<relations>
+		</relations>
+	</cpfDescription>
+</eac-cpf>

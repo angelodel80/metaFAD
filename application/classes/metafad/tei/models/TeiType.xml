@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="tei_types" model:usePrefix="true">
+
+    <model:Query name="mysql_selectType">
+    <![CDATA[
+        SELECT B.*
+        FROM tei_types A
+        JOIN tei_types B on A.tei_type_child = B.tei_type_key
+        WHERE A.tei_type_key = :typeId
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_allTypes">
+    <![CDATA[
+        SELECT *
+        FROM tei_types
+        ORDER BY tei_type_order
+    ]]>
+    </model:Query>
+
+    <model:Query name="mysql_checkLevel">
+    <![CDATA[
+        SELECT A.tei_type_order > B.tei_type_order AS constraintOK
+        FROM tei_types A, tei_types B
+        WHERE A.tei_type_key = :childType AND B.tei_type_key = :parentType
+    ]]>
+    </model:Query>
+</model:Model>

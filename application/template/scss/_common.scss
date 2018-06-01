@@ -1,0 +1,69 @@
+/* BEGIN Common classes */
+img {
+   display: inline-block;
+}
+
+.btn {
+    border-radius: 0;
+}
+.inline {
+  display: inline;
+}
+
+.mb-0 {
+   margin-bottom: 0;
+}
+.margin-left-0 {
+  margin-left: 0;
+}
+
+.content-fix{
+   margin: 0 !important;
+   padding: 0 !important;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.small {
+  font-size: 80%;
+}
+
+/* BEGIN Colors */
+.error {
+    color: #AF0000;
+}
+.text-white {
+  color: #FFF;
+}
+a.text-white {
+    &:hover, &:focus {
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+.bg-aqua {
+  background-color: #5d9cec !important;
+}
+
+.bg-aqua-active {
+  background-color: #2f81e7 !important;
+}
+
+.bg-lava {
+  background-color: #FB6B08 !important;
+}
+
+.bg-lava-active {
+  background-color: #CE520A !important;
+}
+
+.bg-teal {
+  background-color: #36bc9b !important;
+}
+
+.bg-teal-active {
+  background-color: #2a9579 !important;
+}
+/* END Colors */
+/* END Common classes */

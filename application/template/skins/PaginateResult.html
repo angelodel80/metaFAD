@@ -1,0 +1,14 @@
+<div tal:attributes="id PaginateResult/id" tal:condition="php: count(PaginateResult['pagesLinks']) || !is_null(PaginateResult['totalRecords'])">
+	<span tal:condition="php: !is_null(PaginateResult['totalRecords'])" >
+		<span tal:omit-tag="" tal:content="php: __T('GLZ_TOTAL_RECORDS')" /> <span tal:omit-tag="" tal:content="structure PaginateResult/totalRecords" />
+	</span>
+    <ul tal:attributes="class PaginateResult/__cssClass__" tal:condition="php: count(PaginateResult['pagesLinks'])">
+        <li tal:repeat="item PaginateResult/pagesLinks" tal:attributes="class item/__cssClass__">
+            <a href="" tal:condition="php: item['__url__'] != ''" tal:attributes="href structure item/__url__" tal:content="structure item/value">1</a>
+            <span tal:condition="php: item['__url__'] == ''" tal:content="structure item/value">1</span>
+        </li>
+        <span tal:condition="PaginateResult/goTo" tal:omit-tag="">
+			<li tal:content="structure PaginateResult/goTo" />
+		</span>
+    </ul>
+</div>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page
+    xmlns:mvc="org.glizy.mvc.components.*"
+    xmlns:iccd="metafad.modules.iccd.views.components.*"
+    xmlns:com="metafad.common.views.components.*"
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    id="Page"
+    controllerName="metafad.modules.exporter.controllers.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php"
+    defaultAction="export">
+
+    <glz:templateDefine name="model" required="true" />
+    <glz:templateDefine name="grid_fields" required="true" />
+    <glz:templateDefine name="primary_key" required="false" defaultValue="document_id" />
+    <glz:templateDefine name="documentRenderCell" required="false" defaultValue="metafad.common.views.renderer.CellEditDraftDelete" />
+    <glz:templateDefine name="filterByInstitute" defaultValue="true" />
+    <glz:templateDefine name="autocompleteController" required="false" defaultValue="" />
+
+    <glz:Import src="_common.xml" />
+
+    <mvc:State name="export">
+        <com:DataGridSolr id="dataGridExport" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="true"
+                          recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true"
+                          autocompleteController="##autocompleteController##">
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" />
+            ##grid_fields##
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##documentRenderCell##" />
+        </com:DataGridSolr>
+
+        <iccd:FormEdit id="exportForm" newCode="true">
+          <glz:Panel cssClass="export-option">
+            <glz:Panel cssClass="export-option-checkbox">
+              <glz:Input id="exportAll" type="checkbox" value="exportAll" label="Esporta risultato della ricerca" cssClassLabel="" applyFormItemTemplate="false"/>
+            </glz:Panel>
+            <glz:Panel cssClass="export-option-checkbox">
+              <glz:Input id="exportSelected" type="checkbox" value="exportSelected" label="Esporta record selezionati" cssClassLabel="" applyFormItemTemplate="false"/>
+            </glz:Panel>
+            <glz:Panel cssClass="export-option-checkbox">
+              <glz:Input id="exportAutBib" type="checkbox" value="exportAutBib" label="Esporta schede AUT e BIB associate" cssClassLabel="" applyFormItemTemplate="false"/>
+            </glz:Panel>
+          </glz:Panel>
+          <glz:Panel id="countSelected" />
+          <glz:Input id="exportTitle" cssClass="form-control" label="Titolo esportazione" required="true"/>
+          <glz:Hidden id="ids" />
+          <glz:List id="exportFormat" cssClass="form-control" label="{i18n:Formato esportazione}" >
+              <glz:ListItem key="trc" value="ICCD 92"/>
+              <glz:ListItem key="iccdxml" value="ICCD XML"/>
+          </glz:List>
+          
+          <glz:Input id="exportEmail" cssClass="form-control" label="Email di notifica"/>
+          <glz:Panel cssClass="export-mag-email-message col-sm-offset-3 col-sm-10 col-xs-12"><glz:Text>L'email verr&#224; inviata al termine dell'operazione, possono essere inseriti pi&#250; valori separati da virgola.</glz:Text></glz:Panel>
+          <glz:HtmlButton label="{i18n:Esporta}" name="action" id="action" cssClass="btn btn-flat btn-info btn-export-mag"/>  
+        </iccd:FormEdit>
+        <glz:JSscript folder="metafad/gestioneDati/boards/js" />
+    </mvc:State>
+</mvc:Page>

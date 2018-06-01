@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:Page xmlns:mvc="org.glizy.mvc.components.*" 
+        xmlns:c="metafad.modules.iccd.views.components.*" 
+        xmlns:cmp="metafad.teca.MAG.views.components.*" 
+        xmlns:cms="org.glizycms.views.components.*" 
+        xmlns:com="metafad.common.views.components.*" 
+        xmlns:glz="http://www.glizy.org/dtd/1.0/" 
+        xmlns:mets="metafad.teca.mets.views.components.*" 
+        id="Page" 
+        defaultEditableRegion="content" 
+        templateType="php" 
+        templateFileName="Page.php">
+   <glz:Import src="_common.xml" />
+   <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active" addQueryString="true" visible="false" />
+   <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.teca.mets#list">
+      <com:DataGridSolr id="dataGrid" recordClassName="metafad.teca.mets.models.Model" enableSorting="true" cssClass="table table-bordered table-striped" fullTextSearch="true">
+         <glz:DataGridColumn columnName="identifier_t" headerText="{i18n:Identificativo}" width="12" />
+         <glz:DataGridColumn columnName="update_at_s" headerText="{i18n:Data modifica}" width="15" />
+         <glz:DataGridColumn columnName="isValid" sortable="false" searchable="false" width="10" headerText="{i18n:Validata}" cssClass="center" renderCell="org.glizycms.core.application.renderer.CellUserActive" />
+         <glz:DataGridColumn columnName="document_detail_status" headerText="{i18n:Pubblicato}" width="10" cssClass="center" renderCell="metafad.common.views.renderer.CellDocPublished" />
+         <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" width="10" cssClass="actions" renderCell="metafad.teca.MAG.views.renderer.CellEditDraftDeleteDownload" />
+      </com:DataGridSolr>
+      <mets:AddButton acl="*,new" cssClass="dataGridAddButton" label="" routeUrl="teca-mets/edit/" editableRegion="actions" recordClassName="metafad.teca.mets.models.Model" dataGridAjaxId="dataGrid" />
+   </mvc:State>
+   <mvc:State name="edit,editDraft">
+      <glz:Panel id="panelImages">
+         <cmp:LinkedImages id="linkedImages" />
+      </glz:Panel>
+      <glz:Link icon="fa fa-picture-o" label="Mostra immagini" editableRegion="actions" cssClass="link showImagesMAG" />
+      <glz:JSscript folder="metafad/teca/MAG/js/media_popup" />
+      <glz:JSscript folder="metafad/teca/mets/js" />
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.mets.controllers.*">
+         <com:Container cssClass="fadStrumagStru">
+            <glz:Hidden id="__id" />
+            <glz:Hidden id="__model" value="metafad.teca.mets.models.Model" />
+            <!-- <glz:Hidden id="physicalSTRU" />-->
+            <glz:Hidden id="logicalStru" />
+            <glz:Hidden id="flagVestito" />
+            <glz:Hidden id="flagParent" />
+            <glz:Hidden id="relatedStru" />
+            <glz:Hidden data="type=modalPageIMG;pageid=img_popup;" id="popup" />
+            <com:Container cssClass="col-sm-12 form-link" cssId="schedaMag">
+               <com:Container cssClass="col-sm-3">
+                  <glz:Panel cssClass="control-label-link">
+                     <glz:Text>Record collegato</glz:Text>
+                  </glz:Panel>
+               </com:Container>
+               <com:Container cssClass="col-sm-3">
+                  <glz:List id="linkedFormType">
+                     <glz:ListItem key="metafad.sbn.modules.sbnunimarc" value="SBN Unimarc" />
+                     <glz:ListItem key="SchedaF400" value="Scheda F 4.00" />
+                     <glz:ListItem key="SchedaS300" value="Scheda S 3.00" />
+                     <glz:ListItem key="SchedaOA300" value="Scheda OA 3.00" />
+                     <glz:ListItem key="SchedaD300" value="Scheda D 3.00" />
+                     <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unità archivistica" />
+                     <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unità documentaria" />
+                  </glz:List>
+               </com:Container>
+               <com:Container cssClass="col-sm-5">
+                  <glz:Input id="linkedForm" data="t=term;type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.MAG.models.proxy.FormProxy;return_object=true;" />
+               </com:Container>
+            </com:Container>
+            <com:Container cssClass="col-sm-12 form-link" cssId="linkMag">
+               <com:Container cssClass="col-sm-3">
+                  <glz:Panel cssClass="control-label-link">
+                     <glz:Text>Metadati strutturali collegati</glz:Text>
+                  </glz:Panel>
+               </com:Container>
+               <com:Container cssClass="col-sm-9">
+                  <glz:Input id="linkedStru" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" />
+               </com:Container>
+            </com:Container>
+            <glz:JSTabGroup id="innerTabs" showNav="true">
+               <glz:JSTab id="metsHdr" label="metsHdr" dropdown="true">
+                  <glz:Input id="metsHdr_recordstatus" label="{i18n:Stato del record}" />
+                  <glz:Input id="document_creationDate" label="{i18n:Data di creazione}" readOnly="true" />
+                  <glz:Input id="document_detail_modificationDate" label="{i18n:Data ultima modifica}" readOnly="true" />
+                  <glz:Fieldset id="metsHdr_agent" label="{i18n:Agente}" data="type=repeat;collapsable=false;repeatMin=0">
+                     <glz:Input id="metsHdr_role" label="{i18n:Ruolo}" />
+                     <glz:Input id="metsHdr_type" label="{i18n:Tipo}" />
+                     <glz:Input id="metsHdr_name" label="{i18n:Nome}" />
+                  </glz:Fieldset>
+               </glz:JSTab>
+               <glz:JSTab id="editBib" label="dmdSec" dropdown="true">
+                  <glz:Fieldset id="mods" label="{i18n:MODS}" data="type=repeat;collapsable=false;repeatMin=0;repeatMax=1;">
+                     <glz:Fieldset label="Informazioni Titolo">
+                        <glz:Input id="titolo" label="{i18n:Titolo}" />
+                        <glz:Input id="complementoTitolo" label="{i18n:Sottotitolo}" />
+                        <glz:Input id="numeroParteTitolo" label="{i18n:Numero parte}" />
+                        <glz:Input id="nomeParte" label="{i18n:Nome parte}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="autore-rep" label="Autore" data="type=repeat;noEmptyMessage=true">
+                        <glz:Input id="nome" label="Nome" />
+                        <glz:Input id="ruolo" label="Ruolo" />
+                        <glz:Input id="descrizione" label="Descrizione" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+                     </glz:Fieldset>
+                     <glz:Fieldset>
+                        <glz:Input id="tipologiaRisorsa" label="{i18n:Tipo di risorsa}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="originInfo" label="Note editoriali">
+                        <glz:Input id="luogo" label="{i18n:Luogo}" />
+                        <glz:Input id="editore" label="{i18n:Editore}" />
+                        <glz:Fieldset id="date" label="Data" data="type=repeat;repeatMin=1;repeatMax=1;">
+                           <glz:Input id="estremoRemoto_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data remota" />
+                           <glz:Input id="estremoRecente_data" cssClass="js-archive-cronologia-dateInput form-control" label="Data recente" />
+                           <glz:Input id="qualifica" label="Qualifica" />
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Fieldset id="lingua-rep" label="{i18n:Lingua}" data="type=repeat;noEmptyMessage=true;repeatMin=1">
+                        <glz:Input id="lingua" label="{i18n:Lingua}" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##level##:##1##};dictId=VC_ARCHIVE_ISO_639_3" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="physicalDescription" label="Descrizione fisica">
+                        <glz:Fieldset label="Materia e tecnica">
+                           <glz:Fieldset id="materia-rep" label="Materia" data="type=repeat;noEmptyMessage=true">
+                              <glz:Input id="materia" label="Materia" />
+                           </glz:Fieldset>
+                           <glz:Fieldset id="tecnica-rep" label="Tecnica" data="type=repeat;noEmptyMessage=true">
+                              <glz:Input id="tecnica" label="Tecnica" />
+                           </glz:Fieldset>
+                           <glz:Input id="tipoEstensione" label="Tipo ed estensione" />
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Input id="abstract" label="Abstract" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+                     <glz:Input id="tavolaContenuti" label="Tavola dei contenuti" type="multiline" rows="5" wrap="on" htmlEditor="true" />
+                     <glz:Fieldset id="soggetto-rep" label="Soggetto" data="type=repeat;noEmptyMessage=true">
+                        <glz:Input id="soggetto" label="Soggetto" />
+                     </glz:Fieldset>
+                     <glz:Input id="classificazione" label="Classificazione" />
+                     <glz:Fieldset id="titoloCollegato-rep" label="Titolo collegato" data="type=repeat;noEmptyMessage=true">
+                        &gt;
+                        <glz:Input id="titoloCollegato" label="Titolo" data="type=selectfrom;proxy=metafad.mods.models.proxy.ModuleProxy;return_object=true" />
+                        <glz:List id="tipoRelazione" label="Tipo di relazione" emptyValue=" - ">
+                           <glz:ListItem value="preceding" />
+                           <glz:ListItem value="succeeding" />
+                           <glz:ListItem value="original" />
+                           <glz:ListItem value="host" />
+                           <glz:ListItem value="constituent" />
+                           <glz:ListItem value="series" />
+                           <glz:ListItem value="otherVersion" />
+                           <glz:ListItem value="otherFormat" />
+                           <glz:ListItem value="isReferencedBy" />
+                           <glz:ListItem value="references" />
+                           <glz:ListItem value="reviewOf" />
+                        </glz:List>
+                     </glz:Fieldset>
+                     <glz:Fieldset id="parte-rep" label="Parte" data="type=repeat;noEmptyMessage=true">
+                        <glz:List id="tipologiaParte" label="Tipologia" emptyValue=" - ">
+                           <glz:ListItem value="part" />
+                           <glz:ListItem value="volume" />
+                           <glz:ListItem value="issue" />
+                           <glz:ListItem value="chapter" />
+                           <glz:ListItem value="section" />
+                           <glz:ListItem value="paragraph" />
+                           <glz:ListItem value="track" />
+                        </glz:List>
+                        <glz:Input id="numeroParte" label="Numero dell parte" />
+                        <glz:Fieldset label="Titolo">
+                           <glz:Input id="titoloParte" label="Titolo" />
+                           <glz:List id="tipoTitoloParte" label="Tipo di titolo" emptyValue=" - ">
+                              <glz:ListItem value="part" />
+                              <glz:ListItem value="volume" />
+                              <glz:ListItem value="issue" />
+                              <glz:ListItem value="chapter" />
+                              <glz:ListItem value="section" />
+                              <glz:ListItem value="paragraph" />
+                              <glz:ListItem value="track" />
+                           </glz:List>
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Input id="localizzazione" label="Localizzazione" data="type=selectfrom;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:##mods##,##level##:##1##};dictId=VC_MODS_LOCALIZZAZIONE" />
+                     <glz:Fieldset id="collocazione-rep" label="Collocazione" data="type=repeat;noEmptyMessage=true">
+                        <glz:Input id="collocazione" label="Collocazione" />
+                        <glz:Input id="specificazione" label="Specificazione" />
+                        <glz:Fieldset id="inventario-rep" label="Inventario" data="type=repeat;noEmptyMessage=true">
+                           <glz:Input id="inventario" label="Inventario" />
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Input id="condizioniAccesso" label="Condizioni d'accesso" />
+                     <glz:Fieldset id="part" label="Compilazione">
+                        <glz:Input id="compilatore" label="Compilatore" readOnly="true" />
+                        <glz:Input id="dataCreazione" label="Data di creazione" readOnly="true" />
+                        <glz:Input id="dataModifica" label="Data di modifica" readOnly="true" />
+                     </glz:Fieldset>
+                  </glz:Fieldset>
+                  <glz:Fieldset id="dc" label="{i18n:DC}" data="type=repeat;collapsable=false;repeatMin=0;repeatMax=1">
+                     <glz:Fieldset id="BIB_dc_identifier" label="{i18n:dc:identifier}" data="type=repeat;collapsable=false;repeatMin=1">
+                        <glz:Input id="BIB_dc_identifier_value" label="{i18n:dc:identifier}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_title" label="{i18n:dc:title}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_title_value" label="{i18n:dc:title}" />
+                        <glz:Input id="BIB_dc_title_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_creator" label="{i18n:dc:creator}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_creator_value" label="{i18n:dc:creator}" />
+                        <glz:Input id="BIB_dc_creator_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_publisher" label="{i18n:dc:publisher}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_publisher_value" label="{i18n:dc:publisher}" />
+                        <glz:Input id="BIB_dc_publisher_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_subject" label="{i18n:dc:subject}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_subject_value" label="{i18n:dc:subject}" />
+                        <glz:Input id="BIB_dc_subject_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_description" label="{i18n:dc:description}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_description_value" label="{i18n:dc:description}" />
+                        <glz:Input id="BIB_dc_description_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_contributor" label="{i18n:dc:contributor}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_contributor_value" label="{i18n:dc:contributor}" />
+                        <glz:Input id="BIB_dc_contributor_lang" label="{i18n:Lang}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_date" label="{i18n:dc:date}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_date_value" label="{i18n:dc:date}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_type" label="{i18n:dc:type}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_type_value" label="{i18n:dc:type}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_format" label="{i18n:dc:format}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_format_value" label="{i18n:dc:format}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_source" label="{i18n:dc:source}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_source_value" label="{i18n:dc:source}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_language" label="{i18n:dc:language}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_language_value" label="{i18n:dc:language}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_relation_fieldset" label="{i18n:Relazioni}">
+                        <glz:List id="list_options" label="{i18n:Tipo di relazione da inserire}">
+                           <glz:ListItem key="Fa parte di" value="Fa parte di" selected="true" />
+                           <glz:ListItem key="Contiene" value="Contiene" />
+                        </glz:List>
+                        <glz:Fieldset id="BIB_dc_relation" label="{i18n:dc:relation}" data="type=repeat;collapsable=false;repeatMin=0">
+                           <glz:Input id="BIB_dc_relation_value" label="{i18n:dc:relation}" />
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_coverage" label="{i18n:dc:coverage}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_coverage_value" label="{i18n:dc:coverage}" />
+                     </glz:Fieldset>
+                     <glz:Fieldset id="BIB_dc_rights" label="{i18n:dc:rights}" data="type=repeat;collapsable=false;repeatMin=0">
+                        <glz:Input id="BIB_dc_rights_value" label="{i18n:dc:rights}" />
+                     </glz:Fieldset>
+                  </glz:Fieldset>
+               </glz:JSTab>
+               <glz:JSTab id="strutab" label="{i18n:structMap}" dropdown="true">
+                  <glz:Hidden id="stru_options" value="2" />
+                  <cmp:StruManagement id="struComponent" data="" />
+                  <!-- <cmp:ShowStru id="stru" data=""/>
+                <cmp:ElementContainer id="showElements" /> -->
+               </glz:JSTab>
+               <glz:JSTab id="file" label="{i18n:fileSec}" dropdown="true">
+                  <glz:Input data="type=mediapicker;preview=true" id="FTA-image" label="{i18n:Collega media dal DAM}" required="false" />
+                  <glz:HtmlButton label="{i18n:Conferma}" type="button" cssClass="btn btn-flat btn-dam" />
+                  <glz:JSTabGroup id="fileTabs" showNav="false" cssClass="nav nav-tabs">
+                     <glz:JSTab id="img" label="{i18n:Immagini}" dropdown="false" cssClass="tab-pane-media active">
+                        <mets:ShowFiles id="show-img" type="img" />
+                     </glz:JSTab>
+                     <!-- <glz:JSTab id="doc" label="{i18n:Documenti}" dropdown="false" cssClass="tab-pane-media hide">
+                    <mets:ShowFiles id="show-doc" type="doc"/>
+                  </glz:JSTab> -->
+                     <glz:JSTab id="audio" label="{i18n:Audio}" dropdown="false" cssClass="tab-pane-media hide">
+                        <mets:ShowFiles id="show-audio" type="audio" />
+                     </glz:JSTab>
+                     <glz:JSTab id="video" label="{i18n:Video}" dropdown="false" cssClass="tab-pane-media hide">
+                        <mets:ShowFiles id="show-video" type="video" />
+                     </glz:JSTab>
+                  </glz:JSTabGroup>
+               </glz:JSTab>
+               <glz:JSTab id="premis" label="{i18n:RIGHTS}" dropdown="true">
+                  <glz:Input id="rightsmd_dichiarazione" label="{i18n:Dichiarazione}" />
+                  <glz:Fieldset label="{i18n:Detentore}">
+                     <glz:Input id="rightsmd_denominazione" label="{i18n:Denominazione/nome}" />
+                     <glz:Fieldset label="{i18n:Contatti}">
+                        <glz:Input id="rightsmd_indirizzo" label="{i18n:Indirizzo}" />
+                        <glz:Input id="rightsmd_mail" label="{i18n:E-mail}" />
+                     </glz:Fieldset>
+                     <glz:Input id="rightsmd_note" label="{i18n:Note}" />
+                  </glz:Fieldset>
+                  <glz:Fieldset id="rightsmd_licenze" label="{i18n:Licenze}" data="type=repeat;collapsable=false;repeatMin=0">
+                     <glz:List id="category" label="{i18n:Categoria}">
+                        <glz:ListItem key="COPYRIGHTED" value="COPYRIGHTED" selected="true" />
+                        <glz:ListItem key="LICENSED" value="LICENSED" />
+                        <glz:ListItem key="PUBLIC DOMAIN" value="PUBLIC DOMAIN" />
+                        <glz:ListItem key="CONTRACTUAL" value="CONTRACTUAL" />
+                        <glz:ListItem key="OTHER" value="OTHER" />
+                     </glz:List>
+                     <glz:Fieldset label="{i18n:Permessi}">
+                        <glz:Fieldset id="permesso" data="type=repeat;collapsable=false;repeatMin=0">
+                           <glz:List id="permesso_value" label="{i18n:Permesso}">
+                              <glz:ListItem key="DISCOVER" value="DISCOVER" selected="true" />
+                              <glz:ListItem key="DISPLAY" value="DISPLAY" />
+                              <glz:ListItem key="COPY" value="COPY" />
+                              <glz:ListItem key="DUPLICATE" value="DUPLICATE" />
+                              <glz:ListItem key="MODIFY" value="MODIFY" />
+                              <glz:ListItem key="DELETE" value="DELETE" />
+                              <glz:ListItem key="PRINT" value="PRINT" />
+                           </glz:List>
+                        </glz:Fieldset>
+                     </glz:Fieldset>
+                     <glz:Fieldset label="{i18n:Vincoli}">
+                        <glz:Fieldset id="vincoli" data="type=repeat;collapsable=false;repeatMin=0">
+                           <glz:List id="vincolo_value" label="{i18n:Vincolo}">
+                              <glz:ListItem key="TIME" value="TIME" selected="true" />
+                              <glz:ListItem key="TRANSFER PERMISSION" value="TRANSFER PERMISSION" />
+                              <glz:ListItem key="QUALITY" value="QUALITY" />
+                              <glz:ListItem key="PAYMENT" value="PAYMENT" />
+                              <glz:ListItem key="FORMAT" value="FORMAT" />
+                              <glz:ListItem key="RE-USE" value="RE-USE" />
+                           </glz:List>
+                        </glz:Fieldset>
+                        <glz:Input id="vincoli_note" label="{i18n:Note}" />
+                     </glz:Fieldset>
+                  </glz:Fieldset>
+               </glz:JSTab>
+               <!-- <glz:JSTab id="relationsTab" label="{i18n:Relazioni}" routeUrl="linkRelations" cssClassTab="pull-right"/> -->
+            </glz:JSTabGroup>
+            <cms:FormButtonsPanel>
+               <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,edit" />
+               <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,edit" />
+               <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+               <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+               <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+               <glz:HtmlButton label="{i18n:Valida}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=validate" acl="*,publish" />
+            </cms:FormButtonsPanel>
+         </com:Container>
+      </c:FormEdit>
+   </mvc:State>
+   <mvc:State name="delete">
+      <glz:Hidden controllerName="metafad.teca.mets.controllers.Delete" />
+   </mvc:State>
+   <mvc:State name="relations">
+      <glz:Hidden controllerName="metafad.gestioneDati.boards.controllers.Relations" />
+      <glz:JSTabGroup id="innerTabs">
+         <glz:JSTab id="relationsTab" label="{i18n:Relazioni}" cssClassTab="pull-right" />
+         <glz:JSTab id="editTab" label="{i18n:Gestione METS}" routeUrl="linkEdit" cssClassTab="pull-right" />
+      </glz:JSTabGroup>
+      <cmp:MagRelation id="magRelation" />
+   </mvc:State>
+   <glz:JSscript><![CDATA[$( document ).ready( function(){
+          $('#relatedBoard').change(function(){
+              $($('#board').data('instance').$element).data('proxy', $(this).val());
+              $('#board').data('instance').initialize($('#board').data('instance').$element);
+              if($('#relatedBoard').val() != "MAG Libero"){
+                  $('#s2id_board').attr("class", "select2-container form-control required");
+              } else {
+                  $('#s2id_board').attr("class", "select2-container hidden required");
+              }
+          });
+
+
+      });
+
+      window.onload = function(){
+          if($('#s2id_board .select2-choice span').text().length !== 0){
+              $('#s2id_board').attr("class", "select2-container form-control required");
+          }
+      }]]></glz:JSscript>
+</mvc:Page>

@@ -1,0 +1,188 @@
+/* BEGIN Datatables */
+
+div {
+    &.dataTables_wrapper {
+        margin-bottom: 60px;
+        .filter-row {
+            background: #eee;
+            padding: 10px;
+        }
+        .select {
+            &:after {
+                content: '\f0d7';
+                font-family: FontAwesome;
+                position: absolute;
+                right: 10px;
+                top: 7px;
+                z-index: 0;
+                pointer-events: none;
+            }
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border-radius: 0;
+        }
+        .filter-box {
+          float: left;
+              &.select-page-length {
+                  label {
+                    border-right: 1px solid $border;
+                    padding-right: 5px;
+                  }
+                  label {
+                      &:before {
+                        content: '\f0d7';
+                        font-family: FontAwesome;
+                        position: absolute;
+                        margin-top: 2px;
+                        margin-left: 58px;
+                        z-index: 0;
+                        pointer-events: none;
+                      }
+                  }
+              }
+        }
+        .dataTables_length {
+            label {
+                font-weight: normal;
+                float: right;
+                text-align: left;
+            }
+            select {
+                width: 75px;
+                border: 1px solid #ccc;
+            }
+        }
+        .dataTables_filter {
+            label {
+                &:not(:first-child) {
+                  padding-left: 15px;
+                }
+            }
+            input,
+            select {
+                min-width: 210px;
+                width: 240px;
+                height: 34px;
+                border: 1px solid #ccc;
+                padding: 3px;
+                margin-right: 5px;
+            }
+            input {
+                padding-right: 30px;
+                height: 34px;
+                border-radius: 0;
+            }
+            .select {
+                &:after {
+                    position: relative;
+                    right: 25px;
+                    top: 2px;
+                } 
+            }
+        }
+        .dataTables_info,
+        .select-page-length {
+            padding-top: 8px;
+            font-size: 14px;
+        }
+        .dataTables_info {
+            padding-left: 5px;
+            padding-top: 9px;
+        }
+        .dataTables_paginate {
+            float: right;
+            margin: 0;
+            ul.pagination {
+                margin: 2px 0;
+                white-space: nowrap;
+            }
+        }
+        .DataTables_sort_icon {
+            position: relative;
+            top: 2px;
+            float: right;
+        }
+        .input-goto {
+            position: relative;
+            top: -16px;
+            left: 1px;
+            height: 36.85px;
+            width: 80px;
+            text-align: right;
+            border-radius: 0px !important;
+        }
+    }
+}
+
+table {
+    &.dataTable {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        clear: both;
+        margin-top: 2px !important;
+        margin-bottom: 6px !important;
+        max-width: none !important;
+        thead {
+            .sorting,
+            .sorting_asc,
+            .sorting_desc,
+            .sorting_asc_disabled,
+            .sorting_desc_disabled {
+                cursor: pointer;
+            }
+            .sorting {
+                background: #eee url('images/sort_both.png') no-repeat center right;
+            }
+            .sorting_asc {
+                background: #eee url('images/sort_asc.png') no-repeat center right;
+            }
+            .sorting_desc {
+                background: #eee url('images/sort_desc.png') no-repeat center right;
+            }
+            .sorting_asc_disabled {
+                background: #eee url('images/sort_asc_disabled.png') no-repeat center right;
+            }
+            .sorting_desc_disabled {
+                background: #eee url('images/sort_desc_disabled.png') no-repeat center right;
+            }
+        }
+        td,
+        th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        th {
+            background: #eee;
+            border: 0;
+            &:active {
+                outline: none;
+            }
+        }
+        td {
+            &.actions {
+                white-space: nowrap;
+                text-align: right;
+            }
+            &.center {
+                text-align: center;
+            }
+        }
+        .ui-state-default {
+            width: auto!important;
+        }
+    }
+}
+
+#kardexGrid_wrapper {
+    .filter-row {
+        display: none;
+    }
+    .select2-container {
+        display: block;
+    }
+}
+/* END Datatables */

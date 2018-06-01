@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:cmp="metafad.teca.MAG.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs nav-tabs-flat" cssClassCurrent="active"
+                            addQueryString="true" visible="false"/>
+
+    <mvc:State id="stateIndex" name="index" label="{i18n:Elenco}" url="metafad.teca.MAG#list">
+        <cmp:DataGridSolr id="dataGrid" recordClassName="metafad.teca.MAG.models.Model" cssClass="table table-bordered table-striped" fullTextSearch="true">
+            <glz:DataGridColumn columnName="BIB_dc_identifier_index_t" headerText="{i18n:Identificativo}" width="12"/>
+            <glz:DataGridColumn columnName="BIB_dc_title_t" headerText="{i18n:Titolo}" width="40" renderCell="metafad.common.views.renderer.ShortField"/>
+            <glz:DataGridColumn columnName="update_at_s" headerText="{i18n:Data modifica}" width="15"/>
+            <glz:DataGridColumn columnName="isValid" sortable="false" searchable="false" width="10" headerText="{i18n:Validata}" cssClass="center" renderCell="org.glizycms.core.application.renderer.CellUserActive" />
+            <glz:DataGridColumn columnName="document_detail_status" headerText="{i18n:Pubblicato}" width="10" cssClass="center" renderCell="metafad.common.views.renderer.CellDocPublished" />
+            <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" width="10" cssClass="actions"
+                                renderCell="metafad.teca.MAG.views.renderer.CellEditDraftDeleteDownload"/>
+        </cmp:DataGridSolr>
+        <cmp:AddButton acl="*,new" cssClass="dataGridAddButton" label="" routeUrl="tecamag/edit/" editableRegion="actions"
+                       recordClassName="metafad.teca.MAG.models.Model" dataGridAjaxId="dataGrid"/>
+    </mvc:State>
+
+    <mvc:State name="edit,editDraft,show">
+
+    <glz:Panel id="panelImages">
+      <cmp:LinkedImages id="linkedImages"/>
+    </glz:Panel>
+
+    <glz:Link id="showImagesLink" icon="fa fa-picture-o" label="Mostra immagini" editableRegion="actions" cssClass="link showImagesMAG"/>
+    <glz:JSscript folder="metafad/teca/MAG/js/media_popup" />
+    <glz:JSscript folder="metafad/teca/MAG/js/gestione_mag" editableRegion="tail"/>
+
+    <c:FormEdit id="editForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*">
+        <com:Container cssClass="fadStrumagStru">
+                <glz:Hidden id="__id"/>
+                <glz:Hidden id="__model" value="metafad.teca.MAG.models.Model"/>
+                <!-- <glz:Hidden id="physicalSTRU" />-->
+                <glz:Hidden id="logicalStru" />
+
+                <glz:Hidden id="flagVestito" />
+                <glz:Hidden id="flagParent" />
+
+                <glz:Hidden id="relatedStru" />
+                <glz:Hidden data="type=modalPageIMG;pageid=img_popup;" id="popup"/>
+                <com:Container cssClass="col-sm-12 form-link" cssId="schedaMag">
+                    <com:Container cssClass="col-sm-3">
+                      <glz:Panel cssClass="control-label-link"><glz:Text>Record collegato</glz:Text></glz:Panel>
+                    </com:Container>
+                    <com:Container cssClass="col-sm-3">
+                      <glz:List id="linkedFormType" emptyValue="-">
+                        <glz:ListItem key="metafad.sbn.modules.sbnunimarc" value="SBN Unimarc" />
+                        <glz:ListItem key="SchedaF400" value="Scheda F 4.00" />
+                        <glz:ListItem key="SchedaS300" value="Scheda S 3.00" />
+                        <glz:ListItem key="SchedaOA300" value="Scheda OA 3.00" />
+                        <glz:ListItem key="SchedaD300" value="Scheda D 3.00" />
+                        <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unità archivistica" />
+                        <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unità documentaria" />
+                      </glz:List>                    
+                    </com:Container>
+                    <com:Container id="linkedFormContainer" cssClass="linkedFormContainer col-sm-5">
+                      <glz:Input id="linkedForm" data="type=selectfrom;proxy=metafad.teca.MAG.models.proxy.FormProxy;return_object=true;"/>
+                    </com:Container>
+                </com:Container>
+                <com:Container cssClass="col-sm-12 form-link" cssId="linkMag">
+                  <com:Container cssClass="col-sm-3">
+                    <glz:Panel cssClass="control-label-link"><glz:Text>Metadati strutturali collegati</glz:Text></glz:Panel>
+                  </com:Container>
+                  <com:Container cssClass="col-sm-9">
+                    <glz:Input id="linkedStru" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.STRUMAG.models.proxy.StruMagProxy;return_object=true" />
+                  </com:Container>
+                </com:Container>
+                <!-- <glz:Panel cssClass="col-sm-12" id="stato-div">
+                  <glz:Panel cssClass="col-sm-2" id="stato-label">
+                    <glz:Text wrapTag="span" html="true" text="Stato"/>
+                  </glz:Panel>
+                  <glz:Panel cssClass="col-sm-2">
+                    <glz:RadioButton id="lavorazione" label="{i18n:Lavorazione}" applyFormItemTemplate="false" checkedValue="" name="stato"/>
+                  </glz:Panel>
+                  <glz:Panel cssClass="col-sm-2">
+                    <glz:RadioButton id="revisione" label="{i18n:Revisione}" applyFormItemTemplate="false" checkedValue="" name="stato"/>
+                  </glz:Panel>
+                  <glz:Panel cssClass="col-sm-2">
+                    <glz:RadioButton id="pubblicato" label="{i18n:Pubblicato}" applyFormItemTemplate="false" checkedValue="" name="stato"/>
+                  </glz:Panel>
+                </glz:Panel> -->
+        <glz:JSTabGroup id="innerTabs" showNav="true">
+
+            <glz:JSTab id="editGen" label="{i18n:GEN}" dropdown="true">
+                <glz:Input id="GEN_creation" label="{i18n:Creation}" readOnly="true"/>
+                <glz:Input id="GEN_lastUpdate" label="{i18n:Last update}" readOnly="true"/>
+                <glz:Input id="GEN_stprog" label="{i18n:Stprog}" required="true"/>
+                <glz:Input id="GEN_collection" label="{i18n:Collection}"/>
+                <glz:Input id="GEN_agency" label="{i18n:Agency}" required="true"/>
+                <glz:List id="GEN_access_rights" label="{i18n:AccessRight}" required="true" emptyValue="">
+                    <glz:ListItem key="0" value="0 (uso riservato all'interno dell'istituzione)"/>
+                    <glz:ListItem key="1" value="1 (uso pubblico)"/>
+                </glz:List>
+                <glz:List id="GEN_completeness" label="{i18n:Completeness}" required="true" emptyValue="">
+                    <glz:ListItem key="0" value="0 (digitalizzazione completa)"/>
+                    <glz:ListItem key="1" value="1 (digitalizzazione parziale)"/>
+                </glz:List>
+            </glz:JSTab>
+
+            <glz:JSTab id="editBib" label="BIB" dropdown="true">
+              <glz:List id="BIB_level" label="{i18n:Level}" required="true" emptyValue="">
+                  <glz:ListItem key="a" value="a (spoglio)"/>
+                  <glz:ListItem key="m" value="m (monografia)"/>
+                  <glz:ListItem key="s" value="s (seriale)"/>
+                  <glz:ListItem key="c" value="c (raccolta prodotta dall'istituzione)"/>
+                  <glz:ListItem key="f" value="f (unit&#224; archivistica)"/>
+                  <glz:ListItem key="d" value="d (unit&#224; documentaria)"/>
+              </glz:List>
+              <glz:Fieldset id="BIB_dc_identifier" label="{i18n:dc:identifier}" data="type=repeat;collapsable=false;repeatMin=1" required="true">
+                <glz:Input id="BIB_dc_identifier_value" label="{i18n:dc:identifier}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_title" label="{i18n:dc:title}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_title_value" label="{i18n:dc:title}"/>
+                <glz:Input id="BIB_dc_title_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_creator" label="{i18n:dc:creator}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_creator_value" label="{i18n:dc:creator}"/>
+                <glz:Input id="BIB_dc_creator_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_publisher" label="{i18n:dc:publisher}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_publisher_value" label="{i18n:dc:publisher}"/>
+                <glz:Input id="BIB_dc_publisher_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_subject" label="{i18n:dc:subject}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_subject_value" label="{i18n:dc:subject}"/>
+                <glz:Input id="BIB_dc_subject_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_description" label="{i18n:dc:description}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_description_value" label="{i18n:dc:description}"/>
+                <glz:Input id="BIB_dc_description_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_contributor" label="{i18n:dc:contributor}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_contributor_value" label="{i18n:dc:contributor}"/>
+                <glz:Input id="BIB_dc_contributor_lang" label="{i18n:Lang}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_date" label="{i18n:dc:date}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_date_value" label="{i18n:dc:date}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_type" label="{i18n:dc:type}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_type_value" label="{i18n:dc:type}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_format" label="{i18n:dc:format}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_format_value" label="{i18n:dc:format}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_source" label="{i18n:dc:source}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_source_value" label="{i18n:dc:source}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_language" label="{i18n:dc:language}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_language_value" label="{i18n:dc:language}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_relation_fieldset" label="{i18n:Relazioni}">
+                <glz:Input id="list_options" label="{i18n:Tipo di relazione da inserire}" />
+                <glz:Fieldset id="BIB_dc_relation" label="{i18n:dc:relation}" data="type=repeat;collapsable=false;repeatMin=0">
+                  <glz:Input id="BIB_dc_relation_value" label="{i18n:dc:relation}" data="type=selectfrom;multiple=false;add_new_values=false;proxy=metafad.teca.MAG.models.proxy.MagRelationProxy;return_object=true;"/>
+                </glz:Fieldset>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_coverage" label="{i18n:dc:coverage}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_coverage_value" label="{i18n:dc:coverage}"/>
+              </glz:Fieldset>
+              <glz:Fieldset id="BIB_dc_rights" label="{i18n:dc:rights}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_dc_rights_value" label="{i18n:dc:rights}"/>
+              </glz:Fieldset>
+
+              <glz:Fieldset id="BIB_holdings" label="{i18n:Holdings}" data="type=repeat;collapsable=false;repeatMin=0">
+                <glz:Input id="BIB_holdings_ID" label="{i18n:ID}"/>
+                <glz:Input id="BIB_holdings_library" label="{i18n:Library}"/>
+                <glz:Input id="BIB_holdings_inventory_number" label="{i18n:Inventory number}"/>
+                <glz:Fieldset id="BIB_holdings_shelfmark" label="{i18n:Shelfmark}" data="type=repeat;collapsable=false;repeatMin=0">
+                  <glz:Input id="BIB_holdings_shelfmark_value" label="{i18n:Shelfmark}"/>
+                  <glz:Input id="BIB_holdings_shelfmark_type" label="{i18n:Type}"/>
+                </glz:Fieldset>
+              </glz:Fieldset>
+
+              <glz:Fieldset id="BIB_local_bib" label="{i18n:Local bib}">
+                <glz:Fieldset id="BIB_local_bib_geo_coord" label="{i18n:Geo coord}" data="type=repeat;collapsable=false;repeatMin=0">
+                  <glz:Input id="BIB_local_bib_geo_coord-element" label="{i18n:Geo coord}"/>
+                </glz:Fieldset>
+                <glz:Fieldset id="BIB_local_bib_not_date" label="{i18n:Not date}" data="type=repeat;collapsable=false;repeatMin=0">
+                  <glz:Input id="BIB_local_bib_not_date-element" label="{i18n:Not date}"/>
+                </glz:Fieldset>
+              </glz:Fieldset>
+
+              <glz:Fieldset id="BIB_piece" label="{i18n:Piece}" cssClass="hide">
+                <glz:Input id="BIB_piece_year" label="{i18n:Year}" data="level=s"/>
+                <glz:Input id="BIB_piece_issue" label="{i18n:Issue}" data="level=s"/>
+                <glz:Input id="BIB_piece_stpiece_per" label="{i18n:Stpiece per}" data="level=s"/>
+                <glz:Input id="BIB_piece_part_number" label="{i18n:Part number}" data="level=m"/>
+                <glz:Input id="BIB_piece_part_name" label="{i18n:Part name}" data="level=m"/>
+                <glz:Input id="BIB_piece_stpiece_vol" label="{i18n:Stpiece vol}" data="level=m"/>
+              </glz:Fieldset>
+            </glz:JSTab>
+
+            <glz:JSTab id="strutab" label="{i18n:STRU}" dropdown="true">
+              <glz:List id="stru_options" label="{i18n:Opzioni di collegamento}" >
+                  <glz:ListItem key="0" value="Solo struttura fisica" selected="true"/>
+                  <glz:ListItem key="1" value="Solo struttura logica"/>
+                  <glz:ListItem key="2" value="Struttura fisica e logica"/>
+              </glz:List>
+              <cmp:StruManagement id="struComponent" data=""/>
+              <!-- <cmp:ShowStru id="stru" data=""/>
+              <cmp:ElementContainer id="showElements" /> -->
+            </glz:JSTab>
+
+            <glz:JSTab id="file" label="{i18n:FILE}" dropdown="true">
+              <glz:Input data="type=mediapicker;preview=true" id="FTA-image" label="{i18n:Collega media dal DAM}" required="false" />
+              <glz:HtmlButton label="{i18n:Conferma}" type="button" cssClass="btn btn-flat btn-dam" />
+              <glz:JSTabGroup id="fileTabs" showNav="false" cssClass="nav nav-tabs">
+                <glz:JSTab id="img" label="{i18n:Immagini}" dropdown="false" cssClass="tab-pane-media active">
+                  <cmp:ShowFiles id="show-img" type="img"/>
+                </glz:JSTab>
+                <glz:JSTab id="doc" label="{i18n:Documenti}" dropdown="false" cssClass="tab-pane-media hide">
+                  <cmp:ShowFiles id="show-doc" type="doc"/>
+                </glz:JSTab>
+                <glz:JSTab id="audio" label="{i18n:Audio}" dropdown="false" cssClass="tab-pane-media hide">
+                  <cmp:ShowFiles id="show-audio" type="audio"/>
+                </glz:JSTab>
+                <glz:JSTab id="video" label="{i18n:Video}" dropdown="false" cssClass="tab-pane-media hide">
+                  <cmp:ShowFiles id="show-video" type="video"/>
+                </glz:JSTab>
+                <glz:JSTab id="ocr" label="{i18n:OCR}" dropdown="false" cssClass="tab-pane-media hide">
+                  <cmp:ShowFiles id="show-ocr" type="ocr"/>
+                </glz:JSTab>
+                <glz:JSTab id="dis" label="{i18n:DIS}" dropdown="false" cssClass="tab-pane-media hide">
+                  <cmp:ShowFiles id="show-dis" type="dis"/>
+                </glz:JSTab>
+              </glz:JSTabGroup>
+            </glz:JSTab>
+
+            <glz:JSTab id="imggroup" label="{i18n:IMG GROUP}"  dropdown="true">
+              <glz:Fieldset id="GEN_img_group" label="{i18n:Img Group}" data="type=FormEditRepeatMediaGroup;collapsable=true;repeatMin=0">
+                <com:Container cssClass="col-sm-12 group-id-div">
+                  <com:Container cssClass="col-sm-8">
+                    <glz:Input id="GEN_img_group_ID" label="{i18n:ID}" required="true"/>
+                  </com:Container>
+                  <com:Container cssClass="col-sm-4 metadata-link">
+                    <glz:Link icon="fa fa-file-o" label="Carica metadati da immagine" cssClass="link metadata"/>
+                    <glz:Panel cssClass="hide">
+                      <glz:Hidden data="type=metadataPopup;pageid=metadata_popup;" id="metadata-popup"/>                     
+                      <glz:Hidden data="type=mediapickerMAG;externalFiltersOR=[{'type':'IMAGE'},{'type':'CONTAINER'}];preview=true" id="media-dam" required="false" />
+                    </glz:Panel>
+                  </com:Container>
+                </com:Container>
+                <glz:Fieldset id="GEN_img_group_image_metrics" label="{i18n:Image metrics}">
+                  <glz:List id="GEN_img_group_image_metrics_samplingfrequencyunit" label="{i18n:Sampling Frequency Unit}" required="true" >
+                      <glz:ListItem key="1" value="1 (nessuna unit&#224; di misura definita)"/>
+                      <glz:ListItem key="2" value="2 (inch, pollice)"/>
+                      <glz:ListItem key="3" value="3 (centimetro)"/>
+                  </glz:List>
+                  <glz:List id="GEN_img_group_image_metrics_samplingfrequencyplane" label="{i18n:Sampling Frequency Plane}" required="true" >
+                      <glz:ListItem key="1" value="1 (camera/scanner focal plane)"/>
+                      <glz:ListItem key="2" value="2 (object plane)"/>
+                      <glz:ListItem key="3" value="3 (source object plane)"/>
+                  </glz:List>
+                  <glz:Input id="GEN_img_group_image_metrics_xsamplingfrequency" label="{i18n:X Sampling Frequency}"/>
+                  <glz:Input id="GEN_img_group_image_metrics_ysamplingfrequency" label="{i18n:Y Sampling Frequency}"/>
+                  <glz:List id="GEN_img_group_image_metrics_bitpersample" label="{i18n:Bit per Sample}" required="true" emptyValue="">
+                      <glz:ListItem key="1" value="1 (bitonale, bianco e nero)"/>
+                      <glz:ListItem key="4" value="4 (4-bit scala di grigi)"/>
+                      <glz:ListItem key="8" value="8 (8-bit scala di grigi o gamma di 256 colori)"/>
+                      <glz:ListItem key="8,8,8" value="8,8,8 (24-bit RGB)"/>
+                      <glz:ListItem key="16,16,16" value="16,16,16 (48-bit TIFF, HDR)"/>
+                      <glz:ListItem key="8,8,8,8" value="8,8,8,8 (32-bit CMYK)"/>
+                  </glz:List>
+                  <glz:List id="GEN_img_group_image_metrics_photometricinterpretation" label="{i18n:Photometric Interpretation}" required="true" emptyValue="">
+                      <glz:ListItem key="WhiteIsZero" value="WhiteIsZero"/>
+                      <glz:ListItem key="BlackIsZero" value="BlackIsZero"/>
+                      <glz:ListItem key="RGB" value="RGB"/>
+                      <glz:ListItem key="Palette color" value="Palette color"/>
+                      <glz:ListItem key="Transparency Mask" value="Transparency Mask"/>
+                      <glz:ListItem key="CMYK" value="CMYK"/>
+                      <glz:ListItem key="YcbCr" value="YcbCr"/>
+                      <glz:ListItem key="CIELab" value="CIELab"/>
+                  </glz:List>
+                </glz:Fieldset>
+                <glz:Input id="GEN_img_group_ppi" label="{i18n:PPI}" type="number"/>
+                <glz:Input id="GEN_img_group_dpi" label="{i18n:DPI}" type="number"/>
+                <glz:Fieldset id="GEN_img_group_format" label="{i18n:Format}" required="true" emptyValue="">
+                  <glz:Input id="GEN_img_group_format_name" label="{i18n:Name}"/>
+                  <glz:List id="GEN_img_group_format_mime" label="{i18n:Mime}" required="true" emptyValue="">
+                      <glz:ListItem key="image/jpeg" value="image/jpeg"/>
+                      <glz:ListItem key="image/tiff" value="image/tiff"/>
+                      <glz:ListItem key="image/gif" value="image/gif"/>
+                      <glz:ListItem key="image/png" value="image/png"/>
+                      <glz:ListItem key="image/vnd.djvu" value="image/vnd.djvu"/>
+                      <glz:ListItem key="application/pdf" value="application/pdf"/>
+                  </glz:List>
+                  <glz:List id="GEN_img_group_format_compression" label="{i18n:Compression}" required="true" emptyValue="">
+                      <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+                      <glz:ListItem key="CCITT 1D" value="CCITT 1D"/>
+                      <glz:ListItem key="CCITT Group 3" value="CCITT Group 3"/>
+                      <glz:ListItem key="CCITT Group 4" value="CCITT Group 4"/>
+                      <glz:ListItem key="LZW" value="LZW"/>
+                      <glz:ListItem key="JPG" value="JPG"/>
+                      <glz:ListItem key="PNG" value="PNG"/>
+                      <glz:ListItem key="DJVU" value="DJVU"/>
+                  </glz:List>
+                </glz:Fieldset>
+                <glz:Fieldset id="GEN_img_group_scanning" label="{i18n:Scanning}" emptyValue="">
+                  <glz:Input id="GEN_img_group_scanning_sourcetype" label="{i18n:Source Type}"/>
+                  <glz:Input id="GEN_img_group_scanning_scanningagency" label="{i18n:Scanning Agency}"/>
+                  <glz:Input id="GEN_img_group_scanning_devicesource" label="{i18n:Device source}"/>
+                  <glz:Fieldset id="GEN_img_group_scanning_scanningsystem" label="{i18n:Scanning System}" emptyValue="">
+                    <glz:Input id="GEN_img_group_scanning_scanningsystem_scanner_manufacturer" label="{i18n:Scanner manufacturer}"/>
+                    <glz:Input id="GEN_img_group_scanning_scanningsystem_scanner_model" label="{i18n:Scanner Model}"/>
+                    <glz:Input id="GEN_img_group_scanning_scanningsystem_capture_software" label="{i18n:Capture software}"/>
+                  </glz:Fieldset>
+                </glz:Fieldset>
+              </glz:Fieldset>
+            </glz:JSTab>
+
+            <glz:JSTab id="audiogroup" label="{i18n:AUDIO GROUP}"  dropdown="true">
+              <glz:Fieldset id="GEN_audio_group" label="{i18n:Audio Group}"  data="type=FormEditRepeatMediaGroup;collapsable=true;repeatMin=0">
+                <glz:Input id="GEN_audio_group_ID" label="{i18n:ID}" required="true"/>
+                <glz:Fieldset id="GEN_audio_group_audio_metrics" label="{i18n:Audio Metrics}">
+                  <glz:List id="GEN_audio_group_audio_metrics_samplingfrequency" label="{i18n:Sampling Frequency}" required="true" emptyValue="">
+                      <glz:ListItem key="8" value="8"/>
+                      <glz:ListItem key="11.025" value="11.025"/>
+                      <glz:ListItem key="12" value="12"/>
+                      <glz:ListItem key="16" value="16"/>
+                      <glz:ListItem key="22.05" value="22.05"/>
+                      <glz:ListItem key="24" value="24"/>
+                      <glz:ListItem key="32" value="32"/>
+                      <glz:ListItem key="44.1" value="44.1"/>
+                      <glz:ListItem key="48" value="48"/>
+                      <glz:ListItem key="96" value="96"/>
+                  </glz:List>
+                  <glz:List id="GEN_audio_group_audio_metrics_bytepersample" label="{i18n:Byte per Sample}" required="true" emptyValue="">
+                      <glz:ListItem key="8" value="8"/>
+                      <glz:ListItem key="16" value="16"/>
+                      <glz:ListItem key="24" value="24"/>
+                  </glz:List>
+                  <glz:List id="GEN_audio_group_audio_metrics_bitrate" label="{i18n:BitRate}" required="true" emptyValue="">
+                      <glz:ListItem key="24" value="24"/>
+                      <glz:ListItem key="32" value="32"/>
+                      <glz:ListItem key="48" value="48"/>
+                      <glz:ListItem key="56" value="56"/>
+                      <glz:ListItem key="64" value="64"/>
+                      <glz:ListItem key="96" value="96"/>
+                      <glz:ListItem key="128" value="128"/>
+                      <glz:ListItem key="160" value="160"/>
+                      <glz:ListItem key="192" value="192"/>
+                      <glz:ListItem key="256" value="256"/>
+                      <glz:ListItem key="320" value="320"/>
+                      <glz:ListItem key="384" value="384"/>
+                  </glz:List>
+                </glz:Fieldset>
+                <glz:Fieldset id="GEN_audio_group_format" label="{i18n:Format}" required="true" emptyValue="">
+                  <glz:Input id="GEN_audio_group_format_name" label="{i18n:Name}"/>
+                  <glz:List id="GEN_audio_group_format_mime" label="{i18n:Mime}" required="true" emptyValue="">
+                      <glz:ListItem key="audio/wav" value="audio/wav"/>
+                      <glz:ListItem key="audio/mpeg" value="audio/mpeg"/>
+                      <glz:ListItem key="audio/mpg" value="audio/mpg"/>
+                      <glz:ListItem key="audio/mp3" value="audio/mp3"/>
+                      <glz:ListItem key="audio/x-mpeg" value="audio/x-mpeg"/>
+                      <glz:ListItem key="audio/midi" value="audio/midi"/>
+                      <glz:ListItem key="audio/x-realaudio" value="audio/x-realaudio"/>
+                  </glz:List>
+                  <glz:List id="GEN_audio_group_format_compression" label="{i18n:Compression}" emptyValue="">
+                      <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+                      <glz:ListItem key="Linear PCM" value="Linear PCM"/>
+                      <glz:ListItem key="MPEG-1 layer 1" value="MPEG-1 layer 1"/>
+                      <glz:ListItem key="MPEG-1 layer 2" value="MPEG-1 layer 2"/>
+                      <glz:ListItem key="MPEG-1 layer 3" value="MPEG-1 layer 3"/>
+                      <glz:ListItem key="AC3" value="AC3"/>
+                      <glz:ListItem key="Dolby" value="Dolby"/>
+                      <glz:ListItem key="DTS" value="DTS"/>
+                  </glz:List>
+                  <glz:List id="GEN_audio_group_format_channel_configuration" label="{i18n:Channel configuration}" emptyValue="">
+                      <glz:ListItem key="Mono" value="Mono"/>
+                      <glz:ListItem key="Dual mono" value="Dual mono"/>
+                      <glz:ListItem key="Joint stereo" value="Joint stereo"/>
+                      <glz:ListItem key="Stereo" value="Stereo"/>
+                      <glz:ListItem key="2 ch" value="2 ch"/>
+                      <glz:ListItem key="4 ch" value="4 ch"/>
+                      <glz:ListItem key="5.1 ch" value="5.1 ch"/>
+                      <glz:ListItem key="6.1 ch" value="6.1 ch"/>
+                  </glz:List>
+                </glz:Fieldset>
+                <glz:Fieldset id="GEN_audio_group_transcription" label="{i18n:Transcription}">
+                  <glz:Input id="GEN_audio_group_transcription_sourcetype" label="{i18n:Source Type}"/>
+                  <glz:Input id="GEN_audio_group_transcription_transcriptionagency" label="{i18n:Transcription Agency}"/>
+                  <glz:Input id="GEN_audio_group_transcription_transcriptiondate" type="datetime" label="{i18n:Transcription Date}"/>
+                  <glz:Input id="GEN_audio_group_transcription_devicesource" label="{i18n:Device Source}"/>
+                  <glz:Fieldset id="GEN_audio_group_transcription_transcriptionchain" label="{i18n:Transcription Chain}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Fieldset id="GEN_audio_group_transcription_transcriptionchain_device_description" required="true" label="{i18n:Device Description}">
+                      <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_description_type" required="true" label="{i18n:Type}"/>
+                      <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_description_unique_identifier" label="{i18n:Unique identifier}"/>
+                      <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_description_comments" label="{i18n:Comments}"/>
+                    </glz:Fieldset>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_manufacturer" required="true" label="{i18n:Device Manufacturer}"/>
+                    <glz:Fieldset id="GEN_audio_group_transcription_transcriptionchain_device_model" required="true" label="{i18n:Device Model}">
+                      <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_model_model" required="true" label="{i18n:Model}"/>
+                      <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_model_serial_number" label="{i18n:Serial number}"/>
+                    </glz:Fieldset>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionchain_capture_software" label="{i18n:Capture Software}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionchain_device_settings" label="{i18n:Device Device settings}"/>
+                  </glz:Fieldset>
+                  <glz:Fieldset id="GEN_audio_group_transcription_transcriptionsummary" label="{i18n:Transcription Summary}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionsummary_grouping" required="true" label="{i18n:Grouping}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionsummary_data_description" required="true" label="{i18n:Data description}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionsummary_data_unit" label="{i18n:Data unit}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptionsummary_data_value" label="{i18n:Data value}"/>
+                  </glz:Fieldset>
+                  <glz:Fieldset id="GEN_audio_group_transcription_transcriptiondata" label="{i18n:Transcription Data}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Input id="GEN_audio_group_transcription_transcriptiondata_grouping" required="true" label="{i18n:Grouping}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptiondata_data_description" required="true" label="{i18n:Data description}"/>
+                    <glz:Input id="GEN_audio_group_transcription_transcriptiondata_data_unit" label="{i18n:Data unit}"/>
+                    <glz:Fieldset id="GEN_audio_group_transcription_transcriptiondata_interval" label="{i18n:Interval}">
+                      <glz:Input id="GEN_audio_group_transcription_transcriptiondata_interval_start" required="true" label="{i18n:Start}"/>
+                      <glz:Input id="GEN_audio_group_transcription_transcriptiondata_interval_stop" required="true" label="{i18n:Stop}"/>
+                    </glz:Fieldset>
+                    <glz:Fieldset id="GEN_audio_group_transcription_transcriptiondata_data_value" label="{i18n:Data value}" data="type=repeat;collapsable=false;repeatMin=0">
+                      <glz:Input id="GEN_audio_group_transcription_transcriptiondata_data_value-element" label="{i18n:Data value}"/>
+                    </glz:Fieldset>
+                  </glz:Fieldset>
+                </glz:Fieldset>
+              </glz:Fieldset>
+            </glz:JSTab>
+
+            <glz:JSTab id="videogroup" label="{i18n:VIDEO GROUP}" dropdown="true">
+              <glz:Fieldset id="GEN_video_group" label="{i18n:Video Group}" data="type=FormEditRepeatMediaGroup;collapsable=true;repeatMin=0">
+                <glz:Input id="GEN_video_group_ID" label="{i18n:ID}" required="true"/>
+                <glz:Fieldset id="GEN_video_group_video_metrics" label="{i18n:Video Metrics}">
+                  <glz:List id="GEN_video_group_video_metrics_videosize" label="{i18n:Video Size}" required="true" emptyValue="">
+                      <glz:ListItem key="160x120" value="160x120"/>
+                      <glz:ListItem key="176x144" value="176x144"/>
+                      <glz:ListItem key="192x144" value="192x144"/>
+                      <glz:ListItem key="280x180" value="280x180"/>
+                      <glz:ListItem key="320x240" value="320x240"/>
+                      <glz:ListItem key="352x288" value="352x288"/>
+                      <glz:ListItem key="360x288" value="360x288"/>
+                      <glz:ListItem key="384x288" value="384x288"/>
+                      <glz:ListItem key="480x576" value="480x576"/>
+                      <glz:ListItem key="720x576" value="720x576"/>
+                  </glz:List>
+                  <glz:List id="GEN_video_group_video_metrics_aspectratio" label="{i18n:Aspect Ratio}" required="true" emptyValue="">
+                      <glz:ListItem key="1:1" value="1:1"/>
+                      <glz:ListItem key="4:3" value="4:3"/>
+                      <glz:ListItem key="16:9" value="16:9"/>
+                      <glz:ListItem key="2.11:1" value="2.11:1"/>
+                  </glz:List>
+                  <glz:List id="GEN_video_group_video_metrics_framerate" label="{i18n:Frame Rate}" required="true" emptyValue="">
+                      <glz:ListItem key="23.976" value="23.976"/>
+                      <glz:ListItem key="24" value="24"/>
+                      <glz:ListItem key="25" value="25"/>
+                      <glz:ListItem key="29.97" value="29.97"/>
+                      <glz:ListItem key="30" value="30"/>
+                      <glz:ListItem key="50" value="50"/>
+                      <glz:ListItem key="59.94" value="59.94"/>
+                      <glz:ListItem key="60" value="60"/>
+                  </glz:List>
+                </glz:Fieldset>
+                <glz:Fieldset id="GEN_video_group_format" label="{i18n:Format}" required="true" emptyValue="">
+                  <glz:Input id="GEN_video_group_format_name" label="{i18n:Name}"/>
+                  <glz:List id="GEN_video_group_format_mime" label="{i18n:Mime}" required="true" emptyValue="">
+                      <glz:ListItem key="video/x-ms-asf" value="video/x-ms-asf"/>
+                      <glz:ListItem key="video/avi" value="video/avi"/>
+                      <glz:ListItem key="video/mpeg" value="video/mpeg"/>
+                      <glz:ListItem key="video/vnd.rn-realvideo" value="video/vnd.rn-realvideo"/>
+                      <glz:ListItem key="video/wmv" value="video/wmv"/>
+                  </glz:List>
+                  <glz:List id="GEN_video_group_format_videoformat" label="{i18n:Video Format}" required="true" emptyValue="">
+                      <glz:ListItem key="Component" value="Component"/>
+                      <glz:ListItem key="NTSC" value="NTSC"/>
+                      <glz:ListItem key="PAL" value="PAL"/>
+                      <glz:ListItem key="SECAM" value="SECAM"/>
+                      <glz:ListItem key="Unspecified" value="Unspecified"/>
+                  </glz:List>
+                  <glz:List id="GEN_video_group_format_encode" label="{i18n:Encode}" required="true" emptyValue="">
+                      <glz:ListItem key="interlaced" value="interlaced"/>
+                      <glz:ListItem key="non-interlaced" value="non-interlaced"/>
+                  </glz:List>
+                  <glz:List id="GEN_video_group_format_streamtype" label="{i18n:Stream Type}" emptyValue="">
+                      <glz:ListItem key="Uncompressed" value="Uncompressed"/>
+                      <glz:ListItem key="MPEG-1" value="MPEG-1"/>
+                      <glz:ListItem key="MPEG-2" value="MPEG-2"/>
+                      <glz:ListItem key="MPEG-4" value="MPEG-4"/>
+                  </glz:List>
+                  <glz:Input id="GEN_video_group_format_codec" label="{i18n:Codec}"/>
+                </glz:Fieldset>
+                <glz:Fieldset id="GEN_video_group_digitisation" label="{i18n:Digitisation}" emptyValue="">
+                  <glz:Input id="GEN_video_group_digitisation_sourcetype" label="{i18n:Source Type}"/>
+                  <glz:Input id="GEN_video_group_digitisation_transcriptionagency" label="{i18n:Transcription Agency}"/>
+                  <glz:Input id="GEN_video_group_digitisation_devicesource" label="{i18n:Device Source}"/>
+                  <glz:Fieldset id="GEN_video_group_digitisation_transcriptionchain" label="{i18n:Transcription Chain}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Fieldset id="GEN_video_group_digitisation_transcriptionchain_device_description" required="true" label="{i18n:Device Description}">
+                      <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_description_type" required="true" label="{i18n:Type}"/>
+                      <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_description_unique_identifier" label="{i18n:Unique identifier}"/>
+                      <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_description_comments" label="{i18n:Comments}"/>
+                    </glz:Fieldset>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_manufacturer" required="true" label="{i18n:Device Manufacturer}"/>
+                    <glz:Fieldset id="GEN_video_group_digitisation_transcriptionchain_device_model" required="true" label="{i18n:Device Model}">
+                      <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_model_model" required="true" label="{i18n:Model}"/>
+                      <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_model_serial_number" label="{i18n:Serial number}"/>
+                    </glz:Fieldset>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionchain_capture_software" label="{i18n:Capture Software}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionchain_device_settings" label="{i18n:Device Device settings}"/>
+                  </glz:Fieldset>
+                  <glz:Fieldset id="GEN_video_group_digitisation_transcriptionsummary" label="{i18n:Transcription Summary}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionsummary_grouping" required="true" label="{i18n:Grouping}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionsummary_data_description" required="true" label="{i18n:Data description}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionsummary_data_unit" label="{i18n:Data unit}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptionsummary_data_value" label="{i18n:Data value}"/>
+                  </glz:Fieldset>
+                  <glz:Fieldset id="GEN_video_group_digitisation_transcriptiondata" label="{i18n:Transcription Data}"  data="type=FormEditRepeatMandatory;collapsable=false;repeatMin=0">
+                    <glz:Input id="GEN_video_group_digitisation_transcriptiondata_grouping" required="true" label="{i18n:Grouping}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptiondata_data_description" required="true" label="{i18n:Data description}"/>
+                    <glz:Input id="GEN_video_group_digitisation_transcriptiondata_data_unit" label="{i18n:Data unit}"/>
+                    <glz:Fieldset id="GEN_video_group_digitisation_transcriptiondata_interval" label="{i18n:Interval}">
+                      <glz:Input id="GEN_video_group_digitisation_transcriptiondata_interval_start" required="true" label="{i18n:Start}"/>
+                      <glz:Input id="GEN_video_group_digitisation_transcriptiondata_interval_stop" required="true" label="{i18n:Stop}"/>
+                    </glz:Fieldset>
+                    <glz:Fieldset id="GEN_video_group_digitisation_transcriptiondata_data_value" label="{i18n:Data value}" data="type=repeat;collapsable=false;repeatMin=0">
+                      <glz:Input id="GEN_video_group_digitisation_transcriptiondata_data_value-element" label="{i18n:Data value}"/>
+                    </glz:Fieldset>
+                  </glz:Fieldset>
+                </glz:Fieldset>
+              </glz:Fieldset>
+            </glz:JSTab>
+
+            <glz:JSTab id="relationsTab" label="{i18n:Relazioni}" routeUrl="linkRelations" cssClassTab="pull-right"/>
+        </glz:JSTabGroup>
+
+        <cms:FormButtonsPanel>
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=save" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveClose" acl="*,edit" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraft" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_SAVE_DRAFT_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save-novalidation" data="action=saveDraftClose" acl="*,editDraft" />
+                <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+                <glz:HtmlButton label="{i18n:Valida}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=validate" acl="*,publish" />
+        </cms:FormButtonsPanel>
+        </com:Container>
+    </c:FormEdit>
+    </mvc:State>
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.teca.MAG.controllers.Delete"/>
+    </mvc:State>
+
+    <mvc:State name="relations">
+      <glz:Hidden controllerName="metafad.gestioneDati.boards.controllers.Relations"/>
+      <glz:JSTabGroup id="innerTabs">
+        <glz:JSTab id="relationsTab" label="{i18n:Relazioni}" cssClassTab="pull-right">
+        </glz:JSTab>
+        <glz:JSTab id="editTab" label="{i18n:Scheda}" routeUrl="linkEdit" cssClassTab="pull-right"/>
+      </glz:JSTabGroup>
+      <cmp:MagRelation id="magRelation" />
+    </mvc:State>
+
+    <mvc:State name="import">
+      <glz:JSTabGroup id="tabs" showNav="true">
+        <glz:JSTab id="fileImport" label="{i18n:Import MAG da file}" dropdown="false">
+          <glz:Panel cssClass="row col-md-12 margin-bottom">
+            <glz:Text>ATTENZIONE : Il file deve essere uno zip che contiene l'XML del MAG e la cartella con le immagini</glz:Text>
+          </glz:Panel>
+          <c:FormEdit id="importForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*" method="post" enctype="multipart/form-data">
+            <glz:Input id="fileToImport" type="file" label="Zip contenente i file" required="true" />
+            <glz:List id="formType" label="Aggancia alle schede" emptyValue="">
+              <glz:ListItem key="metafad.sbn.modules.sbnunimarc.model.Model" value="SBN Unimarc" />
+              <glz:ListItem key="SchedaF400.models.Model" value="Scheda F 4.00" />
+              <glz:ListItem key="SchedaOA300.models.Model" value="Scheda OA 3.00" />
+              <glz:ListItem key="SchedaS300.models.Model" value="Scheda S 3.00" />
+              <glz:ListItem key="SchedaD300.models.Model" value="Scheda D 3.00" />
+              <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unit&#224; Documentaria" />
+              <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unit&#224; Archivistica" />
+            </glz:List>
+            <glz:List id="importMode" label="{i18n:Modalit&#224; di importazione}" emptyValue="">
+                <glz:ListItem key="substitute" value="Sostituisci i dati se gi&#224; presenti"/>
+            </glz:List>
+
+            <glz:Checkbox id="importMedia" label="Importa media" />
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Import}" name="action" cssClass="btn btn-flat btn-info" value="importProcedure" data="action=importProcedure" />
+            </cms:FormButtonsPanel>
+          </c:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="fileImportServer" label="{i18n:Import MAG da server}" dropdown="false">
+          <c:FormEdit id="importForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*" method="post" enctype="multipart/form-data">
+            <cmp:FilePicker id="folder" pageId="StorageBrowser" onlyFolder="true" onlyFirstLevel="false" required="false" label="{i18n:Cartella contenente i file}" title="{i18n:Seleziona cartella MAG}" />
+            <glz:List id="formType" label="Aggancia alle schede" emptyValue="">
+              <glz:ListItem key="metafad.sbn.modules.sbnunimarc.model.Model" value="SBN Unimarc" />
+              <glz:ListItem key="SchedaF400.models.Model" value="Scheda F 4.00" />
+              <glz:ListItem key="SchedaOA300.models.Model" value="Scheda OA 3.00" />
+              <glz:ListItem key="SchedaS300.models.Model" value="Scheda S 3.00" />
+              <glz:ListItem key="SchedaD300.models.Model" value="Scheda D 3.00" />
+              <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unit&#224; Documentaria" />
+              <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unit&#224; Archivistica" />
+            </glz:List>
+            <glz:List id="importMode" label="{i18n:Modalit&#224; di importazione}" emptyValue="">
+                <glz:ListItem key="substitute" value="Sostituisci i dati se gi&#224; presenti"/>
+            </glz:List>
+
+            <glz:Checkbox id="importMedia" label="Importa media" />
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Import}" name="action" cssClass="btn btn-flat btn-info" value="importProcedure" data="action=importProcedure" />
+            </cms:FormButtonsPanel>
+          </c:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="formImport" label="{i18n:Genera MAG da schede}" dropdown="false" >
+          <c:FormEdit id="form_importForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*" enctype="multipart/form-data">
+            <glz:List id="form_formType" label="Seleziona un tipo di scheda" required="true">
+              <glz:ListItem key="metafad.sbn.modules.sbnunimarc.model.Model" value="SBN Unimarc" />
+              <glz:ListItem key="SchedaF400.models.Model" value="Scheda F 4.00" />
+              <glz:ListItem key="SchedaOA300.models.Model" value="Scheda OA 3.00" />
+              <glz:ListItem key="SchedaS300.models.Model" value="Scheda S 3.00" />
+              <glz:ListItem key="SchedaD300.models.Model" value="Scheda D 3.00" />
+              <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unit&#224; Documentaria" />
+              <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unit&#224; Archivistica" />
+            </glz:List>
+            <glz:List id="form_importMode" label="{i18n:Modalit&#224; di importazione}" emptyValue="">
+                <glz:ListItem key="substitute" value="Sostituisci i dati se gi&#224; presenti"/>
+            </glz:List>
+            <glz:Input id="dateStart" label="Data inizio intervallo" type="date" required="true"/>
+            <glz:Input id="dateEnd" label="Data fine intervallo" type="date" required="true"/>
+            <glz:Panel cssClass="header-fieldset"><glz:Text>Valori di default se non presenti nella scheda</glz:Text></glz:Panel>
+            <glz:Fieldset id="fieldset-gen" label="GEN">
+              <glz:Input id="GEN_stprog" label="{i18n:Stprog}" required="true"/>
+              <glz:Input id="GEN_collection" label="{i18n:Collection}"/>
+              <glz:Input id="GEN_agency" label="{i18n:Agency}" required="true"/>
+              <glz:List id="GEN_access_rights" label="{i18n:AccessRight}" required="true" emptyValue="">
+                <glz:ListItem key="0" value="0 (uso riservato all'interno dell'istituzione)"/>                   <glz:ListItem key="1" value="1 (uso pubblico)"/>
+              </glz:List>
+              <glz:List id="GEN_completeness" label="{i18n:Completeness}" required="true" emptyValue="">
+                <glz:ListItem key="0" value="0 (digitalizzazione completa)"/>
+                <glz:ListItem key="1" value="1 (digitalizzazione parziale)"/>
+              </glz:List>
+            </glz:Fieldset>
+            <cms:FormButtonsPanel>
+              <glz:HtmlButton label="{i18n:Import}" name="action" cssClass="btn btn-flat btn-info" value="formImportProcedure" data="action=formImportProcedure" acl="*,edit" />
+            </cms:FormButtonsPanel>
+          </c:FormEdit>
+        </glz:JSTab>
+        <glz:JSTab id="fileImportMets" label="{i18n:Importa METS-Google}" dropdown="false">   
+          <c:FormEdit id="importForm" newCode="true" controllerName="metafad.teca.MAG.controllers.*" enctype="multipart/form-data">
+              <glz:Input id="fileToImport_mets" type="file" label="Zip contenente i file" required="true" />
+              <glz:List id="formType_mets" label="Aggancia alle schede" emptyValue="">
+                <glz:ListItem key="metafad.sbn.modules.sbnunimarc.model.Model" value="SBN Unimarc" />
+                <glz:ListItem key="SchedaF400.models.Model" value="Scheda F 4.00" />
+                <glz:ListItem key="SchedaOA300.models.Model" value="Scheda OA 3.00" />
+                <glz:ListItem key="SchedaS300.models.Model" value="Scheda S 3.00" />
+                <glz:ListItem key="SchedaD300.models.Model" value="Scheda D 3.00" />
+                <glz:ListItem key="archivi.models.UnitaDocumentaria" value="Unit&#224; Documentaria" />
+                <glz:ListItem key="archivi.models.UnitaArchivistica" value="Unit&#224; Archivistica" />
+              </glz:List>
+              <glz:List id="importMode_mets" label="{i18n:Modalit&#224; di importazione}" emptyValue="">
+                  <glz:ListItem key="substitute" value="Sostituisci i dati se gi&#224; presenti"/>
+              </glz:List>
+              <glz:Panel cssClass="header-fieldset">
+                  <glz:Text>Valori di default se non presenti nella scheda</glz:Text>
+              </glz:Panel>
+                <glz:Fieldset id="fieldset-gen-mets" label="GEN">
+                  <glz:Input id="GEN_stprog_mets" label="{i18n:Stprog}" required="true" />
+                  <glz:Input id="GEN_collection_mets" label="{i18n:Collezione}" />
+                  <glz:Input id="GEN_agency_mets" label="{i18n:Agenzia}" required="true" />
+                  <glz:List id="GEN_access_rights_mets" label="{i18n:Diritti di accesso}" required="true" emptyValue="">
+                      <glz:ListItem key="0" value="0 (uso riservato all'interno dell'istituzione)" />
+                      <glz:ListItem key="1" value="1 (uso pubblico)" />
+                  </glz:List>
+                  <glz:List id="GEN_completeness_mets" label="{i18n:Completezza}" required="true" emptyValue="">
+                      <glz:ListItem key="0" value="0 (digitalizzazione completa)" />
+                      <glz:ListItem key="1" value="1 (digitalizzazione parziale)" />
+                  </glz:List>
+                </glz:Fieldset>
+              <cms:FormButtonsPanel>
+                  <glz:HtmlButton label="{i18n:Import}" name="action" cssClass="btn btn-flat btn-info" value="metsProcedure" data="action=metsProcedure" />
+              </cms:FormButtonsPanel>
+          </c:FormEdit>
+        </glz:JSTab>
+
+      </glz:JSTabGroup>
+    </mvc:State>
+
+    <mvc:State name="importProcedure">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.ImportProcedure"/>
+    </mvc:State>
+
+    <mvc:State name="metsProcedure">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.MetsProcedure"/>
+    </mvc:State>
+
+    <mvc:State name="formImportProcedure">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.FormImportProcedure"/>
+    </mvc:State>
+
+    <mvc:State name="exportProcedure">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.ExportProcedure"/>
+    </mvc:State>
+
+    <mvc:State name="download">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.detail.Download"/>
+    </mvc:State>
+
+    <mvc:State name="getMagExport">
+      <glz:Hidden controllerName="metafad.teca.MAG.controllers.GetMagExport"/>
+    </mvc:State>
+
+    <glz:JSscript><![CDATA[
+    $( document ).ready( function(){
+        $('#relatedBoard').change(function(){
+            $($('#board').data('instance').$element).data('proxy', $(this).val());
+            $('#board').data('instance').initialize($('#board').data('instance').$element);
+            if($('#relatedBoard').val() != "MAG Libero"){
+                $('#s2id_board').attr("class", "select2-container form-control required");
+            } else {
+                $('#s2id_board').attr("class", "select2-container hidden required");
+            }
+        });
+
+
+    });
+
+    window.onload = function(){
+        if($('#s2id_board .select2-choice span').text().length !== 0){
+            $('#s2id_board').attr("class", "select2-container form-control required");
+        }
+    }
+
+
+]]></glz:JSscript>
+
+</mvc:Page>

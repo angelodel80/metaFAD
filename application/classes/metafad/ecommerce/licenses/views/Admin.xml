@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+          xmlns:glz="http://www.glizy.org/dtd/1.0/"
+          xmlns:cms="org.glizycms.views.components.*"
+          xmlns:mvc="org.glizy.mvc.components.*"
+          xmlns:iccd="metafad.modules.thesaurus.views.components.*"
+          xmlns:cmp="metafad.ecommerce.licenses.views.components.*"
+          xmlns:com="metafad.common.views.components.*"
+          xmlns:c="metafad.modules.iccd.views.components.*"
+          defaultEditableRegion="content"
+          templateType="php"
+          templateFileName="Page.php">
+
+    <glz:Import src="_common.xml"/>
+
+    <mvc:State name="index">
+      <com:DataGridAjax query="filterInstitute" id="dataGridForms" recordClassName="metafad.ecommerce.licenses.models.Model"
+                        cssClass="table table-bordered table-striped"
+                        fullTextSearch="true">
+        <glz:DataGridColumn columnName="license_title" headerText="{i18n:Titolo}"/>
+        <glz:DataGridColumn columnName="license_type" headerText="{i18n:Tipologia}"/>
+        <glz:DataGridColumn columnName="license_price" headerText="{i18n:Prezzo}"/>
+        <glz:DataGridColumn columnName="license_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDeleteLicenses" />
+      </com:DataGridAjax>
+      <iccd:AddButton buttonId="dataGridAddButton" acl="*,new" label="" routeUrl="actionsMVCAdd" editableRegion="actions" add="Aggiungi licenza" recordClassName="metafad.ecommerce.licenses.models.Model" cssClass="dataGridAddButton" dataGridAjaxId="dataGridForms"/>
+    </mvc:State>
+
+    <mvc:State name="edit">
+      <c:FormEdit id="editForm" newCode="true" controllerName="metafad.ecommerce.controllers.*">
+        <glz:Hidden id="__id"/>
+        <glz:Hidden id="__model" value="metafad.ecommerce.licenses.models.Model"/>
+
+        <glz:Input id="license_title" label="{i18n:Titolo}" required="true"/>
+        <glz:List id="license_type" label="{i18n:Tipologia}" required="true">
+          <glz:ListItem key="generale" value="Generale" selected="true"/>
+          <glz:ListItem key="particolare" value="Particolare"/>
+        </glz:List>
+        <glz:Input id="license_stream" label="{i18n:Stream associato}" data="type=selectfrom;multiple=true;return_object=false;add_new_values=false;proxy=metafad.ecommerce.licenses.models.proxy.StreamProxy;" />
+        <glz:Input id="license_price" label="{i18n:Prezzo}" required="true"/>
+        <glz:Input id="license_description" label="{i18n:Descrizione}" required="true" type="multiline" wrap="on" rows="10"/>
+
+        <cms:FormButtonsPanel>
+          <glz:HtmlButton label="{i18n:GLZ_PUBLISH}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=save" />
+          <glz:HtmlButton label="{i18n:GLZ_PUBLISH_CLOSE}" type="button" cssClass="btn btn-flat js-glizycms-save" data="action=saveClose" />
+          <glz:HtmlButton label="{i18n:GLZ_CANCEL}" type="button" routeUrl="link" cssClass="btn btn-flat js-glizycms-cancel" data="action=cancel" />
+        </cms:FormButtonsPanel>
+      </c:FormEdit>
+
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <glz:Hidden controllerName="metafad.ecommerce.controllers.*" />
+    </mvc:State>
+</mvc:Page>

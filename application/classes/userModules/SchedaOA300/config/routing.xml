@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glz:Routing>
+    <glz:Route name="SchedaOA300" value="{pageId=SchedaOA300.views.FrontEnd}/{static=state=show}/{integer=document_id}/{value=catalogdetail_title}" />
+</glz:Routing>

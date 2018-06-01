@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:type="2tables"
+        model:tableName="thesaurus_tbl,thesaurusforms_tbl"
+        model:joinFields="thesaurus_id,thesaurusforms_FK_thesaurus_id"
+        model:usePrefix="true">
+
+    <model:Query name="findTerm" type="function" arguments="moduleId,fieldName,level">
+    <![CDATA[
+        $directLevel = strncmp($level, "Direct", 6) === 0 && intval(substr($level, 6)) > 0;
+        $expr = $iterator->expr();
+        if($level == '*' || $directLevel)
+        {
+          $joinExpr = $expr->eq("thesaurusforms_FK_thesaurus_id", "thesaurusdetails_FK_thesaurus_id");
+        }
+        else
+        {
+          $joinExpr = $expr->andX(
+              $expr->eq("thesaurusforms_FK_thesaurus_id", "thesaurusdetails_FK_thesaurus_id"),
+              $expr->eq("thesaurusforms_level", "thesaurusdetails_level")
+          );
+        }
+
+        if ($directLevel)
+        {
+            $iterator->select('thesaurusdetails_key', 'thesaurusdetails_value','thesaurusdetails_FK_thesaurus_id','thesaurusdetails_parent')
+                     ->join('t1', 'thesaurusdetails_tbl', "t2", $joinExpr)
+                     ->where('thesaurusforms_moduleId', $moduleId)
+                     ->where('thesaurusforms_field', $fieldName)
+                     ->where('thesaurusdetails_level', substr($level, 6))
+                     ->orderBy('thesaurusdetails_key');
+        }
+        else
+        {
+            $iterator->select('thesaurusdetails_key', 'thesaurusdetails_value','thesaurusdetails_FK_thesaurus_id','thesaurusdetails_parent')
+                     ->join('t1', 'thesaurusdetails_tbl', "t2", $joinExpr)
+                     ->where('thesaurusforms_moduleId', $moduleId)
+                     ->where('thesaurusforms_field', $fieldName)
+                     ->orderBy('thesaurusdetails_key');
+        }
+	]]>
+	</model:Query>
+
+</model:Model>

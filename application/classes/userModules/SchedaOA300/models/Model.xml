@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="SchedaOA300"
+    model:usePrefix="true"
+    model:type="document"
+    model:baseClass="metafad.modules.iccd.models.ActiveRecordDocument">
+
+    <model:Script parent="model">
+    <![CDATA[
+    public function getTitle()
+    {
+        return $this->SGT[0]->SGTI[0]->{'SGTI-element'} ? $this->SGT[0]->SGTI[0]->{'SGTI-element'} : null;
+    }
+
+    public function getSolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'SchedaOA300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+			'NCTN' => 'NCTN_s,NCTN_t',
+			'OGTD' => 'OGTD_s,OGTD_t',
+			'SGTI' => 'SGTI_s,SGTI_t',
+
+        );
+
+        $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
+
+        return $solrModel;
+    }
+
+    public function getFESolrDocument()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'SchedaOA300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'feMapping' => '{"Titolo sintetica":["SGT.SGTI"],"Livello di ricerca":["LIR"],"Localizzazione: Regione":["PVCR"],"Localizzazione: Provincia":["PVCP"],"Localizzazione: Comune":["PVCC"],"Localizzazione: Localita":["PVCL"],"Numero di catalogo generale":["NCTN"],"Istituto":["LDCN"],"Cronologia: cronologia generica":["DT.DTZG"],"Cronologia: cronologia specifica: da":["DT.DTSI","DT.DTSV"],"Cronologia: cronologia specifica: a":["DT.DTSF","DT.DTSL"],"Dati tecnici: materia e tecnica":["MTC"],"Tipo di scheda":["TSK"],"Tipo di scheda (label)":["TSK"],"Definizione del bene":["OGTD"],"Oggetto: definizione dell oggetto":["OGTD"],"Oggetto: tipologia":["OGTT"],"Oggetto: identificazione":["OGTV"],"Soggetto: identificazione":["SGT.SGTI"],"Soggetto: titolo":["SGT.SGTT"],"Ubicazione dati patrimoniali: inventario: numero":["UB->INV->INVN"],"Ubicazione dati patrimoniali: inventario: collocazione":["UB->INV->INVC"],"Descrizione":["NSC","DESO","DESS","ISR.ISRI"],"Codice univoco":["NCTR","NCTN","NCTS"],"Definizione culturale: autore":["AUT.AUTN","AUT.AUTB"],"Definizione culturale: ruolo":["AUT.AUTR"],"Definizione culturale: autore: crono":["AUT.AUTA"],"Definizione culturale: ambito culturale":["ATB.ATBD"],"Stato di conservazione":["STCC"],"Specifiche di accesso ai dati":["ADSM"],"Compilazione: nome":["CMPN"],"Responsabilita (chi)":["sub:AU"],"Bene (cosa)":["sub:OG","sub:DA"],"Localizzazione (dove)":["sub:LC"],"Cronologia (quando)":["sub:DT"],"Dati Analitici (come)":["sub:MT"]}'
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeMappingAdvancedSearch()
+    {
+        $solrModel = array(
+            '__id' => 'id',
+            'SchedaOA300.models.Model' => 'document_type_t',
+            'updateDateTime' => 'update_at_s',
+            'document' => 'doc_store',
+            'isValid' => 'isValid_i',
+            'beMapping' => '{"Livello di ricerca":["LIR"],"Regione":["PVCR"],"Numero di catalogo generale":["NCTN"],"Oggetto: definizione dell oggetto":["OGTD"],"Oggetto: tipologia":["OGTT"],"Oggetto: identificazione":["OGTV"],"Soggetto: identificazione":["SGT.SGTI"],"Soggetto: titolo":["SGT.SGTT"],"Ubicazione dati patrimoniali: inventario: numero":["UB->INV->INVN"],"Ubicazione dati patrimoniali: inventario: collocazione":["UB->INV->INVC"],"Cronologia: cronologia generica":["DT.DTZG"],"Cronologia: cronologia specifica: da":["DT.DTSI","DT.DTSV"],"Cronologia: cronologia specifica: a":["DT.DTSF","DT.DTSL"],"Definizione culturale: autore":["AUT.AUTN","AUT.AUTB"],"Definizione culturale: ruolo":["AUT.AUTR"],"Definizione culturale: crono":["AUT.AUTA"],"Definizione culturale: ambito culturale":["ATB.ATBD"],"Dati tecnici: materia e tecnica":["MTC"],"Stato di conservazione":["STCC"],"Dati analitici":["DA"],"Specifiche di accesso ai dati":["ADSM"],"Compilazione: nome":["CMPN"]}'
+        );
+
+        return $solrModel;
+    }
+
+    public function getBeAdvancedSearchFields()
+    {
+        $searchFields = array(
+			'NCTN' => 'NCTN_t',
+			'OGTD' => 'OGTD_t',
+			'SGTI' => 'SGTI_t',
+			'Livello di ricerca' => 'livello_di_ricerca_txt',
+			'Regione' => 'regione_txt',
+			'Numero di catalogo generale' => 'numero_di_catalogo_generale_txt',
+			'Oggetto: definizione dell oggetto' => 'oggetto_definizione_dell_oggetto_txt',
+			'Oggetto: tipologia' => 'oggetto_tipologia_txt',
+			'Oggetto: identificazione' => 'oggetto_identificazione_txt',
+			'Soggetto: identificazione' => 'soggetto_identificazione_txt',
+			'Soggetto: titolo' => 'soggetto_titolo_txt',
+			'Ubicazione dati patrimoniali: inventario: numero' => 'ubicazione_dati_patrimoniali_inventario_numero_txt',
+			'Ubicazione dati patrimoniali: inventario: collocazione' => 'ubicazione_dati_patrimoniali_inventario_collocazione_txt',
+			'Cronologia: cronologia generica' => 'cronologia_cronologia_generica_txt',
+			'Cronologia: cronologia specifica: da' => 'cronologia_cronologia_specifica_da_txt',
+			'Cronologia: cronologia specifica: a' => 'cronologia_cronologia_specifica_a_txt',
+			'Definizione culturale: autore' => 'definizione_culturale_autore_txt',
+			'Definizione culturale: ruolo' => 'definizione_culturale_ruolo_txt',
+			'Definizione culturale: crono' => 'definizione_culturale_crono_txt',
+			'Definizione culturale: ambito culturale' => 'definizione_culturale_ambito_culturale_txt',
+			'Dati tecnici: materia e tecnica' => 'dati_tecnici_materia_e_tecnica_txt',
+			'Stato di conservazione' => 'stato_di_conservazione_txt',
+			'Dati analitici' => 'dati_analitici_txt',
+			'Specifiche di accesso ai dati' => 'specifiche_di_accesso_ai_dati_txt',
+			'Compilazione: nome' => 'compilazione_nome_txt',
+
+        );
+
+        return $searchFields;
+    }
+
+    public function getRecordId()
+    {
+        $uniqueIccdIdProxy = org_glizy_ObjectFactory::createObject('metafad.gestioneDati.boards.models.proxy.UniqueIccdIdProxy');
+        return $uniqueIccdIdProxy->createUniqueIccdId($this);
+    }    
+
+    ]]>
+    </model:Script>
+
+    <model:Define>
+<model:Field name="TSK" validator="notempty" type="string" length="4"/>
+<model:Field name="LIR" validator="notempty" type="string" length="5"/>
+<model:Field name="NCTR" validator="notempty" type="string" length="2"/>
+<model:Field name="NCTN" validator="notempty" type="string" length="8"/>
+<model:Field name="NCTS" type="string" length="2"/>
+<model:Field name="ESC" validator="notempty" type="string" length="25"/>
+<model:Field name="ECP" validator="notempty" type="string" length="25"/>
+<model:Field name="EPR" type="string" length="25"/>
+<model:Field name="RV" type="object" readFormat="false"/>
+<model:Field name="AC" type="object" readFormat="false"/>
+<model:Field name="OGTD" validator="notempty" type="string" length="70"/>
+<model:Field name="OGTT" type="string" length="70"/>
+<model:Field name="OGTV" type="string" length="25"/>
+<model:Field name="OGTN" type="string" length="100"/>
+<model:Field name="OGTP" type="string" length="50"/>
+<model:Field name="QNT" type="object" readFormat="false"/>
+<model:Field name="SGT" type="object" readFormat="false"/>
+<model:Field name="PVCS" type="string" length="50"/>
+<model:Field name="PVCR" validator="notempty" type="string" length="25"/>
+<model:Field name="PVCP" validator="notempty" type="string" length="3"/>
+<model:Field name="PVCC" validator="notempty" type="string" length="50"/>
+<model:Field name="PVCL" type="string" length="50"/>
+<model:Field name="PVCE" type="string" length="250"/>
+<model:Field name="PVL" type="string" length="250"/>
+<model:Field name="PVE" type="string" length="50"/>
+<model:Field name="LDCT" type="string" length="50"/>
+<model:Field name="LDCQ" type="string" length="50"/>
+<model:Field name="LDCN" type="string" length="80"/>
+<model:Field name="LDCC" type="string" length="80"/>
+<model:Field name="LDCU" validator="notempty" type="string" length="250"/>
+<model:Field name="LDCM" type="string" length="70"/>
+<model:Field name="LDCS" type="string" length="250"/>
+<model:Field name="UB" type="object" readFormat="false"/>
+<model:Field name="LA" type="object" readFormat="false"/>
+<model:Field name="GP" type="object" readFormat="false"/>
+<model:Field name="RE" type="object" readFormat="false"/>
+<model:Field name="RO" type="object" readFormat="false"/>
+<model:Field name="DT" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="AUT" option="AUT300.models.Model" type="object" readFormat="false"/>
+<model:Field name="ATB" type="object" readFormat="false"/>
+<model:Field name="AAT" type="object" readFormat="false"/>
+<model:Field name="EDT" type="object" readFormat="false"/>
+<model:Field name="CMM" type="object" readFormat="false"/>
+<model:Field name="MTC" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="MIS" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="FIL" type="string" length="50"/>
+<model:Field name="FRM" type="string" length="50"/>
+<model:Field name="STCC" validator="notempty" type="string" length="50"/>
+<model:Field name="STCS" type="string" length="500"/>
+<model:Field name="RS" type="object" readFormat="false"/>
+<model:Field name="DESO" validator="notempty" type="text" length="1300"/>
+<model:Field name="DESI" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="DESS" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="ISR" type="object" readFormat="false"/>
+<model:Field name="STM" type="object" readFormat="false"/>
+<model:Field name="NSC" type="text" length="5000"/>
+<model:Field name="ACQ" type="object" readFormat="false"/>
+<model:Field name="CDGG" validator="notempty" type="string" length="50"/>
+<model:Field name="CDGS" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="CDGI" type="object" readFormat="false"/>
+<model:Field name="NVC" type="object" readFormat="false"/>
+<model:Field name="ALN" type="object" readFormat="false"/>
+<model:Field name="ESP" type="object" readFormat="false"/>
+<model:Field name="FTA" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="DRA" type="object" readFormat="false"/>
+<model:Field name="VDC" type="object" readFormat="false"/>
+<model:Field name="REG" type="object" readFormat="false"/>
+<model:Field name="FNT" type="object" readFormat="false"/>
+<model:Field name="ADM" type="object" readFormat="false"/>
+<model:Field name="BIB" option="BIB300.models.Model" type="object" readFormat="false"/>
+<model:Field name="BIL" type="object" readFormat="false"/>
+<model:Field name="MST" type="object" readFormat="false"/>
+<model:Field name="ADSP" validator="notempty" type="string" length="1"/>
+<model:Field name="ADSM" validator="notempty" type="string" length="70"/>
+<model:Field name="ADSD" type="string" length="25"/>
+<model:Field name="CMPD" validator="notempty" type="string" length="4"/>
+<model:Field name="CMPN" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="RSR" type="object" readFormat="false"/>
+<model:Field name="FUR" validator="notempty" type="object" readFormat="false"/>
+<model:Field name="RVM" type="object" readFormat="false"/>
+<model:Field name="AGG" type="object" readFormat="false"/>
+<model:Field name="ISP" type="object" readFormat="false"/>
+<model:Field name="AN" type="object" readFormat="false"/>
+
+    </model:Define>
+</model:Model>

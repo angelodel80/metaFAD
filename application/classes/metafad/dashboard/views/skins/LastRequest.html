@@ -1,0 +1,25 @@
+<div tal:condition="Component/total" class="box box-solid box-bigheader assignedActivitiesWidget">
+    <div class="box-header with-border">
+        <div class="box-tools">
+		   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-caret-down"></i></button>
+		</div>
+        <i class="fa fa-file-text-o"></i>
+        <h3 class="box-title">Ultime richieste</h3>
+    </div>
+    <div tal:repeat="item Component/records" id="chat-box" class="box-body chat">
+        <div class="row activitiesInstance">
+            <div class="col-md-5">
+                <h3 tal:content="php: item.request_user_firstName . ' ' . item.request_user_lastName"/>
+                <p class="relatedProcess" tal:content="item/request_title"></p>
+                <!-- <span tal:condition="item/boardType">Scheda </span><span tal:content="item/boardType"></span> -->
+            </div>
+            <div class="rightControls">
+                <div class="activitiesInstanceWidgetButtons">
+                    <div>
+                      <a style="color: #e27451" tal:attributes="href php:  __Link::makeUrl('actionsMVC',array('pageId'=>'ecommerce-requests','action'=>'edit','id'=>item.request_id))">Leggi richiesta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

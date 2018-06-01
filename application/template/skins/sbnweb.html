@@ -1,0 +1,74 @@
+<div tal:omit-tag="" tal:condition="php: Component['schedaCollegata']" tal:content="structure Component/schedaCollegata"/>
+<div class="select-deselect-div" tal:condition="php: Component['schedaCollegata']"><span style="color:black !important;">Seleziona i campi da importare</span>
+  <span class="pull-right"><input class="js-deselect-all" type="checkbox"/> Deseleziona tutto</span>
+  <span class="pull-right" style="margin-left:10px;margin-right:8px; border-left:1px solid #aaaaaa; color: #fff">|</span>
+  <span class="pull-right"><input class="js-select-all" type="checkbox"/> Seleziona tutto</span>
+</div>
+<form class="stickyForm" tal:condition="php: Component['html']" tal:content="structure Component/html"></form>
+
+<script>
+  $(document).ready(function(){
+    $('.js-select-checkbox').on('click',function(){
+      if($(this).hasClass('js-checked'))
+      {
+        $(this).parent().parent().find('input').each(function(){
+          $(this).prop('checked',false);
+          $(this).removeClass('js-checked');
+        });
+      }
+      else
+      {
+        $(this).parent().parent().find('input').each(function(){
+          $(this).prop('checked',true);
+          $(this).addClass('js-checked');
+        });
+        selectAncestors($(this).attr('id'));
+      }
+    });
+
+    function selectAncestors(id)
+    {
+      var parentId = $('#'+id).data('parent');
+      if(parentId !== undefined)
+      {
+        $('#'+parentId).prop('checked',true);
+        $('#'+parentId).addClass('js-checked');
+        selectAncestors(parentId);
+      }
+    }
+
+    $('.js-select-all').on('click',function(){
+      $('.js-deselect-all').prop('checked',false);
+      $('.js-select-checkbox').each(function(){
+        $(this).prop('checked',true);
+        $(this).addClass('js-checked');
+      });
+    });
+
+    $('.js-deselect-all').on('click',function(){
+      $('.js-select-all').prop('checked',false);
+      $('.js-select-checkbox').each(function(){
+        $(this).prop('checked',false);
+        $(this).removeClass('js-checked');
+      });
+    });
+
+    var message = new Event('sbn');
+
+    $('.js-import').on('click',function(){
+      var data = new Array();
+      var arrayCount = new Array();
+      $('.js-select-checkbox.js-checked').each(function(){
+        var id = $(this).attr('id');
+        data[id] = {'valore':$('#value-'+id).html(),'parent':$(this).data('parent'),'type':$(this).data('type'),'n':$(this).data('n')};
+      });
+      message.data = data;
+      message.bid = $('.title-schedasbn').find('a').html();
+      window.top.dispatchEvent(message);
+    });
+
+    $('.js-back').on('click',function(){
+      window.history.back();
+    });
+  });
+</script>

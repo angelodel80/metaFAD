@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+	xmlns:glz="http://www.glizy.org/dtd/1.0/"
+    xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+    model:tableName="users_tbl" model:usePrefix="true">
+
+    <model:Query name="all" type="function" arguments="id">
+    <![CDATA[
+        $isBE = __Config::get('metafad.users.IsBE');
+        $isBE = $isBE === null || $isBE === '' ? "1" : "0";
+
+        $iterator->join('t1', $this->tablePrefix.'usergroups_tbl', 't2', $iterator->expr()->eq('user_FK_usergroup_id', 'usergroup_id'))
+                 ->where('usergroup_backEndAccess', $isBE);
+    ]]>
+    </model:Query>
+
+    <model:Query name="userFromId" type="function" arguments="id">
+    <![CDATA[
+        $isBE = __Config::get('metafad.users.IsBE');
+        $isBE = $isBE === null || $isBE === '' ? "1" : "0";
+
+        $iterator->join('t1', $this->tablePrefix.'usergroups_tbl', 't2', $iterator->expr()->eq('user_FK_usergroup_id', 'usergroup_id'))
+                 ->where('user_id', $id)
+                 ->where('usergroup_backEndAccess', $isBE);
+    ]]>
+    </model:Query>
+
+     <model:Query name="datagridSearch" type="function" arguments="filters">
+    <![CDATA[
+        $isBE = __Config::get('metafad.users.IsBE');
+        $isBE = $isBE === null || $isBE === '' ? "1" : "0";
+
+        $newFilter = array('__OR__' => array());
+        foreach($filters as $k=>$v) {
+            if (!$filters[$k]) continue;
+
+            if ('usergroup_name' == $k) {
+                $newFilter['usergroup_name'] = array('value' => '%'.$v.'%', 'condition' => 'LIKE');
+            } else {
+                $newFilter['__OR__'][$k] = array('value' => '%'.$v.'%', 'condition' => 'LIKE');
+            }
+        }
+
+        $instituteKey = metafad_usersAndPermissions_Common::getInstituteKey();
+
+        $filters['user_isActive'] = '';
+        $iterator->join('t1', $this->tablePrefix.'usergroups_tbl', 't2', $iterator->expr()->eq('user_FK_usergroup_id', 'usergroup_id'));
+
+        if ($instituteKey != '*') {
+            $iterator->join('t1', $this->tablePrefix.'user_roles_institutes_tbl', 't3', $iterator->expr()->eq('user_id', 'user_roles_institutes_FK_userId'));
+        }
+
+        $iterator->setFilters($newFilter);
+        $iterator->where('user_id > 0')
+                 ->where('usergroup_backEndAccess', $isBE);
+
+        if ($instituteKey != '*') {
+            $iterator->where('user_roles_institutes_FK_instituteId', metafad_usersAndPermissions_Common::getInstituteId())
+                     ->groupBy('user_id');
+        }
+    ]]>
+    </model:Query>
+
+</model:Model>
+
+

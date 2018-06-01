@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+        xmlns:glz="http://www.glizy.org/dtd/1.0/"
+        xmlns:model="http://www.glizy.org/dtd/1.0/model/"
+        model:tableName="mets" 
+        model:usePrefix="false" 
+        model:type="document"
+        model:baseClass="metafad.common.models.ActiveRecordDocument">
+        
+        <model:Script parent="model">
+        <![CDATA[
+        public function getBeAdvancedSearchFields()
+        {
+            $searchFields = array(
+      			'identifier' => 'identifier_t',
+      			'title' => 'title_t',
+            'update_at' => 'update_at_s',
+          );
+          return $searchFields;
+        }
+
+        public function getSolrDocument()
+        {
+            $solrModel = array(
+                '__id' => 'id',
+                'metafad.teca.mets.models.Model' => 'document_type_t',
+                'updateDateTime' => 'update_at_s',
+                'document' => 'doc_store',
+                'isValid' => 'isValid_i',
+                'document_id' => 'document_id_t',
+      			'document_detail_modificationDate' => 'document_detail_modificationDate_t',
+                'identifier' => 'identifier_t',
+                'title' => 'title_t'
+            );
+            return $solrModel;
+        }
+
+        public function getTitle()
+        {
+            return $this->identifier;
+        }
+
+        public function getRecordId()
+        {
+          return $this->getTitle();
+        }
+
+        ]]>
+        </model:Script>
+    <model:Define>
+        <model:Field name="fulltext" type="string" index="fulltext" onlyIndex="true" />
+        <model:Field name="extId" type="int" index="true" />
+        <model:Field name="linkedFormType" type="string" />
+        <model:Field name="linkedForm" type="object" readFormat="false" />
+        <model:Field name="stato" type="string" index="true" />
+
+        <model:Field name="identifier" type="string" index="true" />
+        <model:Field name="title" type="string" index="true" />
+
+        <model:Field name="metsHdr_recordstatus" type="string" />
+        <model:Field name="metsHdr_createdate" type="string" />
+        <model:Field name="metsHdr_lastmoddate" type="string" />
+        <model:Field name="metsHdr_agent" type="object" readFormat="false" />
+
+        <model:Field name="mods" type="object" readFormat="false" />
+        <model:Field name="dc" type="object" readFormat="false" />
+
+        <model:Field name="rightsmd_dichiarazione" type="string" />
+        <model:Field name="rightsmd_denominazione" type="string" />
+        <model:Field name="rightsmd_indirizzo" type="string" />
+        <model:Field name="rightsmd_mail" type="string" />
+        <model:Field name="rightsmd_note" type="string" />
+        <model:Field name="rightsmd_licenze" type="object" readFormat="false"/>
+
+        <model:Field name="stru" type="object" readFormat="false" />
+        <model:Field name="logicalStru" type="string" />
+        <model:Field name="flagVestito" type="string" />
+        <model:Field name="flagParent" type="string" />
+
+        <model:Field name="linkedStru" type="object" readFormat="false"/>
+
+        <model:Field name="status" type="string" index="true" />
+        <model:Field name="relatedBoard" type="string" />
+        <model:Field name="board" type="fulltext" />
+        <model:Field name="isValid" type="int" />
+
+    </model:Define>
+</model:Model>

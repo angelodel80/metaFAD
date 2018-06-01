@@ -1,0 +1,40 @@
+[
+  {
+    "obj": "metafad_common_importer_operations_ReadXML",
+    "params": {
+      "filename": "/opt/lampp/htdocs/mibac_metafad/wwwRoot/application/classes/metafad/common/importer/inputFileExamples/TEI/Anghiari_Biblioteca_comunale_Anghiari_Carte_Taglieschi_Taglieschi_ms_1612.xml"
+    }
+  },
+  {
+    "obj": "metafad_common_importer_operations_InstituteSetter",
+    "params": {
+      "ignoreInput": true,
+      "instituteKey": "societa-napoletana-di-storia-patria"
+    }
+  },
+  {
+    "obj": "metafad_common_importer_operations_GetXMLNodeList",
+    "params": {
+      "rootxpath": "."
+    }
+  },
+  {
+    "obj": "metafad_common_importer_operations_Iterate",
+    "params": {
+      "operations": [
+        {
+          "obj": "metafad_common_importer_operations_XmlToJson",
+          "params": {
+            "schemafile": "/opt/lampp/htdocs/mibac_metafad/wwwRoot/application/classes/metafad/common/importer/jsonSchemas/TEI/manoscritto_schema.json"
+          }
+        },
+        {
+          "obj": "metafad_common_importer_operations_SaveTEI"
+        }
+      ]
+    }
+  },
+  {
+    "obj": "metafad_common_importer_operations_LogInput"
+  }
+]

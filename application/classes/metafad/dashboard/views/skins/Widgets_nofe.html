@@ -1,0 +1,56 @@
+<div class="row margin-bottom">
+    <div class="col-lg-4 col-sm-6 col-xs-12">
+        <div class="widget-box clearfix bg-aqua">
+            <div class="left-part bg-aqua-active">
+                <i class="fa fa-history"></i>
+            </div>
+            <div class="inner">
+                <p tal:content="Component/activitiesAssigned"></p>
+                <p class="small" tal:content="structure php:__T('attività assegnate')"></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12">
+        <div class="widget-box clearfix bg-purple">
+            <div class="left-part bg-purple-active">
+                <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="inner">
+                <p tal:content="Component/sheetsAssigned"></p>
+                <p class="small" tal:content="structure php:__T('schede assegnate')"></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12">
+        <div class="widget-box clearfix bg-teal">
+            <div class="left-part calendar bg-teal-active">
+                <p class="small" tal:content="structure Component/month"></p>
+                <p tal:content="structure Component/dayWeek"></p>
+            </div>
+            <div class="calendar">
+                <p class="small" tal:content="structure Component/time"></p>
+                <p id="widget-time"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(function(){
+
+    function setTime(){
+        var now = new Date();
+        var h = now.getHours();
+        var m = now.getMinutes();
+        h = (h + "").length == 1 ? "0" + h : h;
+        m = (m + "").length == 1 ? "0" + m : m;
+        $('#widget-time').html(h+':'+m);
+    }
+
+    setInterval(function(){
+        setTime();
+
+    }, 1000);
+
+    setTime();
+});
+</script>
