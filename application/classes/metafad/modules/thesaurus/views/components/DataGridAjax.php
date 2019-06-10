@@ -14,6 +14,7 @@ class metafad_modules_thesaurus_views_components_DataGridAjax extends org_glizy_
         $this->defineAttribute('setFiltersToQuery', false, false, COMPONENT_TYPE_BOOLEAN);
         $this->defineAttribute('JQueryUI', false, true, COMPONENT_TYPE_BOOLEAN);
         $this->defineAttribute('dbDebug', false, false, COMPONENT_TYPE_BOOLEAN);
+        $this->defineAttribute('isDetail', false, false, COMPONENT_TYPE_BOOLEAN);
 
         // call the superclass for validate the attributes
         parent::init();
@@ -187,7 +188,14 @@ EOD;
 
         } else  {
 
-            $it->load($this->getAttribute('query'));
+            if($this->getAttribute('isDetail') == true && __Config::get('metafad.thesaurus.filterInstitute'))
+            {
+                $it->load('instituteFilter', array('params' => array('thesaurusId' => $id, 'institute_key' => metafad_usersAndPermissions_Common::getInstituteKey())));
+            }
+            else
+            {
+                $it->load($this->getAttribute('query'));
+            }
 
             if (method_exists($it, 'showAll')) {
                 $it->showAll();

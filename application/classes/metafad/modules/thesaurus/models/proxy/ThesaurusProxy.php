@@ -5,8 +5,7 @@ class metafad_modules_thesaurus_models_proxy_ThesaurusProxy extends GlizyObject
     public function findTerm($fieldName, $model, $query, $term, $proxyParams)
     {
         $it = org_glizy_objectFactory::createModelIterator('metafad.modules.thesaurus.models.ThesaurusForms')
-            ->load('findTerm', array('moduleId' => $proxyParams->module, 'fieldName' => $fieldName,'level' => $proxyParams->level));
-
+            ->load('findTerm', array('moduleId' => $proxyParams->module, 'fieldName' => ($proxyParams->fieldName)?:$fieldName,'level' => $proxyParams->level));
         if($proxyParams->parentKey)
         {
           $id = clone $it;
@@ -19,7 +18,12 @@ class metafad_modules_thesaurus_models_proxy_ThesaurusProxy extends GlizyObject
         }
 
         if ($term != '') {
-            $it->where('thesaurusdetails_value', '%'.$term.'%', 'ILIKE');
+            $it->where('thesaurusdetails_value', '%'.$term.'%', 'ILIKE')
+                ->limit(0,250);
+        }
+        else
+        {
+            $it->limit(0,250);
         }
 
         $result = array();

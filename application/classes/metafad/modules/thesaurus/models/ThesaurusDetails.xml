@@ -7,4 +7,11 @@
     model:joinFields="thesaurus_id,thesaurusdetails_FK_thesaurus_id"
     model:usePrefix="true">
 
+    <model:Query name="instituteFilter">
+    <![CDATA[
+        SELECT * FROM thesaurusdetails_tbl
+        WHERE thesaurusdetails_FK_thesaurus_id = :thesaurusId
+        AND (thesaurusdetails_instituteKey = :institute_key OR thesaurusdetails_instituteKey IS NULL)
+    ]]>
+    </model:Query>
 </model:Model>

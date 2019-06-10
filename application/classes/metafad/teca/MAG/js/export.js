@@ -1,16 +1,23 @@
+var ids = new Array();
+
 $(document).ready(function(){
-  var ids = new Array();
   $('#countSelected').html('0 elementi selezionati.');
 
   $('body').on('change','.selectionflag',function(){
     var checked = $(this).prop('checked');
     var id = $(this).attr('data-id');
     if(checked){
-      ids.push(id);
+      if (!ids.includes(id)) 
+      {
+        ids.push(id);
+      }
     }
     else{
       var index = ids.indexOf(id);
-      ids.splice(index,1);
+      if (index != -1) 
+      {
+        ids.splice(index,1);
+      }
     }
     $('#countSelected').html(ids.length + ' elementi selezionati.');
     $('#ids').val(ids.join());

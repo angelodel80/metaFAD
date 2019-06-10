@@ -37,7 +37,7 @@ jQuery(document).ready(function () {
 
       Glizy.openIFrameDialog(
         '',
-        'index.php?pageId='+this.pageId+'&id='+$('#__id').val()+'&action='+this.state,
+        'index.php?pageId='+this.pageId+'&id='+$('#__id').val()+'&action=showPreview',
         w,
         $(window).width()/4,
         $(window).height()/4,

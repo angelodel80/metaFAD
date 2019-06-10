@@ -2,6 +2,8 @@
 class metafad_sbn_modules_importer_helpers_ImportSbnHelper extends GlizyObject
 {
   private $hasMediaIdList = array();
+  private $idListNew = array();
+  private $idListOld = array();
 
   public function importJsonToDb($startingDir, $modelName, $documentType, $docType, $uploadType)
   {
@@ -47,12 +49,15 @@ class metafad_sbn_modules_importer_helpers_ImportSbnHelper extends GlizyObject
               }
               $json = json_decode(file_get_contents($actualDir . $dir . '/' . $value));
               $model = org_glizy_ObjectFactory::createModelIterator($modelName);
-              if ($uploadType == 'increment') {
+              if ($uploadType == 'increment' || $uploadType == 'dbonly') {
                 $model = $model->where('id', $json->id)->first();
                 if (!$model) {
                   $model = org_glizy_ObjectFactory::createModel($modelName);
+                  array_push($this->idListNew, $json->id);
                 } else if ($modelName == 'metafad.sbn.modules.sbnunimarc.model.Model') {
+                  array_push($this->idListOld, $json->id);
                   if ($this->checkMediaInfo($model)) {
+
                     $this->hasMediaIdList[] = $json->id;
                   }
                 }
@@ -139,10 +144,10 @@ class metafad_sbn_modules_importer_helpers_ImportSbnHelper extends GlizyObject
 
                   if ($isSingleField) {
                     $jsonToSend[$fieldNameSolr] = $fieldToSend[0];
-                    $jsonToSend[$fieldNameSolr.'_lower'] = strtolower($jsonToSend[$fieldNameSolr]);
+                    $jsonToSend[$fieldNameSolr . '_lower'] = strtolower($jsonToSend[$fieldNameSolr]);
                   } else {
                     $jsonToSend[$fieldNameSolr] = $fieldToSend;
-                    $jsonToSend[$fieldNameSolr.'_lower'] = $this->lowerArray($fieldToSend);
+                    $jsonToSend[$fieldNameSolr . '_lower'] = $this->lowerArray($fieldToSend);
                   }
                 }
               }
@@ -166,7 +171,7 @@ class metafad_sbn_modules_importer_helpers_ImportSbnHelper extends GlizyObject
     }
     $this->indexSolr($jsonToCommit, $countCommitQueue);
 
-    return $hasMediaIdList;
+    return array('hasMediaIdList' => $this->hasMediaIdList, 'idListNew' => $this->idListNew, 'idListOld' => $this->idListOld);
   }
 
   public function importFE($folder, $output, $profile, $folderWeb, $uploadType)
@@ -190,9 +195,24 @@ class metafad_sbn_modules_importer_helpers_ImportSbnHelper extends GlizyObject
 
   public function updateSbnDigitale($list)
   {
+    $fi = org_glizy_objectFactory::createObject('metafad.viewer.helpers.FirstImage');
+    $kardexService = __ObjectFactory::createObject('metafad.sbn.modules.sbnunimarc.services.KardexService');
+
     foreach ($list as $id) {
-      $url = __Config::get('metafad.service.updateSbnDigitale');
-      $r = org_glizy_ObjectFactory::createObject('org.glizy.rest.core.RestRequest', $url . '?id=' . $id . '&digitale=true', 'GET', '', 'application/json');
+      $firstImage = $fi->execute($id, 'sbn');
+
+      if ($firstImage) {
+        $firstImage = $firstImage['firstImage'];
+        $url = __Config::get('metafad.service.updateSbnDigitale');
+        $idpreview = ($firstImage) ? '&idpreview=' . $firstImage : '';
+
+        $digitale = '&digitale=true';
+
+        $r = org_glizy_ObjectFactory::createObject('org.glizy.rest.core.RestRequest', $url . '?id=' . strtoupper($id) . $digitale . $idpreview, 'GET', '', 'application/json');
+        $r->execute();
+      } else {
+        $kardexService->updateFE($id);
+      }
     }
   }
 

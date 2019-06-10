@@ -67,7 +67,7 @@ class metafad_modules_iccd_services_moduleService extends GlizyObject
 		$obj = new StdClass;
         $obj->name = $input->getAttribute('id');
 
-        if ($input->hasAttribute('required')) {
+		if ($input->hasAttribute('required')) {
          	$obj->required = $input->getAttribute('required') == 'true';
         } else {
 	        $obj->required = false;
@@ -79,6 +79,13 @@ class metafad_modules_iccd_services_moduleService extends GlizyObject
         if ($input->hasAttribute('maxLength')) {
         	$obj->maxLength = $input->getAttribute('maxLength');
         }
+
+
+		if (!$obj->minOccurs && !$obj->maxOccurs) 
+		{
+			$obj->minOccurs = $obj->required ? '1' : '0';
+			$obj->maxOccurs = '1';
+		}
 
         return $obj;
 	}
@@ -109,7 +116,7 @@ class metafad_modules_iccd_services_moduleService extends GlizyObject
 
          	if (!property_exists($obj, 'maxOccurs')) {
          		$obj->maxOccurs = 'unbounded';
-         	}
+			}
 
         } else {
 	        $obj->minOccurs = $required ? '1' : '0';
@@ -126,7 +133,7 @@ class metafad_modules_iccd_services_moduleService extends GlizyObject
         foreach ($fieldSet->childNodes as $child) {
         	if ($child->nodeName == 'glz:Fieldset') {
         		$obj->children[] = $this->processFieldSet($child, $level+1);
-        	} else if ($child->nodeName == 'glz:Input') {
+        	} else if ($child->nodeName == 'glz:Input' && strpos($child->getAttribute('id'),'-element') === false && strpos($child->getAttribute('id'), '__') === false) {
         		$obj->children[] = $this->processInput($child, $level+1);
 			} else if ($child->nodeName == 'glz:List') {
         		$obj->children[] = $this->processInput($child, $level+1);

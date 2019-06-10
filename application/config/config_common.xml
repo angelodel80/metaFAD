@@ -112,6 +112,8 @@
 
     <glz:Param name="metafad.log.group" value="metafad"/>
     <glz:Param name="metafad.log.level" value="{{env:METAFAD_LOG_LEVEL}}"/>
+    
+    <glz:Param name="metafad.hasMultiLanguage" value="false"/>
 
     <glz:Param name="metafad.solr.base.url" value="{{env:SOLR_HOST}}"/>
     <glz:Param name="metafad.search.base.url" value="{{env:SEARCH_SERVICES_HOST}}"/>
@@ -212,18 +214,21 @@
     <glz:Param name="metafad.be.hasSBN" value="{{env:METAFAD_FLAG_SBN}}"/>
 	<glz:Param name="metafad.be.hasICCD" value="{{env:METAFAD_FLAG_ICCD}}"/>
 	<glz:Param name="metafad.be.hasArchive" value="{{env:METAFAD_FLAG_ARCHIVE}}"/>
-	<glz:Param name="metafad.be.hasInstitutes" value="true" />
-	<glz:Param name="metafad.be.hasImport" value="true" />
-	<glz:Param name="metafad.be.hasExport" value="true" /><!-- true ! false | demo -->
-	<glz:Param name="metafad.be.hasMag" value="true" />
-	<glz:Param name="metafad.be.hasMets" value="true" />
-	<glz:Param name="metafad.be.hasIccdGenerator" value="true" />
-	<glz:Param name="metafad.be.hasDictionaries" value="true" />
-    <glz:Param name="metafad.be.hasEcommerce" value="true" />
-	<glz:Param name="metafad.fe.hasMetaindice" value="true" />
-    <glz:Param name="metafad.dam.hasDownload" value="true" />
-	<glz:Param name="metafad.fe.search.hasCustomServices" value="true" />
+	<glz:Param name="metafad.be.hasInstitutes" value="{{env:METAFAD_HAS_INSTITUTES,true}}" />
+	<glz:Param name="metafad.be.hasImport" value="{{env:METAFAD_HAS_IMPORT,true}}" />
+	<glz:Param name="metafad.be.hasExport" value="{{env:METAFAD_HAS_EXPORT,true}}" /><!-- true ! false | demo -->
+	<glz:Param name="metafad.be.hasMag" value="{{env:METAFAD_HAS_MAG,true}}" />
+	<glz:Param name="metafad.be.hasMets" value="{{env:METAFAD_HAS_METS,true}}" />
+	<glz:Param name="metafad.be.hasIccdGenerator" value="{{env:METAFAD_HAS_ICCDGENERATOR,true}}" />
+    <glz:Param name="metafad.be.hasDictionaries" value="{{env:METAFAD_HAS_DICTIONARIES,true}}" />
+    <glz:Param name="metafad.be.hasMovio" value="{{env:METAFAD_HAS_MOVIO,true}}" />
+    <glz:Param name="metafad.be.hasEcommerce" value="{{env:METAFAD_HAS_ECOMMERCE,true}}" />
+	<glz:Param name="metafad.fe.hasMetaindice" value="{{env:METAFAD_HAS_METAINDICE,true}}" />
+    <glz:Param name="metafad.dam.hasDownload" value="{{env:METAFAD_HAS_DOWNLOAD,true}}" />
+	<glz:Param name="metafad.fe.search.hasCustomServices" value="{{env:METAFAD_HAS_CUSTOMSERVICES,true}}" />
 	<glz:Param name="metafad.dataGridSolr.autoComplete" value="20" />
+    <glz:Param name="metafad.massiveDelete.activate" value="{{env:METAFAD_MASSIVE_DELETE_ACTIVATE,false}}" />
+    <glz:Param name="metafad.getIccd.activate" value="{{env:METAFAD_GETICCD_ACTIVATE,false}}" />
 
 	<!-- Lista dei campi del profilo di ricerca ICCD da salvare in solr FE -->
 	<glz:Param name="metafad.iccd.solr.commonFields">
@@ -252,4 +257,31 @@
 		]
 	]]>
 	</glz:Param>
+
+    <glz:Param name="metafad.archive.treeIcon">
+	  <![CDATA[
+    {
+	"archivi.models.UnitaArchivistica": "fa fa-folder",
+    "archivi.models.UnitaDocumentaria": "fa fa-file-text",
+    "archivi.models.ComplessoArchivistico": "fa fa-archive"
+	}
+    ]]>
+    </glz:Param>
+
+    <glz:Param name="metafad.selectAll" value="false" />
+    
+    <glz:Param name="metafad.getIccd.availableModels">
+	  <![CDATA[
+        [
+            "AUT200","AUT300","AUT400",
+            "BIB200","BIB300","BIB400",
+            "SchedaD200","SchedaD300",
+            "SchedaF300","SchedaF400",
+            "SchedaMI200","SchedaMI300",
+            "SchedaOA200","SchedaOA300",
+            "SchedaS200","SchedaS300"
+        ]
+    ]]>
+    </glz:Param>
+
 </glz:Config>

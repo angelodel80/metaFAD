@@ -39,6 +39,7 @@
     <mvc:State id="stateListDetail" name="listDetail" label="{i18n:Lista Fondo}"
                url="archivi#listFondo">
         <cmp:PageTitle value="" tag="h3" id="fondoTitle" cssClass="titleFondo"/>
+        <cmp:FormEditWithAjaxSteps id="myForm" controllerName="archivi.controllers.*"/>
         <cmp:DataGridSolr id="dataGridDetail" enableSorting="true" filterByInstitute="true" recordClassName="archivi.models.ComplessoArchivistico"
                           cssClass="table table-bordered table-striped" ignoreTypeFilter="true"
                           controllerName="archivi.controllers.*" fullTextSearch="true"
@@ -47,12 +48,17 @@
 <glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per il Complesso}"/>
 <glz:DataGridColumn columnName="livelloDiDescrizione_s" headerText="{i18n:Livello di descrizione}" renderCell="archivi.views.renderer.CellLivelloDiDescrizione"/>
 <glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}" renderCell="archivi.views.renderer.CellDenominazione"/>
-<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Estremo cronologico testuale}"/>
+<glz:DataGridColumn columnName="estremoRemoto_s" headerText="{i18n:Estremo remoto}"/>
+<glz:DataGridColumn columnName="ordinamentoProvvisorio_i" headerText="{i18n:NOP}" renderCell="archivi.views.renderer.CellNOP"/>
+<glz:DataGridColumn columnName="segnaturaAttuale_s" headerText="{i18n:Segnature attuale}"/>
+<glz:DataGridColumn columnName="segnaturaPrecedente_s" headerText="{i18n:Segnatura precedente}"/>
+<glz:DataGridColumn columnName="codiceDiClassificazione_s" headerText="{i18n:Codice di classificazione}"/>
 
             <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
                                 renderCell="archivi.views.renderer.CellSelectEditDraftDelete"/>
         </cmp:DataGridSolr>
         <cmp:DataGridFilter id="filter" dataGridAjaxId="dataGridDetail" fieldNumber="1" parent="{php:__Request::get('id')}"/>
+        <cmp:SortButton id="reorderButton" label="Riordina" dataGridAjaxId="dataGridDetail" editableRegion="actions"/>
     </mvc:State>
 
     <mvc:State id="hierarchy" name="hierarchy" label="{i18n:Gerarchia}" url="archivi-ComplessoArchivistico/hierarchy">
@@ -75,8 +81,11 @@
         <com:FormEdit id="editForm" newCode="true" controllerName="archivi.controllers.*">
             <glz:Hidden id="__id"/>
             <glz:Hidden id="__model" value="archivi.models.ComplessoArchivistico"/>
-			<glz:Hidden id="instituteKey" />
+			      <glz:Hidden id="instituteKey" />
             <glz:Hidden id="pageId" value="{php:__Request::get('pageId')}"/>
+            <glz:Hidden id="ordinamentoProvvisorio"/>
+            <glz:Hidden id="ordinamentoGlobale"/>
+
             <glz:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="false"/>
 
             <glz:Hidden id="isTemplate"/>

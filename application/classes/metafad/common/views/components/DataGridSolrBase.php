@@ -11,6 +11,9 @@ class metafad_common_views_components_DataGridSolrBase extends metafad_common_vi
         $this->defineAttribute('enableSorting', false, false, COMPONENT_TYPE_BOOLEAN);
         $this->defineAttribute('keyAndLabel', false, false, COMPONENT_TYPE_BOOLEAN);
         $this->defineAttribute('autocompleteController', false, false, COMPONENT_TYPE_STRING);
+        $this->defineAttribute('multiLanguage', false, false, COMPONENT_TYPE_BOOLEAN);
+        $this->defineAttribute('massive', false, false, COMPONENT_TYPE_BOOLEAN);
+        $this->defineAttribute('hasDigital', false, false, COMPONENT_TYPE_BOOLEAN);
 
         // call the superclass for validate the attributes
         parent::init();
@@ -134,9 +137,18 @@ EOD;
             }
 
             $content = $column['headerText'];
-
             if ($column['checkbox']) {
-                $content .= ' <input type="checkbox" class="filterSearchCheckbox" name="'.$column['columnName'].'">';
+                $content .= ' <input type="checkbox" class="filterSearchCheckbox" name="' . $column['columnName'] . '">';
+            }
+
+            if(!$selector)
+            {
+                if ($column['checkboxSelectAll'] && __Config::get('metafad.selectAll')) {
+                    $selector = ' <a class="select-items js-result-select-all" name="' . $column['columnName'] . '"><i class="fa fa-square-o text-dark-gray"></i> Seleziona Tutto</a>';
+                }
+                if ($column['checkboxSelectPage'] && __Config::get('metafad.selectAll')) {
+                    $selector .= ' <a class="select-items js-result-select-page" name="' . $column['columnName'] . '"><i class="fa fa-square-o text-dark-gray"></i> Seleziona pagina</a>';
+                }
             }
 
             $headers .= org_glizy_helpers_Html::renderTag('th', $attributes, true, $content);
@@ -177,9 +189,15 @@ EOD;
         $sLast = __T('Last');
         $sNext = __T('Next');
         $sPrevious = __T('Previous');
+        $aLengthMenu = (__Config::get('datagrid.lengthMenu')) ?:'[10, 25, 50, 75, 100]';
         $JQueryUI = $this->getAttribute('JQueryUI') ? 'true' : 'false';
         $recordClassName = $this->getAttribute('recordClassName');
         $autocompleteController = $this->getAttribute('autocompleteController');
+        $selectAllController = 'metafad.common.controllers.ajax.SelectAll';
+
+        $massive = $this->getAttribute('massive');
+        $hasDigital = $this->getAttribute('hasDigital');
+        $parent = $this->getAttribute('parent');
 
         $filterInstitute = ''; 
         $instituteKey = metafad_usersAndPermissions_Common::getInstituteKey();
@@ -205,10 +223,10 @@ EOD;
 <script type="text/javascript">
 // <![CDATA[
 \$( function(){
-    var allValue = new Array();
+    var allValue = ((localStorage['$recordClassName-lastAdvancedSearch']) ? JSON.parse(localStorage['$recordClassName-lastAdvancedSearch']) : new Array());
     var oldAllValue = new Array();
     var table = \$('#$id').dataTable( {
-        "sDom": "<'row-fluid filter-row clearfix'<'filter-box'f>r><'table-container't><'row-fluid clearfix'<'filter-box select-page-length'l><'filter-box pull-left'i><'filter-box pull-right'p>>",
+        "sDom": "<'row-fluid filter-row clearfix'<'filter-box'f>r><'table-container't><'row-fluid clearfix'<'select-record-section'><'filter-box select-page-length'l><'filter-box pull-left'i><'filter-box pull-right'p>>",
         "sPaginationType": "custom",
         "oLanguage": {
             "sLengthMenu": "_MENU_ $sLengthMenu",
@@ -261,6 +279,7 @@ EOD;
             });
         },
         "bLengthChange": true,
+        "aLengthMenu": $aLengthMenu,
         "bJQueryUI": $JQueryUI,
         "bServerSide": true,
         "sAjaxSource": "$ajaxUrl",
@@ -290,8 +309,30 @@ EOD;
     $('$advancedFilter').appendTo("#{$id}_wrapper > div.filter-row");
 
     $(document).ready( function () {
-
         $('#$id').data('dataTable', table);
+
+        $('.select-record-section').html('$selector');
+
+        $('#$id').on('draw',function(){
+            var tocheck = false;
+            $('.selectionflag').each(function(){
+                if($(this).prop('checked'))
+                {
+                    tocheck = true;
+                }
+            });
+            if(tocheck)
+            { 
+                $('.js-result-select-page').data('checked','checked');
+                $('.js-result-select-page').children('.fa').removeClass('fa-square-o').addClass('fa-check-square');
+            }
+            else
+            {
+                $('.js-result-select-page').data('checked',false);
+                $('.js-result-select-page').children('.fa').addClass('fa-square-o').removeClass('fa-check-square');
+            }
+        }); 
+
         allValue.push({"name": "advancedSearch", "value": "false"});
 
         $('body').on('click', 'button[data-action=simpleSearch]', function () {
@@ -334,6 +375,83 @@ EOD;
             allValue.push({"name": "advancedSearch", "value": "true"});
 
             $('select[name="searchKey"]').trigger('change');
+        });
+        
+        function checkSelector(checked, cssclass ) 
+        {
+            if(!checked)
+            {
+                $(cssclass).data('checked',true);
+                $(cssclass).children('.fa').removeClass('fa-square-o').addClass('fa-check-square');
+            }
+            else
+            {
+                $(cssclass).data('checked',false);
+                $(cssclass).children('.fa').addClass('fa-square-o').removeClass('fa-check-square');
+            }
+        }
+
+        $('body').on('click', '.js-result-select-all', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var checked = $(this).data('checked');
+            checkSelector(checked,'.js-result-select-all');
+            checkSelector(checked,'.js-result-select-page');
+            
+            var checked = $(this).data('checked');
+            if (checked) {
+                $.ajax({
+                url: Glizy.ajaxUrl+'&controllerName=$selectAllController',
+                data: {
+                    instituteKey: '$filterInstitute',
+                    model: '$recordClassName',
+                    filters: getAllValues('#advancedSearchRepeaterContainer div.moreElement', null),
+                    massive: '$massive',
+                    hasDigital : '$hasDigital',
+                },
+                success: function( data ) {
+                    arrayLength = data.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        ids.push(data[i]);
+                    }
+
+                    $('.selectionflag').prop('checked', 'checked');
+                    if ($('#__selectedIds').length > 0) 
+                    {
+                        $('#__selectedIds').val(ids.join());
+                    }
+                    if ($('#ids').length > 0) 
+                    {
+                        $('#ids').val(ids.join());
+                    }
+                },
+            });
+            }
+            else {
+                $('.selectionflag').prop('checked',false);
+                $('#__selectedIds').val('');
+                $('#ids').val('');
+                ids = [];
+            }
+            
+        });
+
+        $('body').on('click', '.js-result-select-page', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var checked = $(this).data('checked');
+            var checked = $(this).data('checked');
+            checkSelector(checked,'.js-result-select-page');
+            
+            var checked = $(this).data('checked');
+
+            if (checked) {
+                $('.selectionflag').prop('checked', 'checked');
+            }
+            else {
+                $('.selectionflag').prop('checked',false);
+            }
+            $('.selectionflag').trigger('change');
         });
 
         function addTrashButton(count)
@@ -379,7 +497,7 @@ EOD;
             var container = $(this).closest('.moreElement');
             var inputContainer = container.find('.searchValueContainer');
             var type = $(this).find('option:selected').data('type');
-
+ 
             if (type == 'autocomplete') {
                 inputContainer.replaceWith(`
                     <div class="col-md-6 col-lg-6 searchValueContainer">
@@ -400,6 +518,8 @@ EOD;
                                 filters: getAllValues('#advancedSearchRepeaterContainer div.moreElement', fieldName),
                                 fieldName: fieldName,
                                 term: request.term,
+                                hasDigital: '$hasDigital',
+                                parent: '$parent',
                             },
                             success: function( data ) {
                                 if (data.length == 0) {
@@ -474,6 +594,7 @@ EOD;
 
         var oTable = $('#$id').DataTable();
 
+        
         $('#{$id}_filter input').val(oTable.fnSettings().oPreviousSearch.sSearch);
         function fnResetAllFilters() {
             var oSettings = oTable.fnSettings();
@@ -522,18 +643,31 @@ EOD;
 
         function search() {
             var index = 0;
-            
+                        
             if (allValue.length){
                 oldAllValue = allValue;
             }
 
             allValue = getAllValues('#advancedSearchRepeaterContainer div.moreElement');
-
             $('.filterSearchCheckbox').each(function() {
                 allValue.push({"name": this.name, "value": this.checked ? 1 : 0});
             });
 
+            localStorage['$recordClassName-lastAdvancedSearch'] = JSON.stringify(allValue);
+
             oTable.fnDraw();
+        }
+
+        if(localStorage['$recordClassName-lastAdvancedSearch'])
+        {
+            $('.advancedSearchButton').trigger('click');
+            var lastSearchValue = JSON.parse(localStorage['$recordClassName-lastAdvancedSearch']);
+            $.each(lastSearchValue, function(k, v) {
+                $('select[name="searchKey"]').last().val(v.name);
+                $('input[name="searchValue"]').last().val(v.value);
+                $('#addFilter').trigger('click');
+            });
+            $('.trashButton').last().trigger("click");
         }
     });
 });
@@ -557,6 +691,7 @@ EOD;
 
     protected function getSearchFields($includeCheckbox=false)
     {
+        $labels = array();
         $recordClassName = $this->getAttribute('recordClassName');
         if (strpos(',', $recordClassName) !== false) {
             $document = org_glizy_objectFactory::createModel($recordClassName);
@@ -566,10 +701,25 @@ EOD;
             $searchFields = array();
             foreach (explode(',', $recordClassName) as $model) {
                 $document = org_glizy_objectFactory::createModel($model);
-                $searchFields = array_merge($document->getBeAdvancedSearchFields(), $searchFields);
+                $recordSeachFields = $document->getBeAdvancedSearchFields();
+                foreach($recordSeachFields as $k => $v)
+                {
+                    if(is_array($v))
+                    {
+                        $label = $v['label'];
+                    }
+                    else
+                    {
+                        $label = $v;
+                    }
+                    if(!in_array($l,$labels))
+                    {
+                        $labels[] = $label;
+                        $searchFields[$k] = $v;
+                    }
+                }
                 $modelQuery[] = 'document_type_t:"' . $model . '"';
             }
-
             $query = '('.implode(' OR ', $modelQuery).')';
         }
 

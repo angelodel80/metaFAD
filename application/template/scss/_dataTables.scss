@@ -23,6 +23,15 @@ div {
             -moz-appearance: none;
             border-radius: 0;
         }
+        .select-record-section {
+            margin-top: 5px;
+            .select-items {
+                color: black;
+                cursor: auto;
+                padding-right: 10px;
+            }
+        }
+
         .filter-box {
           float: left;
               &.select-page-length {

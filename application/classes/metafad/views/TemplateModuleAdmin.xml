@@ -5,6 +5,7 @@
     xmlns:cmp="metafad.gestioneDati.boards.views.components.*"
     xmlns:com="metafad.common.views.components.*"
     xmlns:cms="org.glizycms.views.components.*"
+    xmlns:msv="metafad.gestioneDati.massiveEdit.views.components.*"
     xmlns:glz="http://www.glizy.org/dtd/1.0/"
     xmlns:iccd="metafad.modules.thesaurus.views.components.*"
     id="Page"
@@ -32,11 +33,12 @@
 
     <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs" cssClassCurrent="active" addQueryString="true" visible="true" editableRegion="contentTabs" />
     <mvc:State name="index">
+        <glz:JSscript folder="metafad/views/js/previewPopupSintetic" />
         <glz:Modifier target="tabs" attribute="visible" value="false" />
         <com:DataGridSolr id="##dataGridId##" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="##setLastSearch##"
                           recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true"
                           autocompleteController="##autocompleteController##">
-            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" />
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" checkboxSelectAll="true" checkboxSelectPage="true"/>
             ##grid_fields##
             <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##documentRenderCell##" />
         </com:DataGridSolr>
@@ -111,7 +113,8 @@
     </mvc:State>
     <mvc:State name="editMassive">
         <cmp:FormList id="formList" />
-        <cmp:DataGridSolrFiltered id="dataGridFiltered" recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true">
+        <cmp:DataGridSolrFiltered id="dataGridFiltered" recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true" autocompleteController="metafad.common.controllers.ajax.AutoCompleteMassive" massive="true">
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" checkboxSelectPage="true" checkboxSelectAll="true"/>
             ##grid_fields##
             <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDraftDelete" />
         </cmp:DataGridSolrFiltered>
@@ -120,8 +123,13 @@
             <glz:Hidden id="__id" />
             <glz:Hidden id="__groupId" />
             <glz:Hidden id="__model" value="##model##" />
+            <glz:Hidden id="__selectedIds" />
             <glz:Input id="groupName" label="{i18n:Nome gruppo}" size="90" />
+            
+            <msv:FieldsToEmpty id="fieldList" moduleName="##model##" enabled="{config:metafad.massiveDelete.activate}"/>
+            
             ##form_fields##
+
             <cms:FormButtonsPanel id="formButtons">
                 <cmp:PreviousTabButton />
                 <glz:HtmlButton label="{i18n:Salva in stato 'Pubblica'}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save-novalidation" data="action=saveMassive" acl="*,edit" />

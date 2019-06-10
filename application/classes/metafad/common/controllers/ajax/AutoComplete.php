@@ -11,20 +11,19 @@ class metafad_common_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Co
         
         $result = array();
 
-        foreach ($content->response->docs as $doc) {
-            $value = $doc->{$fieldName};
-            if (is_array($value)) {
-                foreach ($value as $s) {
-                    if (preg_match('/.*'.$term.'.*/', $s)) {
-                        $result[$s] = true;
-                    }
-                }
-            } else {
-                $result[$value] = true;
+        $facetField = $content->facet_counts->facet_fields;
+
+        $facets = $facetField->$fieldName;
+
+        for ($i = 0; $i < count($facets); $i += 2) {
+            $term = $facets[$i];
+            $termFreq = $facets[$i + 1];
+
+            if ($termFreq > 0) {
+                $result[] = $term;
             }
         }
 
-        $result = array_map('strval', array_keys($result));
         sort($result);
 
         $this->directOutput = true;
@@ -35,12 +34,12 @@ class metafad_common_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Co
     protected function buildQuery($instituteKey, $model, $filters, $fieldName, $term)
     {
         $q = array( 
-            'document_type_t:"'.$model.'"',
-            $fieldName.':*'.$term.'*',
+            '(document_type_t:"'.$model.'")',
+            '('.$fieldName.':*'.str_replace(' ','*',$term).'*)',
         );
 
         if ($instituteKey) {
-            $q[] = 'instituteKey_s:"'.$instituteKey.'"';
+            $q[] = '(instituteKey_s:"'.$instituteKey.'")';
         }
 
         if ($filters) {
@@ -62,19 +61,28 @@ class metafad_common_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Co
                     if ($v[1]) {
                         $q[] = $f[1] . ':[* TO '.sprintf('%04d', $v[1]).']';
                     }
-                } else {
-                    $q[] = $filter['name'].':"'.$filter['value'].'"';
+                }
+                else if($filter['type'] == 'multiple')
+                {
+                    $a = '(' . implode(' OR ', $filter['value']) . ')';
+                    $q[] = '(' . $filter['name'] . ':'. $a . ')';
+                }
+                else {
+                    $q[] = '(' . $filter['name'].':"'.$filter['value'].'")';
                 }
             }
         }
-        
-        $query = array(
-            'q='.urlencode(implode(' AND ', $q)),
-            'fl='.$fieldName,
-            'wt=json',
-            'rows=100000000'
-        );
 
+        $query = array(
+            'q=' . urlencode(implode(' AND ', $q)),
+            'fl=' . $fieldName,
+            'facet=true',
+            'facet.field=' . $fieldName,
+            'facet.limit=' . __Config::get('metafad.dataGridSolr.autoComplete'),
+            'wt=json',
+            'rows=0'
+        );
+        
         if (__Config::get('DEBUG')) {
             $query[] = 'indent=true';
         }

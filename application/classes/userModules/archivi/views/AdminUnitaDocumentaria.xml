@@ -39,6 +39,7 @@
     <mvc:State id="stateListDetail" name="listDetail" label="{i18n:Lista Fondo}"
                url="archivi#listFondo">
         <cmp:PageTitle value="" tag="h3" id="fondoTitle" cssClass="titleFondo"/>
+        <cmp:FormEditWithAjaxSteps id="myForm" controllerName="archivi.controllers.*"/>
         <cmp:DataGridSolr id="dataGridDetail" enableSorting="true" filterByInstitute="true" recordClassName="archivi.models.UnitaDocumentaria"
                           cssClass="table table-bordered table-striped" ignoreTypeFilter="true"
                           controllerName="archivi.controllers.*" fullTextSearch="true"
@@ -47,12 +48,17 @@
 <glz:DataGridColumn columnName="identificativo_s" headerText="{i18n:Identificativo per l'Unità documentaria}"/>
 <glz:DataGridColumn columnName="livelloDiDescrizione_s" headerText="{i18n:Livello di descrizione}" renderCell="archivi.views.renderer.CellLivelloDiDescrizione"/>
 <glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Titolo originale}" renderCell="archivi.views.renderer.CellDenominazione"/>
-<glz:DataGridColumn columnName="cronologia_s" headerText="{i18n:Estremo cronologico testuale}"/>
+<glz:DataGridColumn columnName="estremoRemoto_s" headerText="{i18n:Estremo remoto}"/>
+<glz:DataGridColumn columnName="ordinamentoProvvisorio_i" headerText="{i18n:NOP}" renderCell="archivi.views.renderer.CellNOP"/>
+<glz:DataGridColumn columnName="segnaturaAttuale_s" headerText="{i18n:Segnature attuale}"/>
+<glz:DataGridColumn columnName="segnaturaPrecedente_s" headerText="{i18n:Segnatura precedente}"/>
+<glz:DataGridColumn columnName="codiceDiClassificazione_s" headerText="{i18n:Codice di classificazione}"/>
 
             <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions"
                                 renderCell="archivi.views.renderer.CellSelectEditDraftDelete"/>
         </cmp:DataGridSolr>
         <cmp:DataGridFilter id="filter" dataGridAjaxId="dataGridDetail" fieldNumber="1" parent="{php:__Request::get('id')}"/>
+        <cmp:SortButton id="reorderButton" label="Riordina" dataGridAjaxId="dataGridDetail" editableRegion="actions"/>
     </mvc:State>
 
     <mvc:State id="hierarchy" name="hierarchy" label="{i18n:Gerarchia}" url="archivi-UnitaDocumentaria/hierarchy">
@@ -208,8 +214,8 @@
     </glz:Fieldset>
     <glz:Input id="forma" label="Forma" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-unitadocumentaria&quot;,##code##:##VA_ARCHIVE_FORMA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_FORMA"/>
     <glz:Fieldset id="numerazioneDescrizione" label="Numerazione della descrizione">
-      <glz:Input id="numeroOrdinamentoProvvisorio" label="Numero di ordinamento provvisorio"/>
-      <glz:Input id="numeroOrdinamentoDefinitivo" label="Numero di ordinamento definitivo"/>
+      <glz:Input id="ordinamentoProvvisorio" label="Numero di ordinamento provvisorio" readOnly="true" type="number"/>
+      <glz:Input id="ordinamentoGlobale" label="Numero di ordinamento globale" readOnly="true" type="number"/>
     </glz:Fieldset>
     <glz:Fieldset id="segnature" label="Segnature">
       <glz:Input id="segnaturaAttuale" label="Segnatura attuale"/>
@@ -494,8 +500,8 @@
     </glz:Fieldset>
     <glz:Input readOnly="true" id="forma" label="Forma" data="type=selectfrom;multiple=false;add_new_values=true;proxy=metafad.modules.thesaurus.models.proxy.ThesaurusProxy;proxy_params={##module##:&quot;archivi-unitadocumentaria&quot;,##code##:##VA_ARCHIVE_FORMA##,##level##:##1##};selected_callback=metafad.modules.thesaurus.controllers.ajax.AddTerm;dictId=VA_ARCHIVE_FORMA"/>
     <glz:Fieldset id="numerazioneDescrizione" label="Numerazione della descrizione">
-      <glz:Input readOnly="true" id="numeroOrdinamentoProvvisorio" label="Numero di ordinamento provvisorio"/>
-      <glz:Input readOnly="true" id="numeroOrdinamentoDefinitivo" label="Numero di ordinamento definitivo"/>
+      <glz:Input readOnly="true" id="ordinamentoProvvisorio" label="Numero di ordinamento provvisorio" type="number"/>
+      <glz:Input readOnly="true" id="ordinamentoGlobale" label="Numero di ordinamento globale" type="number"/>
     </glz:Fieldset>
     <glz:Fieldset id="segnature" label="Segnature">
       <glz:Input readOnly="true" id="segnaturaAttuale" label="Segnatura attuale"/>

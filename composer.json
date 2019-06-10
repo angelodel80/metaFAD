@@ -12,7 +12,10 @@
           "rm -rf cache/*.jpg",
           "rm -rf cache/*.js"
       ]
-    }
+    },
+  "config": {
+    "secure-http": false
+  }
 }
 
 

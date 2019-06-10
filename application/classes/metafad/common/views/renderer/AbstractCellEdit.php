@@ -10,6 +10,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
     {
         // TODO: posstare questa parte di codice in un classe comune
         // e gestire in modo simile quando sono attivi i ruoli e quando no
+        $key = explode('-', $key);
+        $key = end($key);
+        
         $pageId = $this->application->getPageId();
         if (__Config::get('ACL_ROLES')) {
             if (!$this->user->acl($pageId, 'all')) {
@@ -38,6 +41,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
 
     protected function renderEditButton($key, $row, $enabled = true)
     {
+        $key = explode('-',$key);
+        $key = end($key);
+
         $output = '';
         if ($this->canView && $this->canEdit) {
             $output = __Link::makeLinkWithIcon(
@@ -55,8 +61,24 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
         return $output;
     }
 
+    protected function renderPreviewButton($key, $row, $enabled = true)
+    {
+        $key = explode('-', $key);
+        $key = end($key);
+
+        $output = '';
+        if ($this->canView && $this->canEdit) {
+            $output = '<input id="'.$key.'" name="'.$key.'" class="btn btn-flat js-glizycms-preview" type="button" value="Anteprima" data-action="preview">';
+        }
+
+        return $output;
+    }
+
     protected function renderEditDraftButton($key, $row, $enabled = true)
     {
+        $key = explode('-', $key);
+        $key = end($key);
+
         $output = '';
         if ($this->canView && $this->canEditDraft) {
             $output = __Link::makeLinkWithIcon(
@@ -76,6 +98,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
 
     protected function renderDeleteButton($key, $row)
 	{
+        $key = explode('-', $key);
+        $key = end($key);
+
         $output = '';
         if ($this->canView && $this->canDelete) {
             $output .= __Link::makeLinkWithIcon(
@@ -96,6 +121,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
 
     protected function renderDeleteSimpleButton($key, $row,$model)
     {
+        $key = explode('-', $key);
+        $key = end($key);
+
         $output = '';
         if ($this->canView && $this->canDelete) {
             $output .= __Link::makeLinkWithIcon(
@@ -116,6 +144,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
 
     protected function renderVisibilityButton($key, $row)
     {
+        $key = explode('-', $key);
+        $key = end($key);
+        
         $output = '';
         if ($this->canView && $this->canEdit) {
             $output .= __Link::makeLinkWithIcon(
@@ -135,6 +166,9 @@ abstract class metafad_common_views_renderer_AbstractCellEdit extends org_glizy_
 
     protected function renderCheckBox($key, $row)
 	{
+        $key = explode('-', $key);
+        $key = end($key);
+
         $output = '';
         if ($this->canView && $this->canDelete) {
             $output .= '<input name="check[]" data-id="'.$row->getId().'" type="checkbox">';

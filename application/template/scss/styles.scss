@@ -7,6 +7,7 @@
 @import 'dataTables.scss';
 @import 'detailUser.scss';
 @import 'ecommerce.scss';
+@import 'dropdown.scss';
 @import 'mobile.scss';
 @import 'externalLibraries.scss';
 
@@ -231,6 +232,16 @@ li {
    .main-header {
       .navbar {
          background-color: #159CE2;
+         .dropdown-menu {
+             li {
+                 a {
+                     color: black;
+                     &:hover {
+                         background-color: #e1e3e9;
+                     }
+                 }
+             }
+         }
       }
       .logo {
          background-color: #138CCA;

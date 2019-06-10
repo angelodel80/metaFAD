@@ -3,6 +3,9 @@ class metafad_common_views_renderer_CellEditDraftDeleteNormalize extends metafad
 {
     protected function renderNormalizeButton($key, $row)
 	{
+        $key = explode('-', $key);
+        $key = end($key);
+        
         $output = '';
         if ($this->canView && $this->canDelete) {
             $output .= __Link::makeLinkWithIcon(

@@ -20,9 +20,7 @@ class metafad_modules_exporter_services_trcexporter_TRCExporter extends GlizyObj
 
     function getTRC($json, $work)
     {
-
         foreach ($json as $element) {
-
             if ($this->isAUT($element))
                 $trc .= $this->processAUT($element, $work);
             elseif ($this->isBIB($element))
@@ -580,7 +578,6 @@ class metafad_modules_exporter_services_trcexporter_TRCExporter extends GlizyObj
 
     function exportGroup($work_ids, $exportFolder, $modulePath, $moduleName, $export_path, $autbib, $workCount = 0, $ESC = '')
     {
-
         $this->AUTs = array();
         $this->BIBs = array();
 
@@ -594,14 +591,14 @@ class metafad_modules_exporter_services_trcexporter_TRCExporter extends GlizyObj
 
         $this->dam = org_glizy_ObjectFactory::createObject("metafad.teca.DAM.services.ImportMedia");
 
-        if (!preg_match('/scheda([a-z]+?)([0-9]{3})/i', $moduleName, $matches))
-            preg_match('/([a-z]+?)([0-9]{3})/i', $moduleName, $matches);
+        if (!preg_match('/scheda([a-z]+?)([0-9]{3}[a-z]*)/i', $moduleName, $matches))
+            preg_match('/([a-z]+?)([0-9]{3}[a-z]*)/i', $moduleName, $matches);
 
         $this->TSK = strtoupper($matches[1]);
         $this->version = $matches[2];
 
         $moduleService = __ObjectFactory::createObject('metafad.modules.iccd.services.ModuleService');
-		$elements = $moduleService->getElements($moduleName);
+        $elements = $moduleService->getElements($moduleName);
 		$elements = json_decode(json_encode($elements), true);
 
         $counter = 1;
@@ -637,7 +634,8 @@ class metafad_modules_exporter_services_trcexporter_TRCExporter extends GlizyObj
             if (empty($currentESC) || $currentESC=="")
                 $this->ESC = $work->fieldExists('ESC') ? $work->ESC : 'ESC';
 
-            $trc .= $this->getTRC($json, $work);
+            $trc .= $this->getTRC($elements, $work);
+
             $immftan .= $this->getIMMFTAN($work, $counter, $images);
 
             echo "- $id <br>";

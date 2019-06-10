@@ -116,7 +116,8 @@ class metafad_viewer_rest_controllers_Viewer extends org_glizy_rest_core_Command
 				return array('error'=>'Nessun record trovato');
 			}
 			$arraySub = array('SGLT'=>'SGL','SGTI'=>'SGT','SGTP'=>'SGT');
-			$titleKey = str_replace('_t','',end($ar->getSolrDocument()));
+			$titleKey = current(explode(',',str_replace(array('_s','_t'),array('',''),end($ar->getSolrDocument()))));
+
 			if(strpos($titleKey,',') !== false)
 			{
 				$titleKey = end(explode(',',$titleKey));
@@ -277,7 +278,7 @@ class metafad_viewer_rest_controllers_Viewer extends org_glizy_rest_core_Command
 			$image['thumbnail'] =  metafad_teca_DAM_Common::replaceUrl($this->dam->streamUrl($d->id,'thumbnail'));
 			$image['title'] =  $d->title;
 			$image['id'] =  $d->id;
-			$image['type'] =  $d->type;
+			$image['type'] =  ($d->type)?:'IMAGE';
 			$image['url'] = $this->dam->streamUrl($d->id,'original');
 			$image['label'] =  ($d->label) ?: $title;
 			$image['tile'] = $this->zoomSrc($this->dam->streamUrl($d->id,'original'));
@@ -301,7 +302,7 @@ class metafad_viewer_rest_controllers_Viewer extends org_glizy_rest_core_Command
 		$image['thumbnail'] =  metafad_teca_DAM_Common::replaceUrl($this->dam->streamUrl($d->id,'thumbnail'));
 		$image['title'] =  $d->title;
 		$image['id'] =  $d->id;
-		$image['type'] =  $d->type;
+		$image['type'] = ($d->type)?:'IMAGE';
 		$image['url'] = $this->dam->streamUrl($d->id,'original');
 		$image['label'] = ($d->label) ?: $title;
 		$image['tile'] = $this->zoomSrc($this->dam->streamUrl($d->id,'original'));

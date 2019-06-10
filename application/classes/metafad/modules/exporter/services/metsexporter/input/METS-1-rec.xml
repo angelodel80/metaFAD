@@ -20,7 +20,7 @@
                         </mets:agent>
                         <mets:altRecordID TYPE=""></mets:altRecordID>
                     </mets:metsHdr>
-                    <mets:dmdSec GROUPID="desc" ID="ead-des-001">
+                    <mets:dmdSec GROUPID="desc" ID="ead-desc-001">
                         <mets:mdWrap LABEL="Metadati EAD - Descrizione oggetto digitalizzato" MDTYPE="EAD" MIMETYPE="text/xml">
                             <mets:xmlData>
                                 <ead:c>
@@ -28,23 +28,23 @@
                                         <ead:unitid identifier=""></ead:unitid>
                                         <ead:unittitle></ead:unittitle>
                                         <ead:abstract></ead:abstract>
-                                        <ead:unitdate normal="" datechar="principale"></ead:unitdate>
+                                        <ead:unitdate normal="00000000" datechar="principale"></ead:unitdate>
                                         <ead:physdesc> 
                                             <ead:genreform type="tipologie documentarie"></ead:genreform>
                                         </ead:physdesc>
                                         <ead:langmaterial>
-                                            <ead:language langcode=""/>
+                                            <ead:language langcode="ita" />
                                         </ead:langmaterial>
                                     </ead:did>
                                     <ead:odd type="Segnatura">
                                         <ead:p></ead:p>
                                     </ead:odd>
-                                    <ead:phystech>
-                                        <ead:p></ead:p>
-                                    </ead:phystech>
                                     <ead:prefercite>
                                         <ead:p></ead:p>
                                     </ead:prefercite>
+                                    <ead:phystech>
+                                        <ead:p></ead:p>
+                                    </ead:phystech>
                                     <ead:controlaccess>
                                     </ead:controlaccess>
                                     <ead:dao xlink:href=""/>
@@ -76,18 +76,6 @@
                             </mets:mdWrap>
                         </mets:rightsMD>
                     </mets:amdSec>
-                    <mets:fileSec>
-                        <mets:fileGrp USE="reference image">
-                            <mets:file ID="" MIMETYPE="image/jpg">
-                                <mets:FLocat LOCTYPE="URL" xlink:href=""/>
-                            </mets:file>
-                        </mets:fileGrp>
-                        <mets:fileGrp USE="thumbnail image">
-                            <mets:file ID="" MIMETYPE="image/jpg">
-                                <mets:FLocat LOCTYPE="URL" xlink:href=""/>
-                            </mets:file>
-                        </mets:fileGrp>
-                    </mets:fileSec>
                 </mets:mets>
             </envelope:recordBody>
         </envelope:record>

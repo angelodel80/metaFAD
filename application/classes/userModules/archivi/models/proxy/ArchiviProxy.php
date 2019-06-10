@@ -174,7 +174,220 @@ class archivi_models_proxy_ArchiviProxy extends metafad_common_models_proxy_Solr
 
             $data->visibility = $old->visibility;
         }
+    }
 
+    public function getRootAr($id)
+    {
+        $ar = __ObjectFactory::createModel('archivi.models.Model');
+        $ar->load($id, 'PUBLISHED_DRAFT');
+
+        if ($ar->root === 'true') {
+            return $ar;
+        } else {
+            return $this->getRootAr($ar->parent['id']);
+        }
+    }
+
+    public function getChildren($id, $options = null)
+    {
+        if (is_null($options)) {
+            $options = array(
+                'sort' => 'ordinamentoProvvisorio_i asc',
+                'fields' => 'all'
+            );
+        }
+
+        if (!isset($options['sort'])) {
+            $options['sort'] = 'ordinamentoProvvisorio_i asc';
+        }
+
+        $query = array(
+            'q=parent_i:'.$id,
+            'sort='.urlencode($options['sort']),
+            'wt=json',
+            'rows=2147483647'
+        );
+
+        if ($options['fields'] != 'all') {
+            $query[] = 'fl='.$options['fields'];
+        }
+        
+        if (__Config::get('DEBUG')) {
+            $query[] = 'indent=true';
+        }
+
+        $url = __Config::get('metafad.solr.url').'select?'.implode('&', $query);
+        $content = json_decode(file_get_contents($url));
+       
+        return $content->response->docs;
+    }
+
+    // restituisce true se il nodo $id ha figli UA/UD, false altrimenti
+    public function hasUnitChildren($id)
+    {
+        $q = array(
+            'parent_i:'.$id,
+            '(document_type_t:"archivi.models.UnitaArchivistica" OR document_type_t:"archivi.models.UnitaDocumentaria")'
+        );
+
+        $query = array(
+            'q='.urlencode(implode(' AND ', $q)),
+            'fl=id',
+            'wt=json',
+        );
+        
+        if (__Config::get('DEBUG')) {
+            $query[] = 'indent=true';
+        }
+
+        $url = __Config::get('metafad.solr.url').'select?'.implode('&', $query);
+        $content = json_decode(file_get_contents($url));
+       
+        return $content->response->numFound > 0;
+    }
+
+    public function getNodesToReorder($id, $type)
+    {
+        $q = array(
+            'parent_i:'.$id,
+            '(document_type_t:"archivi.models.UnitaArchivistica" OR document_type_t:"archivi.models.UnitaDocumentaria")'
+        );
+
+        if ($type == 'data-discendente') {
+            $sort = 'estremoRemoto_s desc';
+        } elseif ($type == 'data-ascendente') {
+            $sort = 'estremoRemoto_s asc';
+        } elseif ($type == 'segnaturaAttuale') {
+            $sort = 'segnaturaAttuale_s asc';
+        } elseif ($type == 'segnaturaPrecedente') {
+            $sort = 'segnaturaPrecedente_s asc';
+        } elseif ($type == 'codiceDiClassificazione') {
+            $sort = 'codiceDiClassificazione_s asc';
+        }
+
+        $query = array(
+            'q='.urlencode(implode(' AND ', $q)),
+            'sort='.urlencode($sort),
+            'wt=json',
+            'rows=2147483647'
+        );
+        
+        if (__Config::get('DEBUG')) {
+            $query[] = 'indent=true';
+        }
+
+        $url = __Config::get('metafad.solr.url').'select?'.implode('&', $query);
+        $content = json_decode(file_get_contents($url));
+       
+        return $content->response->docs;
+    }
+
+    public function reorderNode($id, $model, $ordinamentoProvvisorio)
+    {
+        $ar = __ObjectFactory::createModel($model);
+        $ar->load($id, 'PUBLISHED_DRAFT');
+        $ar->ordinamentoProvvisorio = $ordinamentoProvvisorio;
+        $ar->saveCurrentPublished();
+        $this->reindexAr($ar);
+    }
+
+    /**
+     * setta il numero di ordinamento provvisorio delle UA/UD figlie di primo livello del record con id $id 
+     */
+    public function setOrdinamentoProvvisorioChildren($id)
+    {
+        $it = __ObjectFactory::createModelIterator('archivi.models.Model')
+            ->load('getParent', array(':parent' => $id, ':languageId' => __ObjectValues::get('org.glizy', 'languageId')));
+
+        $i = 1;
+        
+        foreach ($it as $ar) {
+            if ($ar->getType() == 'archivi.models.UnitaArchivistica' || $ar->getType() == 'archivi.models.UnitaDocumentaria') {
+                $ar->ordinamentoProvvisorio = $i++;
+                $ar->saveCurrentPublished();
+                $this->reindexAr($ar);
+            }
+        }
+    }
+
+    /**
+     * setta il numero di ordinamento provvisorio di tutti i livelli figli del record con id $id 
+     */
+    public function setOrdinamentoProvvisorioAllChildren($id)
+    {
+        $options = array('sort' => 'id asc');
+        $docs = $this->getChildren($id, $options);
+
+        $i = 1;
+        
+        foreach ($docs as $doc) {
+            $this->setOrdinamentoProvvisorioAllChildren($doc->id);
+            
+            $ar = __ObjectFactory::createModel($doc->document_type_t[0]);
+            $ar->load($doc->id, 'PUBLISHED_DRAFT');
+            if ($ar->getType() == 'archivi.models.UnitaArchivistica' || $ar->getType() == 'archivi.models.UnitaDocumentaria') {
+                $ar->ordinamentoProvvisorio = $i++;
+            } else {
+                $ar->ordinamentoProvvisorio = $doc->id;
+            }
+            $ar->saveCurrentPublished();
+            $this->reindexAr($ar);
+        }
+    }
+
+    /**
+     * setta il numero di ordinamento provvisorio della UA/UD in $data
+     */
+    public function setOrdinamentoProvvisorio($data)
+    {
+        if ($data->__model == 'archivi.models.UnitaArchivistica' || $data->__model == 'archivi.models.UnitaDocumentaria') {
+            $docs = $this->getChildren($data->parent->id);
+            $ordinamentoProvvisorio = count($docs);
+        } else {
+            $ordinamentoProvvisorio = $data->__id;
+        }
+
+        $ar = __ObjectFactory::createModel($data->__model);
+        $ar->load($data->__id, 'PUBLISHED_DRAFT');
+        $data->ordinamentoProvvisorio = $ordinamentoProvvisorio;
+        $ar->ordinamentoProvvisorio = $ordinamentoProvvisorio;
+        $ar->saveCurrentPublished();
+        $this->reindexAr($ar);
+    }
+
+    public function queueReorderGlobal($id)
+    {
+        $jobFactory = org_glizy_ObjectFactory::createObject('metacms.jobmanager.JobFactory');
+        $jobFactory->createJob(
+            'archivi_services_ReorderService',
+            array(
+                'id' => $id,
+            ),
+            'Cambio ordinamento globale',
+            'SYSTEM'
+        );
+    }
+
+    /**
+     * setta il numero di ordinamento globale delle UA/UD
+     */
+    public function setOrdinamentoGlobale($ar, $ordinamentoGlobale, $options = null)
+    {
+        if ($ar->getType() == 'archivi.models.UnitaArchivistica' || $ar->getType() == 'archivi.models.UnitaDocumentaria') { 
+            $ar->ordinamentoGlobale = ++$ordinamentoGlobale;
+            $ar->saveCurrentPublished();
+            $this->reindexAr($ar);
+        }
+        
+        $docs = $this->getChildren($ar->getId(), $options);
+
+        foreach ($docs as $doc) {
+            $arChild = __ObjectFactory::createModel($doc->document_type_t[0]);
+            $arChild->load($doc->id, 'PUBLISHED_DRAFT');
+            $ordinamentoGlobale = $this->setOrdinamentoGlobale($arChild, $ordinamentoGlobale, $options);
+        }
+
+        return $ordinamentoGlobale;
     }
 
     /**
@@ -185,6 +398,8 @@ class archivi_models_proxy_ArchiviProxy extends metafad_common_models_proxy_Solr
      */
     protected function saveProcedure($data, $invertRelation, $isDraft)
     {
+        $isNew = !$data->__id;
+
         $this->handleVisibility($data);
 
         $this->benchStart('saveObject');
@@ -211,8 +426,16 @@ class archivi_models_proxy_ArchiviProxy extends metafad_common_models_proxy_Solr
         }
 
         $this->benchStart('solr');
-        $this->sendDataToSolr($data, true);
+        // mapFE è false se il record è nuovo (__id null), true altrimenti
+        $mapFE = !$isNew && !$isDraft;
+        $this->sendDataToSolr($data, $mapFE);
         $this->benchEnd('solr');
+
+        if ($isNew) {
+            $this->setOrdinamentoProvvisorio($data);
+        }
+
+        $this->queueReorderGlobal($data->__id);
 
         if ($this->profiling === true) {
             foreach ($this->bench as $k => $v) {
@@ -439,9 +662,27 @@ class archivi_models_proxy_ArchiviProxy extends metafad_common_models_proxy_Solr
             }
         }
 
+        if (count($this->stack) == 1) {
+            $ar = __ObjectFactory::createModel('archivi.models.Model');
+            $ar->load($id, 'PUBLISHED_DRAFT');
+            $type = $ar->getType();
+            if ($ar->parent) {
+                $parentId = $ar->parent['id'];
+            }
+        }
+        
         $this->deleteItem($id, $control, $feOnly);
-        //echo "Deleted item $id\n<br>\n";
+
         array_pop($this->stack);
+
+        if (empty($this->stack) && $parentId) {
+            if ($type == 'archivi.models.UnitaArchivistica' || $type == 'archivi.models.UnitaDocumentaria') {
+                $this->setOrdinamentoProvvisorioChildren($parentId);
+                
+                $this->queueReorderGlobal($parentId);
+            }
+        }
+
         return $ret;
     }
 

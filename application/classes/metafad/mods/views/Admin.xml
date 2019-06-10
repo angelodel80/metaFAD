@@ -12,7 +12,7 @@
   <glz:Import src="_common.xml" />
 
   <mvc:State id="stateIndex" name="index" label="{i18n:Mods}" url="Mods">
-    <com:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="metafad.mods.models.Model" cssClass="table table-bordered table-striped" controllerName="metafad.mods.controllers.*" fullTextSearch="true" JQueryUI="true">
+    <com:DataGridSolr id="dataGrid" enableSorting="true" filterByInstitute="true" recordClassName="metafad.mods.models.Model" cssClass="table table-bordered table-striped" controllerName="metafad.mods.controllers.*" fullTextSearch="true" JQueryUI="true" autocompleteController="metafad.common.controllers.ajax.AutoComplete">
       <glz:DataGridColumn columnName="titolo_s" headerText="{i18n:Titolo}" />
       <glz:DataGridColumn columnName="tipologiaRisorsa_s" headerText="{i18n:Tipologia}" />
       <glz:DataGridColumn columnName="id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.CellEditDraftDelete" />

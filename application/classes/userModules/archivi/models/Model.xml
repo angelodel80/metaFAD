@@ -24,6 +24,8 @@
         <model:Field name="root" type="string" index="true"/>
         <model:Field name="visibility" type="string"/>
         <model:Field name="isValid" type="int" />
+        <model:Field name="ordinamentoProvvisorio" type="int"/>
+        <model:Field name="ordinamentoGlobale" type="int"/>
     </model:Define>
 
     <model:Script parent="model"><![CDATA[
@@ -174,6 +176,7 @@ protected function setDefaultFieldsValues()
           doc.document_id = doc_detail.document_detail_FK_document_id
         )
         WHERE doc_detail.document_detail_status != 'OLD'
+        ORDER BY document_id
     ]]>
     </model:Query>
 

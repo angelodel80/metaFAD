@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <glz:Routing>
+    <glz:Route method="GET" value="rest/getIccdList/{value=model}/{value=institute}" controller="metafad.rest.controllers.GetIccdList"/>
+    <glz:Route method="GET" value="rest/getIccd/{value=model}/{value=code}/{value=institute}" controller="metafad.rest.controllers.GetIccd"/>
 	<glz:Route method="GET" value="rest/getJson/{value=type}" controller="metafad.rest.controllers.GetJson"/>
     <glz:Route method="GET" value="rest/strumag/list" controller="metafad.teca.STRUMAG.rest.controllers.List"/>
     <glz:Route method="GET" value="rest/strumag/{value=id}" controller="metafad.teca.STRUMAG.rest.controllers.Load"/>
@@ -40,4 +42,5 @@
     <glz:Route name="link" value="{pageId}" />
 
     <glz:Route name="link-be-portale" value="{config=metafad.FE.url}/admin/" parseUrl="false" />
+    <glz:Route name="link-moviohub" value="{config=metafad.FE.url}/../movio" parseUrl="false" />
 </glz:Routing>

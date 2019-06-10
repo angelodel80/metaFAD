@@ -1,3 +1,5 @@
+var ids = new Array();
+
 $(document).ready(function(){
   var editMassive = $('.edit-massive').children('a');
   editMassive.data('href',editMassive.attr('href'));
@@ -12,12 +14,10 @@ $(document).ready(function(){
   normalizeMassive.data('href',normalizeMassive.attr('href'));
   normalizeMassive.removeAttr('href');
 
-  var ids = new Array();
-
   //Aggiorno i checkbox se la tabella viene ridisegnata, controllando
   //se alcuni record sono già stati selezionati
-  $('#dataGrid').on('draw.dt',function(){
-    $('#dataGrid').find('input').each(function(){
+  $('#dataGridFiltered').on('draw.dt',function(){
+    $('#dataGridFiltered').find('input').each(function(){
       if(ids.indexOf($(this).attr('data-id')) > -1)
       {
         $(this).prop('checked',true);
@@ -25,15 +25,34 @@ $(document).ready(function(){
     });
   });
 
+  $('#dataGrid').on('draw.dt', function () {
+    $('#dataGrid').find('input').each(function () {
+      if (ids.indexOf($(this).attr('data-id')) > -1) {
+        $(this).prop('checked', true);
+      }
+    });
+  });
+
   $('body').on('change','.selectionflag',function(){
     var checked = $(this).prop('checked');
     var id = $(this).attr('data-id');
-    if(checked){
-      ids.push(id);
+    if (checked) {
+      if (!ids.includes(id)) 
+      {
+        ids.push(id);
+      }
     }
     else{
       var index = ids.indexOf(id);
-      ids.splice(index,1);
+      if (index != -1) 
+      {
+        ids.splice(index, 1);
+      }
+    }
+
+    if ($('#__selectedIds').length > 0) 
+    {
+      $('#__selectedIds').val(ids.join());
     }
   });
 
@@ -65,7 +84,23 @@ $(document).ready(function(){
     }
     if(idList != '')
     {
-      window.location.href = link + idList.substring(0, idList.length - 1) + '/';
+      $.ajax({
+        url: Glizy.ajaxUrl + '&controllerName=metafad.gestioneDati.massiveEdit.controllers.ajax.StoreIds',
+        type: 'get',
+        action: 'modify',
+        dataType: 'json',
+        data: {
+          ids: ids
+        },
+        success: function (data, textStatus, jqXHR) {
+          if (data.status === true) {
+            window.location.href = link + data.result + '/';
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert('Attenzione: sono state selezionate troppo schede e questo può avere effetti negativi sulle prestazioni del sistema. Si consiglia un numero non superiore alle 400 simultaneamente.');
+        }
+      })
     }
     else
     {
@@ -89,6 +124,7 @@ $(document).ready(function(){
           message += key + ' non ha una versione di salvataggio allo stato desiderato\n';
         }
       }
+      changeCheckValues();
     }
     else{
       var state = 'pubblicata';
@@ -98,6 +134,7 @@ $(document).ready(function(){
           message += key + ' non ha una versione di salvataggio allo stato desiderato\n';
         }
       }
+      changeCheckValues();
     }
     if(message != '')
     {
@@ -108,5 +145,19 @@ $(document).ready(function(){
     }
     window.alert('ATTENZIONE: stai effettuando in salvataggio allo stato "'+state+'"\n' + message + endMessage);
   });
+
+  function changeCheckValues()
+  {
+    $('.js-empty-field').each(function(){
+      if($(this).prop('checked') === true)
+      {
+        $(this).val('true');
+      }
+      else
+      {
+        $(this).val('false');
+      }
+    });
+  }
 
 });

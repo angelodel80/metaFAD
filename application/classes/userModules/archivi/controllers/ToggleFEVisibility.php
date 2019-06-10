@@ -13,7 +13,7 @@ class archivi_controllers_ToggleFEVisibility extends metafad_common_controllers_
                 'model' => __Request::get('model')
             ),
             'Cambio visibilità',
-            'BACKGROUND'
+            'SYSTEM'
         );
 
         return array('url' => $this->changePage('link', array('pageId' => 'metafad.modules.importerreport')));

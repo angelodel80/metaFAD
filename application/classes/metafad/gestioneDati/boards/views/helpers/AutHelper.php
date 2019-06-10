@@ -19,7 +19,14 @@ class metafad_gestioneDati_boards_views_helpers_AutHelper extends GlizyObject
       $findTermFields = $ar->getFindTermFields();
       $text = array();
       foreach ($findTermFields as $field) {
-        $text[] .= glz_strtrim($ar->$field, 50);
+        if(is_array($field))
+        {
+          $text[] .= $field[0] . $ar->$field[1];
+        }
+        else
+        {
+          $text[] .= glz_strtrim($ar->$field, 50);
+        }
       }
       $value->__AUT->text = implode(' - ', $text);
       $newAut[] = $value;

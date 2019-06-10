@@ -68,7 +68,7 @@ function treeGen() {
                 node.parent.renderStatus();
             },
             dragDrop: function (node, data) {
-                $('#myModalConfirm .modal-body').text('Sicuro di voler proseguire?')
+                $('#myModalConfirm .modal-body').text('I numeri di ordinamento degli elementi successivi verranno ricalcolati - applicare la modifica?')
                 $('#myModalConfirm').modal().on('hidden.bs.modal', function () {
                     $(this).find('.annulla').unbind( "click" );
                     $(this).find('.ok').unbind( "click" );

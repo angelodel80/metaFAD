@@ -1,0 +1,38 @@
+/* BEGIN Dropdown */
+#language-menu {
+    position: relative;
+    top: 9px;
+    color: $editLanguageText;
+    border-right: 1px solid;
+    .label {
+        font-size: 14px;
+        font-weight: 500;
+        position: relative;
+        top: 2px;
+        left: 15px;
+    }
+    .dropdown-toggle {
+        color: $editLanguageText;
+    }
+    .dropdown-menu {
+        left: 3px;
+        &:before {
+            content: '';
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid $dropdown-border;
+            position: absolute;
+            top: -8px;
+            left: 10px;           
+        }
+        &:after {
+            content: '';
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid white;   
+            position: absolute;
+            top: -7px;
+            left: 10px;
+        }
+    }
+}

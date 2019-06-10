@@ -27,6 +27,7 @@
 
 
         <glz:Page id="link-fe" value="{i18n:Gestione portale}" url="route:link-be-portale" icon="fa fa-external-link" />
+        <glz:Page id="link-moviohub" value="{i18n:Movio}" url="route:link-moviohub" icon="fa fa-external-link" visible="{config:metafad.be.hasMovio}" />
     </glz:Page>
 
     <glz:Page pageType="Login" id="login" value="{i18n:Login}" />

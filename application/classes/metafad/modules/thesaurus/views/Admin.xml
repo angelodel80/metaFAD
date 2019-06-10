@@ -75,7 +75,8 @@
 
             <iccd:DataGridAjax id="dataGrid2" recordClassName="metafad.modules.thesaurus.models.ThesaurusDetails"
                                cssClass="table table-bordered table-striped"
-                               JQueryUI="true">
+                               JQueryUI="true"
+                               isDetail="true">
                 <glz:DataGridColumn cssClass="col-lg-3 col-md-3 col-sm-3" columnName="thesaurusdetails_value" width="350px" headerText="{i18n:Etichetta}"
                                     renderCell="metafad.modules.thesaurus.views.renderer.CellValue"/>
                 <glz:DataGridColumn cssClass="col-lg-3 col-md-3 col-sm-3" columnName="thesaurusdetails_key" width="350px" headerText="{i18n:Codice}"

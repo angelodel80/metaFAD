@@ -110,13 +110,20 @@ class metafad_teca_DAM_services_ImportMedia implements metafad_teca_DAM_services
 		return $this->damUrlLocal.'/get/'.$id.'/'.$stream;
 	}
 
-	public function mediaUrl($id)
+	public function mediaUrl($id, $local = true)
 	{
 		if($this->damInstance == '*')
 		{
 			$this->correctInstance($id);
 		}
-		return $this->damUrlLocal.'/media/'.$id;
+		if($local)
+		{
+			return $this->damUrlLocal.'/media/'.$id;
+		}
+		else
+		{
+			return $this->damUrl.'/media/'.$id;
+		}
 	}
 
 	public function getJSON($id, $title)

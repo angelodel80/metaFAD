@@ -36,6 +36,11 @@ class metafad_common_models_ActiveRecordDocument extends org_glizy_dataAccessDoc
         return $solrModel;
     }
 
+    public function canTranslate()
+    {
+        return true;
+    }
+    
     function loadFromArray($values, $useSet=false)
     {
         parent::loadFromArray($values, $useSet);

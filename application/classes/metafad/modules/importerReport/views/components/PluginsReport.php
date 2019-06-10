@@ -53,7 +53,8 @@ class metafad_modules_importerReport_views_components_PluginsReport extends org_
                     )
                 );
         } else {
-            $this->it = org_glizy_objectFactory::createModelIterator('metacms.jobmanager.models.Job');
+            $this->it = org_glizy_objectFactory::createModelIterator('metacms.jobmanager.models.Job')
+                      ->where('job_type', 'SYSTEM', '<>');
         }
 
         $this->it->orderBy('job_modificationDate', 'DESC');

@@ -43,6 +43,8 @@
 <model:Field name="compilazione" description="Compilazione" type="object" readFormat="false"/>
 <model:Field name="osservazioni" description="Osservazioni" type="text"/>
 <model:Field name="visibility" description="Visibilit&#xE0; FE" type="string"/>
+<model:Field name="ordinamentoProvvisorio" description="Numero di ordinamento provvisorio" type="int"/>
+<model:Field name="ordinamentoGlobale" description="Numero di ordinamento globale" type="int"/>
 
     </model:Define>
 
@@ -89,6 +91,9 @@
             '@descrizioneContenuto,storiaArchivistica,criteriOrdinamento[]' => 'descrizione_ss',
             '@compilazione->redattore[]' => 'redattore_ss',
             '@compilazione->azione[]' => 'azione_ss',
+            'ordinamentoProvvisorio' => 'ordinamentoProvvisorio_i',
+            'ordinamentoGlobale' => 'ordinamentoGlobale_i',
+
 );
         
         $solrModel = array_merge(parent::getSolrDocument(), $solrModel);

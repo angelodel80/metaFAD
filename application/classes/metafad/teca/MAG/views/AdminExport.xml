@@ -18,7 +18,7 @@
 
     <mvc:State name="export">
       <com:DataGridSolr id="dataGridExport" setLastSearch="true" recordClassName="metafad.teca.MAG.models.Model" cssClass="table table-bordered table-striped" fullTextSearch="true">
-          <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" />
+          <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" checkboxSelectPage="true" checkboxSelectAll="true"/>
           <glz:DataGridColumn columnName="BIB_dc_identifier_index_t" headerText="{i18n:Identificativo}" width="12"/>
           <glz:DataGridColumn columnName="BIB_dc_title_t" headerText="{i18n:Titolo}" width="40" renderCell="metafad.common.views.renderer.ShortField"/>
           <glz:DataGridColumn columnName="update_at_s" headerText="{i18n:Data modifica}" width="15"/>

@@ -26,6 +26,7 @@
             <cmp:FolderList id="sbnFolder" moduleRef="metafad.sbn.modules.sbnunimarc" cssClass="hide" pathFromConfig="metafad.sbn.outputFolder.web" label="Cartella SBN Unimarc"/>
             <cmp:FolderList id="sbnAutFolder" moduleRef="AuthoritySBNModuleName" cssClass="hide" pathFromConfig="metafad.sbnaut.outputFolder.web" label="Cartella SBN AUT"/>
             <glz:List id="uploadType" label="{i18n:Tipo di caricamento}" size="90" >
+                <glz:ListItem key="dbonly" value="Solo DB" />
                 <glz:ListItem key="increment" value="Aggiornamento (upload incrementale)" />
                 <glz:ListItem key="delete" value="Cancella e reimporta (attenzione, cancella TUTTO l'indice SBN!)" />
             </glz:List>
@@ -37,7 +38,7 @@
                 <glz:ListItem key="eadeac" value="EAD/EAC" />
             </glz:List>
             <glz:Checkbox id="overwriteScheda" label="Sovrascrivi schede se già presenti"/>
-            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities collegati se già presenti"/>
+            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities se già presenti"/>
             <cms:FormButtonsPanel id="formButtons">
                 <glz:HtmlButton label="{i18n:Import}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=import" />
             </cms:FormButtonsPanel>
@@ -64,7 +65,7 @@
                 <glz:ListItem key="eadeac" value="EAD/EAC" />
             </glz:List>
             <glz:Checkbox id="overwriteScheda" label="Sovrascrivi schede se già presenti"/>
-            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities collegati se già presenti"/>
+            <glz:Checkbox id="overwriteAuthority" label="Sovrascrivi authorities se già presenti"/>
             <cms:FormButtonsPanel id="formButtons">
                 <glz:HtmlButton label="{i18n:Import}" type="button" cssClass="btn btn-flat btn-info js-glizycms-save" data="action=import" />
             </cms:FormButtonsPanel>

@@ -28,6 +28,10 @@
             <nav class="navbar navbar-static-top" role="navigation">
                 <?php print($navigation); ?>
 
+                <div class="pull-right">
+                    <?php print(@$languageMenu); ?>
+                </div>
+
                 <!-- Sidebar toggle button-->
                 <?php if (@$leftSidebar) { ?>
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

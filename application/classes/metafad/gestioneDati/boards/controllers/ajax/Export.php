@@ -7,7 +7,7 @@ class metafad_gestioneDati_boards_controllers_ajax_Export extends metafad_common
 		{
 			$this->directOutput = true;
             $this->logAndMessage(__T('Spiacente, questa funzionalità non è disponibile nella modalità DEMO.'), '', GLZ_LOG_MESSAGE);
-            return array('url' => __Link::makeUrl('link', array('pageId' => 'archive_export')));
+            return array('url' => __Link::makeUrl('link', array('pageId' => 'archive_export_mets')));
 		}
 
         $result = $this->checkPermissionForBackend('publish');
@@ -68,9 +68,8 @@ class metafad_gestioneDati_boards_controllers_ajax_Export extends metafad_common
             return array('msg' => 'ATTENZIONE: Non è stato selezionato nessun record da esportare!');
         }
         else {
-
             $module = substr($module, 0, strpos($module, '_'));
-            if ($module == 'mets') $exportFormat = 'mets';
+            if ($module == 'archive') $exportFormat = 'mets';
 
             //Creazione cartella export
             $milliseconds = microtime(true) * 100;

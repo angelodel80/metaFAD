@@ -20,9 +20,17 @@ class metafad_gestioneDati_boards_views_helpers_BibHelper extends GlizyObject
       $findTermFields = $ar->getFindTermFields();
       $text = array();
       foreach ($findTermFields as $field) {
-        $text[] .= glz_strtrim($ar->$field, 50);
+        if(is_array($field))
+        {
+          $text[] .= ($ar->$field[1]) ? $field[0] . $ar->$field[1] : $ar->document_id;
+        }
+        else
+        {
+          $text[] .= glz_strtrim($ar->$field, 50);
+        }
       }
-      $value->__BIB->text = implode(' - ', $text);
+
+      $value->__BIB->text = implode(' - ', array_filter($text));
       $newBib[] = $value;
     }
     return $newBib;

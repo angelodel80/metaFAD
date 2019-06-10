@@ -7,7 +7,7 @@
     defaultEditableRegion="content"
     templateType="php"
     templateFileName="Popup.php"
-    defaultAction="edit">
+    defaultAction="showPreview">
 
     <glz:templateDefine name="model" required="true" />
     <glz:templateDefine name="form_fields" required="true" />
@@ -15,7 +15,7 @@
 
     <glz:Import src="_common.xml"/>
 
-    <mvc:State name="edit,editDraft">
+    <mvc:State name="showPreview">
         <iccd:FormEdit id="editForm" newCode="true" readOnly="true" controllerName="##controller_name##">
             <glz:Hidden id="__model" value="##model##"/>
             <glz:HtmlButton label="{i18n:Mostra versione stampabile}" type="button" cssClass="btn btn-flat btn-info js-print" />

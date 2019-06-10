@@ -15,7 +15,7 @@ class metafad_solr_helpers_BeHelper extends GlizyObject
           //3 - semplice chiave campo
           $label = str_replace(array(":", '(', ')'), '_', strtolower($key));
           $label = str_replace(' ', '_', $label);
-          $labeltxt = str_replace('__', '_', $label) . '_txt';
+          $labeltxt = str_replace('__', '_', $label) . '_ss_lower';
           $label = str_replace('__', '_', $label) . '_ss';
           $doc->$label = array();
 
@@ -36,7 +36,7 @@ class metafad_solr_helpers_BeHelper extends GlizyObject
           foreach ($value as $v) {
               if (strpos($v, ':') !== false) {
                   $label = str_replace('_ss', '_s', $label);
-                  $labeltxt = str_replace('_txt', '_t', $labeltxt);
+                  $labeltxt = str_replace('_ss_lower', '_s_lower', $labeltxt);
                   $doc->$label = '';
                   //Quando si indica sub:campo, in realtà campo non ha una corrispondenza
                   //nel model, ma si può ricorstruire l'insieme dei campi che lo compone

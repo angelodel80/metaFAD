@@ -15,7 +15,7 @@
   <mvc:State name="export">
     <cmp:DataGridSolr id="dataGridExport" hasDigital="true" enableSorting="true" filterByInstitute="true" setLastSearch="true" recordClassName="archivi.models.UnitaArchivistica,archivi.models.UnitaDocumentaria" cssClass="table table-bordered table-striped"
                       autocompleteController="archivi.controllers.ajax.AutoComplete">
-        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" />
+        <glz:DataGridColumn columnName="document_id" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="3" checkboxSelectPage="true" checkboxSelectAll="true"/>
 				<glz:DataGridColumn columnName="identificativo_s" width="15" headerText="{i18n:Identificativo}" />
         <glz:DataGridColumn columnName="denominazione_s" headerText="{i18n:Denominazione}" renderCell="archivi.views.renderer.CellDenominazione"/>
         <glz:DataGridColumn columnName="cronologia_s" width="30" headerText="{i18n:Cronologia}"/>

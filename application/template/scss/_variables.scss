@@ -1,4 +1,6 @@
 /*** Colors ***/
+$white: #fff;
+$gray-lighter: #EEE;
 $gray-light: #CECECE;
 $gray-dark: #777;
 $blue-light: #72afd2;
@@ -12,3 +14,9 @@ $form-disabled: #f7f8f9;
 /*** Image ***/
 $linked-img-size: $gray-dark;
 $linked-img-size-hover: $blue-light;
+
+/*** Language ***/
+$editLanguageText: $white;
+
+/** Dropdown **/
+$dropdown-border: $gray-lighter;

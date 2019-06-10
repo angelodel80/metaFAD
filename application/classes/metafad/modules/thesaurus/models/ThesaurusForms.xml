@@ -40,6 +40,17 @@
                      ->where('thesaurusforms_field', $fieldName)
                      ->orderBy('thesaurusdetails_key');
         }
+
+        if(__Config::get('metafad.thesaurus.filterInstitute'))
+        {
+            $instituteProxy = __ObjectFactory::createObject('metafad.usersAndPermissions.institutes.models.proxy.InstitutesProxy');
+            $instituteKey = metafad_usersAndPermissions_Common::getInstituteKey();
+            $list = $instituteProxy->getOtherInstitutesList($instituteKey);
+            foreach($list as $l)
+            {
+                $iterator->where('t2.thesaurusdetails_instituteKey',$l,'<>');
+            }
+        }
 	]]>
 	</model:Query>
 

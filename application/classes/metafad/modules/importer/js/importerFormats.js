@@ -48,7 +48,12 @@ function MetaImportFormats(){
         "schedami200": ["trc", "iccdxml"],
         "schedami300": ["trc", "iccdxml"],
         "schedas200": ["trc", "iccdxml"],
-        "schedas300": ["trc", "iccdxml"]
+        "schedas300": ["trc", "iccdxml"],
+        "aut300artin": ["trc", "iccdxml"],
+        "bib300artin": ["trc", "iccdxml"],
+        "schedad300artin": ["trc", "iccdxml"],
+        "schedami300artin": ["trc", "iccdxml"],
+        "schedas300artin": ["trc", "iccdxml"]
     };
 
     /**

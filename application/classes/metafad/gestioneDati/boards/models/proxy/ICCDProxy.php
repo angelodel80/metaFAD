@@ -60,6 +60,28 @@ class metafad_gestioneDati_boards_models_proxy_ICCDProxy extends metafad_common_
 
     /**
      * @param $objData stdClass
+     */
+    public function saveFE($objData, $reindex = false, $forceDelete = true)
+    {
+        if (__Config::get('metafad.be.hasFE') == 'true' && !$objData->isTemplate) {
+            $evtFe = array('type' => 'insertRecordFE', 'data' => array('data' => $objData, 'option' => array('commit' => true, 'reindex' => $reindex)));
+            $this->dispatchEvent($evtFe);
+
+            //Indicizzo anche su metaindice
+            $d = org_glizy_objectFactory::createModel($objData->__model);
+            $solrModel = $d->getFESolrDocument();
+            if ($solrModel['feMapping']) {
+                $metaindice = org_glizy_ObjectFactory::createObject('metafad.solr.helpers.MetaindiceHelper');
+                $metaindice->mapping($objData, 'iccd');
+            } else if ($objData->__model == 'AUT300.models.Model' || $objData->__model == 'AUT400.models.Model') {
+                $metaindice = org_glizy_ObjectFactory::createObject('metafad.solr.helpers.MetaindiceHelper');
+                $metaindice->mapping($objData, 'iccdaut');
+            }
+        }
+    }
+
+    /**
+     * @param $objData stdClass
      * @param $isDraft
      * @return array
      */
@@ -149,5 +171,11 @@ class metafad_gestioneDati_boards_models_proxy_ICCDProxy extends metafad_common_
         $evt5 = array('type' => 'deleteRecord', 'data' => array('id'=>$id,'option' => array('url' => __Config::get('metafad.solr.iccdaut.url'))));
         $this->dispatchEvent($evt5);
       }
+    }
+    
+    public function commitRemainingFE($url)
+    {
+        $evt = array('type' => 'commitRemainingFE', 'data' => array('option' => array('url' => $url)));
+        $this->dispatchEvent($evt);
     }
 }

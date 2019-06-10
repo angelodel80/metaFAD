@@ -27,9 +27,9 @@ class archivi_views_components_AddButton extends org_glizy_components_Component
             $output .= '<li>'.__Link::makeLink($routeUrl, array('sectionType' => $type, 'id' => 0, 'label' => 'Crea scheda: '.$labels[$i])).'</li>';
         }
 
-        foreach ($types as $i => $types) {
-            $output .= '<li>'.__Link::makeLink($routeUrl. 'Template', array('sectionType' => $type, 'templateID' => 0, 'id' => 0, 'label' => 'Crea template: '.$labels[$i])).'</li>';
-        }
+        // foreach ($types as $i => $types) {
+        //     $output .= '<li>'.__Link::makeLink($routeUrl. 'Template', array('sectionType' => $type, 'templateID' => 0, 'id' => 0, 'label' => 'Crea template: '.$labels[$i])).'</li>';
+        // }
 
         $output .= '</ul>'.
                   '</div>'.

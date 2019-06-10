@@ -24,6 +24,9 @@ class metafad_modules_thesaurus_controllers_ajax_AddTerm extends metafad_common_
             $arDetails->thesaurusdetails_value = $term;
             $arDetails->thesaurusdetails_creationDate = new org_glizy_types_DateTime();
             $arDetails->thesaurusdetails_modificationDate = new org_glizy_types_DateTime();
+            if (__Config::get('metafad.thesaurus.filterInstitute')) {
+                $arDetails->thesaurusdetails_instituteKey = metafad_usersAndPermissions_Common::getInstituteKey();
+            }
             $arDetails->save();
         }
     }

@@ -9,10 +9,31 @@ class metafad_gestioneDati_boards_controllers_ajax_SaveMassive extends metafad_c
         }
 
         $decodeData = json_decode($data);
+        $fieldsToEmpty = array();
+
+        foreach($decodeData as $k => $d)
+        {
+            if(strpos($k, 'empty-') === 0)
+            {
+                if($d == 'true')
+                {
+                    $fieldsToEmpty[] = str_replace('empty-','',$k);
+                }
+            }
+        }
+
         $draftPublished = 'PUBLISHED';
         $inverseDraftPublished = 'DRAFT';
 
-        $ids = explode("-", $decodeData->__id);
+        if($decodeData->__selectedIds)
+        {
+            $ids = explode(",", str_replace('en-', '', $decodeData->__selectedIds));
+        }   
+        else
+        {
+            $ids = explode("-", str_replace('en-','',$decodeData->__id));
+        }
+
         $model = $decodeData->__model;
         $arrayFieldToSkip = array('__id', '__model', 'isTemplate', 'popup', '__groupId', 'groupName');
         $fieldToSave = array();
@@ -43,6 +64,13 @@ class metafad_gestioneDati_boards_controllers_ajax_SaveMassive extends metafad_c
             foreach($fieldToSave as $key => $value) {
                 $data->$key = $value;
             }
+
+            //Svuoto i campi indicati come da svuotare
+            foreach($fieldsToEmpty as $key)
+            {
+                $data->$key = null;
+            }
+
             $data->__id = $ar->document_id;
             $data->__model = $model;
 

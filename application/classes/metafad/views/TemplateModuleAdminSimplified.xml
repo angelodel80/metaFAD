@@ -29,14 +29,16 @@
     <glz:templateDefine name="templateEnabled" required="false" defaultValue="false" />
     <glz:templateDefine name="show_external_id" required="false" defaultValue="true" />
     <glz:templateDefine name="autocompleteController" required="false" defaultValue="" />
- 
+    <glz:templateDefine name="multiLanguage" required="false" defaultValue="false" />
+
     <glz:Import src="_common.xml" />
 
     <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs" cssClassCurrent="active" addQueryString="true" visible="true" editableRegion="contentTabs" />
 
     <mvc:State name="index">
         <glz:Modifier target="tabs" attribute="visible" value="false" />
-        <com:DataGridSolr id="##dataGridId##" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="##setLastSearch##" recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true">
+        <com:DataGridSolr id="##dataGridId##" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="##setLastSearch##" recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true"
+                          multiLanguage="##multiLanguage##">
             <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" />
             ##grid_fields##
             <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##documentRenderCell##" />

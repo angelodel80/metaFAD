@@ -368,6 +368,8 @@ EOD;
             {
                 $params = array();
                 $params['checkbox'] = $n->hasAttribute( 'checkbox' ) ? $n->getAttribute( 'checkbox' ) == 'true' : false;
+                $params['checkboxSelectAll'] = $n->hasAttribute('checkboxSelectAll') ? $n->getAttribute('checkboxSelectAll') == 'true' : false;
+                $params['checkboxSelectPage'] = $n->hasAttribute('checkboxSelectPage') ? $n->getAttribute('checkboxSelectPage') == 'true' : false;
                 $params['sortable'] = $n->hasAttribute( 'sortable' ) ? $n->getAttribute( 'sortable' ) == 'true' : true;
                 $params['searchable'] = $n->hasAttribute( 'searchable' ) ? $n->getAttribute( 'searchable' ) == 'true' : true;
                 $params['visible'] = $n->hasAttribute( 'visible' ) ? $n->getAttribute( 'visible' ) == 'true' : true;

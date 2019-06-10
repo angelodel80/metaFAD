@@ -59,7 +59,7 @@ class metafad_gestioneDati_boards_models_proxy_RelationsProxy extends GlizyObjec
             $relation = org_glizy_ObjectFactory::createModel( 'metafad.gestioneDati.boards.models.ComplexRelations' );
             $relation->complex_relation_FK_document_id = $document_id;
             $form = $this->getModelType($document_id);
-            $relation->complex_relation_level = $r->RVEL;
+            $relation->complex_relation_level = ($r->RVEL)?:0;
             $relation->complex_relation_form = $form;
             if($formF)
             {

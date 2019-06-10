@@ -56,8 +56,20 @@
             '__id' => 'id',
             'document' => 'doc_store',
             '__model' => 'document_type_t',
+            '@identificativo-rep->identificativo[]' => 'identificativo_ss',
+            '@identificativo-rep->tipo[]' => 'identificativo_tipo_ss',
+            'tipologiaRisorsa' => 'tipologiarisorsa_s',
             'titolo' => 'titolo_s',
-            'tipologiaRisorsa' => 'tipologiaRisorsa_s',
+            'complementoTitolo' => 'complementotitolo_s',
+            'numeroParteTitolo' => 'numeropartetitolo_s',
+            'nomeParte' => 'nomepartetitolo_s',
+            '@autore-rep->nome[]' => 'nome_autore_ss',
+            '@autore-rep->ruolo[]' => 'ruolo_autore_ss',
+            'luogo' => 'luogo_s',
+            'editore' => 'editore_s',
+            '@date->estremoRemoto_data[]' => 'data_da_is',
+            '@date->estremoRecente_data[]' => 'data_a_is',
+            '@collocazione-rep->inventario-rep->inventario[]' => 'inventario_ss'
         );
 
         $solrModel = array_merge(parent::getSolrDocument(), $solrModel);
@@ -68,8 +80,31 @@
     public function getBeAdvancedSearchFields()
     {
         $searchFields = array(
-      		'Titolo' => 'titolo_s',
-      		'Tipologia risorsa' => 'tipologiaRisorsa_s',
+      		'Identificativo' => 'identificativo_ss',
+            'Tipo identificativo' => 'identificativo_tipo_ss',
+            'Tipologia risorsa' => 'tipologiarisorsa_s',
+            array (
+                'type' => 'text',
+                'label' => 'Titolo',
+                'field' => 'titolo_s',
+            ),
+            array (
+                'type' => 'text',
+                'label' => 'Complemento (titolo)',
+                'field' => 'complementotitolo_s',
+            ),
+            'Numero della parte (titolo)' => 'numeropartetitolo_s',
+            'Nome della parte (titolo)' => 'nomepartetitolo_s',
+            'Nome autore' => 'nome_autore_ss',
+            'Ruolo autore' => 'ruolo_autore_ss',
+            'Luogo' => 'luogo_s',
+            'Editore' => 'editore_s',
+            array (
+                'type' => 'date',
+                'label' => 'Data',
+                'field' => 'data_da_is,data_a_is',
+            ),
+            'Inventario' => 'inventario_ss',
         );
         return $searchFields;
     }
@@ -78,5 +113,6 @@
     {
         return $this->titolo;
     }
+
     ]]></model:Script>
 </model:Model>

@@ -6,6 +6,8 @@ class archivi_controllers_listDetail extends metafad_common_controllers_Command
         $this->checkPermissionForBackend('visible');
 
         if ($id) {
+            $archiviProxy = __ObjectFactory::createObject('archivi.models.proxy.ArchiviProxy');
+
             // POLODEBUG-280 - Identificativo per Unità
             $found = false;
 
@@ -40,8 +42,7 @@ class archivi_controllers_listDetail extends metafad_common_controllers_Command
 
                 if ($record->parent) {
                     $parentsPath = array();
-                    $proxy = __ObjectFactory::createObject('archivi.models.proxy.ArchiviProxy');
-                    $proxy->getParentsArray((object)$record->parent, $parentsPath);
+                    $archiviProxy->getParentsArray((object)$record->parent, $parentsPath);
                     foreach ($parentsPath as $k => $v) {
                         $url = __Link::makeLink('archiviMVC', array(
                             'action' => 'listDetail',
@@ -60,6 +61,10 @@ class archivi_controllers_listDetail extends metafad_common_controllers_Command
             $c = $this->view->getComponentById('fondoTitle');
             $c->setAttribute('value', $title);
             $c->process();
+
+            $hasUnitChildren = $archiviProxy->hasUnitChildren($id);
+            $c = $this->view->getComponentById('reorderButton');
+            $c->setAttribute('visible', $hasUnitChildren);
         }
     }
 }

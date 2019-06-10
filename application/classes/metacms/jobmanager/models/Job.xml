@@ -11,8 +11,10 @@
       WHERE job_description LIKE :titolo AND
             job_name LIKE :name AND 
             (##job_params##) AND
-            job_creationDate <= :dateto
-            AND job_creationDate >= :datefrom
+            job_creationDate <= :dateto AND
+            job_creationDate >= :datefrom AND
+            job_type <> 'SYSTEM'
+
   ]]>
   </model:Query>
 

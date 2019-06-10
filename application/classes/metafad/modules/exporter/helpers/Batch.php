@@ -23,13 +23,12 @@ class metafad_modules_exporter_helpers_Batch extends metacms_jobmanager_service_
 
       metafad_usersAndPermissions_Common::setInstituteKey($damInstance);
 
-      if (!preg_match('/scheda([a-z]+?)([0-9]{3})/i', $moduleName, $matches))
-          preg_match('/([a-z]+?)([0-9]{3})/i', $moduleName, $matches);
-
+      if (!preg_match('/scheda([a-z]+?)([0-9]{3})([a-z]*)/i', $moduleName, $matches))
+          preg_match('/([a-z]+?)([0-9]{3})([a-z]*)/i', $moduleName, $matches);
       $TSK = strtoupper($matches[1]);
       $version = $matches[2];
 
-      $moduleName="Scheda".$TSK.$version;
+      $moduleName="Scheda".$TSK.$version.ucfirst($matches[3]);
 
       $applicationPath = org_glizy_Paths::get('APPLICATION');
       //$export_path = $applicationPath . 'mediaArchive_iccd/exportICCD/';
@@ -55,14 +54,18 @@ class metafad_modules_exporter_helpers_Batch extends metacms_jobmanager_service_
       }else{
         $this->setMessage('Il job non è compatibile con il formato selezionato ('.$format.')');
         $this->save();
+        $this->updateStatus(metacms_jobmanager_JobStatus::ERROR);
+        $error = true;
       }
 
-      $this->updateProgress(100);
-      $this->setMessage('Esportazione schede eseguita');
-      $this->updateStatus(metacms_jobmanager_JobStatus::COMPLETED);
-      $this->save();
-      if($email!='') metafad_modules_iccd_helpers_ExportHelper::sendDownloadEmail($email,$title,new org_glizy_types_DateTime,$host,$format,$folderName);
-
+      if(!$error)
+      {
+        $this->updateProgress(100);
+        $this->setMessage('Esportazione schede eseguita');
+        $this->updateStatus(metacms_jobmanager_JobStatus::COMPLETED);
+        $this->save();
+        if($email!='') metafad_modules_iccd_helpers_ExportHelper::sendDownloadEmail($email,$title,new org_glizy_types_DateTime,$host,$format,$folderName);
+      }
     }
     catch(Error $e){
         $this->updateStatus(metacms_jobmanager_JobStatus::ERROR);

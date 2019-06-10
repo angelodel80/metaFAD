@@ -72,8 +72,8 @@
 <model:Field name="pergamena_materialeSigillo" description="Materiale sigillo" type="string"/>
 <model:Field name="pergamena_materialeS_specificazione" description="Specificazione (se altro)" type="string"/>
 <model:Field name="forma" description="Forma" type="string"/>
-<model:Field name="numeroOrdinamentoProvvisorio" description="Numero di ordinamento provvisorio" type="string"/>
-<model:Field name="numeroOrdinamentoDefinitivo" description="Numero di ordinamento definitivo" type="string"/>
+<model:Field name="ordinamentoProvvisorio" description="Numero di ordinamento provvisorio" type="int"/>
+<model:Field name="ordinamentoGlobale" description="Numero di ordinamento globale" type="int"/>
 <model:Field name="segnaturaAttuale" description="Segnatura attuale" type="string"/>
 <model:Field name="segnaturaPrecedente" description="Segnatura precedente" type="object" readFormat="false"/>
 <model:Field name="codiceDiClassificazione" description="Codice di classificazione" type="string"/>
@@ -160,6 +160,12 @@
             '@toponimi->intestazione->text[]' => 'toponimi_ss',
             '@compilazione->compilazione_redattore[]' => 'redattore_ss',
             '@compilazione->compilazione_azione[]' => 'azione_ss',
+            'ordinamentoProvvisorio' => 'ordinamentoProvvisorio_i',
+            'ordinamentoGlobale' => 'ordinamentoGlobale_i',
+            'segnaturaAttuale' => 'segnaturaAttuale_s',
+            '@segnaturaPrecedente->segnatura' => 'segnaturaPrecedente_s',
+            'codiceDiClassificazione' => 'codiceDiClassificazione_s',
+            '@cronologia->estremoRemoto_codificaData' => 'estremoRemoto_s'
 );
         
         $solrModel = array_merge(parent::getSolrDocument(), $solrModel);

@@ -20,11 +20,11 @@
 
     <glz:Import src="_common.xml" />
 
-    <mvc:State name="export">
+    <mvc:State name="index,export">
         <com:DataGridSolr id="dataGridExport" enableSorting="true" filterByInstitute="##filterByInstitute##" setLastSearch="true"
                           recordClassName="##model##" cssClass="table table-bordered table-striped" fullTextSearch="true" keyAndLabel="true"
                           autocompleteController="##autocompleteController##">
-            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" />
+            <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="metafad.common.views.renderer.SelectionFlag" width="20px" checkboxSelectAll="true" checkboxSelectPage="true"/>
             ##grid_fields##
             <glz:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##documentRenderCell##" />
         </com:DataGridSolr>
@@ -54,5 +54,11 @@
           <glz:HtmlButton label="{i18n:Esporta}" name="action" id="action" cssClass="btn btn-flat btn-info btn-export-mag"/>  
         </iccd:FormEdit>
         <glz:JSscript folder="metafad/gestioneDati/boards/js" />
+    </mvc:State>
+
+    <mvc:State name="edit,editDraft" url="linkEdit" controllerName="metafad.common.controllers.RedirectFromExport">
+    </mvc:State>
+    
+    <mvc:State name="delete" controllerName="metafad.common.controllers.RedirectFromExport">
     </mvc:State>
 </mvc:Page>

@@ -21,8 +21,8 @@
 <model:Field validator="notempty" name="livelloDiDescrizione" description="Livello di descrizione" type="string"/>
 <model:Field name="externalID" description="ID importazione" type="string" index="true"/>
 <model:Field validator="notempty" name="parent" description="Livello superiore" type="array_id" index="true"/>
-<model:Field name="ordinamentoProvvisorio" description="Numero di ordinamento provvisorio" type="string"/>
-<model:Field name="ordinamentoDefinitivo" description="Numero di ordinamento definitivo" type="string"/>
+<model:Field name="ordinamentoProvvisorio" description="Numero di ordinamento provvisorio" type="int"/>
+<model:Field name="ordinamentoGlobale" description="Numero di ordinamento globale" type="int"/>
 <model:Field name="segnaturaAttuale" description="Segnatura attuale" type="string"/>
 <model:Field name="segnaturaPrecedente" description="Segnatura precedente" type="object" readFormat="false"/>
 <model:Field name="codiceDiClassificazione" description="Codice" type="string"/>
@@ -102,6 +102,12 @@
             '@toponimi->intestazione->text[]' => 'toponimi_ss',
             '@compilazione->redattore[]' => 'redattore_ss',
             '@compilazione->azione[]' => 'azione_ss',
+            'ordinamentoProvvisorio' => 'ordinamentoProvvisorio_i',
+            'ordinamentoGlobale' => 'ordinamentoGlobale_i',
+            'segnaturaAttuale' => 'segnaturaAttuale_s',
+            '@segnaturaPrecedente->segnatura' => 'segnaturaPrecedente_s',
+            'codiceDiClassificazione' => 'codiceDiClassificazione_s',
+            '@cronologia->estremoRemoto_codificaData' => 'estremoRemoto_s'
 );
         
         $solrModel = array_merge(parent::getSolrDocument(), $solrModel);

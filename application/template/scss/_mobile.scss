@@ -1,11 +1,4 @@
 /* BEGIN Media Queries */
-
-@media screen and (max-width: 992px) {
-    .table-container {
-        overflow: auto;
-    }
-}
-
 @media screen and (max-width: 1250px) {
     #dataGridAddButton a span,
     #dataGridEditButton a span,
@@ -43,6 +36,9 @@
 }
 
 @media screen and (max-width: 991px) {
+    .table-container {
+        overflow: auto;
+    }
 	.content-wrapper {
 		margin-left: 0;
 	}
@@ -117,6 +113,14 @@
 }
 
 @media screen and (max-width: 767px) {
+    #language-menu {
+        .label {
+            display: none;
+        }
+        .dropdown-menu {
+            min-width: 125px;
+        }
+    }
     .main-header {
         .sidebar-toggle {
             display: block;
@@ -276,6 +280,13 @@
     .ecommerce-tab {
         .ecommerce-info {
             margin-top: 20px;
+        }
+    }
+    div.dataTables_wrapper {
+        .select-record-section {
+            .select-items {
+                display: block;
+            }
         }
     }
 }

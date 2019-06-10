@@ -15,7 +15,9 @@ class metafad_modules_exporter_Module
         $moduleVO->pluginUrl = '';
         $moduleVO->siteMapAdmin = '<glz:Page id="export" pageType="" value="{i18n:Esporta}" icon="fa fa-download" adm:acl="*">
             <glz:Page id="export/patrimonio" pageType="" value="{i18n:Patrimonio}" icon="fa fa-angle-double-right" adm:acl="*"/>
-            <glz:Page id="archive_export" pageType="archivi.views.AdminExport" value="{i18n:Archivi}" icon="fa fa-angle-double-right" adm:acl="*"/>
+            <glz:Page id="archive_export" pageType="" value="{i18n:Archivi}" icon="fa fa-angle-double-right" adm:acl="*">
+                <glz:Page id="archive_export_mets" pageType="archivi.views.AdminExport" value="{i18n:METS-SAN}" icon="fa fa-angle-right" adm:acl="*"/>
+            </glz:Page>
         </glz:Page>';
         $moduleVO->canDuplicated = false;
 

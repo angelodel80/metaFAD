@@ -39,14 +39,26 @@ class archivi_controllers_ajax_ModifyTree extends metafad_common_controllers_aja
             return array('status' => false);
         }
 
-        $archiviProxy = __ObjectFactory::createObject('archivi.models.proxy.ArchiviProxy');
-
+        $oldParentId = $data->parent->parentId;
+        
         $data->parent = (object)array(
             'id' => $parentId,
             'text' => $arParent->_denominazione
         );
+        
         $data->root = !$data->parent;
-        $archiviProxy->save($data, true);
+
+        $archiviProxy = __ObjectFactory::createObject('archivi.models.proxy.ArchiviProxy');
+        if ($arChild->getStatus() == 'PUBLISHED') {
+            $archiviProxy->save($data, true);
+        } else {
+            $archiviProxy->saveDraft($data, true);
+        }
+
+        // ricalcola gli ordinamenti provvisori dei nodi figli del padre da cui si era partiti (drag)
+        // e verso quello in cui si arriva (drop)
+        $archiviProxy->setOrdinamentoProvvisorioChildren($oldParentId);
+        $archiviProxy->setOrdinamentoProvvisorioChildren($parentId);
 
         return array('status' => true);
     }

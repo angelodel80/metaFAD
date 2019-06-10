@@ -1,16 +1,20 @@
 <?php
 class archivi_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Command
 {
-    function execute($instituteKey, $model, $filters, $fieldName, $term)
+    function execute($instituteKey, $model, $filters, $fieldName, $term, $hasDigital = false, $parent = null)
     {
         $q = array( 
-            $fieldName.':*'.$term.'*',
+            '('.$fieldName.':*'.str_replace(' ','*',$term).'*)',
         );
 
         if ($instituteKey) {
-            $q[] = 'instituteKey_s:"'.$instituteKey.'"';
+            $q[] = '(instituteKey_s:"'.$instituteKey.'")';
         }
 
+        if($hasDigital) {
+            $q[] = '(digitale_i:"1")';
+        }
+        
         $typeSet = false;
 
         if ($fieldName == 'livelloDiDescrizione_s') {
@@ -30,26 +34,35 @@ class archivi_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Command
                     }
 
                     if ($v[0]) {
-                        $q[] = $f[0] . ':['.sprintf('%04d', $v[0]).' TO *]';
+                        $q[] = '('. $f[0] . ':['.sprintf('%04d', $v[0]).' TO *])';
                     }
 
                     if ($v[1]) {
-                        $q[] = $f[1] . ':[* TO '.sprintf('%04d', $v[1]).']';
+                        $q[] = '('. $f[1] . ':[* TO '.sprintf('%04d', $v[1]).'])';
                     }
                 } else {
                     if ($filter['name'] == 'livelloDiDescrizione_s') {
                         $typeSet = true;
                     }
-
-                    $q[] = $filter['name'].':"'.$filter['value'].'"';
+                    if($filter['value'] == '*')
+                    {
+                        $q[] = '('.$filter['name'].':'.$filter['value'].')';
+                    }
+                    else
+                    {
+                        $q[] = '(' . $filter['name'] . ':"' . $filter['value'] . '")';
+                    }
                 }
             }
         }
 
-        if (!$typeSet) {
-            $q[] = 'document_type_t:'.$model;
+        if ($parent) {
+            $q[] = '(parent_i:' . $parent . ')';
         }
-        
+        else if (!$typeSet) {
+            $q[] = '(document_type_t:'.$model.')';
+        }
+
         $query = array(
             'q='.urlencode(implode(' AND ', $q)),
             'fl='.$fieldName,
@@ -59,13 +72,13 @@ class archivi_controllers_ajax_AutoComplete extends org_glizy_mvc_core_Command
             'wt=json',
             'rows=0'
         );
-        
+
         if (__Config::get('DEBUG')) {
             $query[] = 'indent=true';
         }
 
         $url = __Config::get('metafad.solr.url').'select?'.implode('&', $query);
-        
+
         $content = json_decode(file_get_contents($url));
 
         $result = array();

@@ -8,12 +8,17 @@ class metafad_common_views_components_DataGridSolr extends metafad_common_views_
         parent::init();
     }
 
+    protected function quoteValue($value)
+    {
+        return ($value == '*') ? $value : '"' . $value . '"';
+    }
+
     public function getAjaxUrl()
     {
         $ajaxUrl = parent::getAjaxUrl();
 
         if ($this->getAttribute('parent')) {
-            $ajaxUrl .= '&parent='.$this->getAttribute('parent');
+            $ajaxUrl .= '&parent=' . $this->getAttribute('parent');
         }
 
         return $ajaxUrl;
@@ -50,33 +55,67 @@ class metafad_common_views_components_DataGridSolr extends metafad_common_views_
         list($searchFields, $modelQuery) = $this->getSearchFields(true);
 
         if ($searchFields) {
-            foreach($searchFields as $field){
-                if ($decodeValue = json_decode($field)){
-                    $field = $decodeValue->value;
+            foreach ($searchFields as $field) {
+                if(is_string($field))
+                {
+                    if ($decodeValue = json_decode($field)) {
+                        $field = $decodeValue->value;
+                    }
                 }
+                if (is_array($field)) {
+                    $type = $field['type'];
+                    $label = $field['label'];
+                    $field = $field['field'];
+                }
+
                 $value = __Request::get($field);
                 if ($value) {
-                    if (is_array($value)) {
-                        foreach ($value as $v) {
-                            $q[] = $field . ':'.$v;
+                    $this->setAttribute('onlyRoots', false);
+
+                    if ($type == 'date' || $type == 'dateCentury') {
+                        $f = explode(',', $field);
+                        $v = explode(',', $value);
+
+                        if ($type = 'dateCentury') {
+                            $romanService = __ObjectFactory::createObject('metafad.common.helpers.RomanService');
+                            $v[0] = $romanService->romanToInteger($v[0]);
+                            $v[1] = $romanService->romanToInteger($v[1]);
+                        }
+
+                        if ($v[0]) {
+                            $q[] = '(' . $f[0] . ':[' . sprintf('%04d', $v[0]) . ' TO *])';
+                        }
+
+                        if ($v[1]) {
+                            $q[] = '(' . $f[1] . ':[* TO ' . sprintf('%04d', $v[1]) . '])';
                         }
                     } else {
-                        $q[] = $field . ':'.$value;
+                        if (is_array($value)) {
+                            foreach ($value as $v) {
+                                $q[] = '(' . $field . ':' . $this->quoteValue($v) . ')';
+                            }
+                        } else {
+                            $q[] = '(' . $field . ':' . $this->quoteValue($value) . ')';
+                        }
+
+                        if ($field == 'livelloDiDescrizione_s') {
+                            $typeSet = true;
+                        }
                     }
                 }
             }
         }
 
         if ($sSearch && empty($q)) {
-            $q[] = '('.$sSearch.')';
+            $q[] = '(' . $sSearch . ')';
         }
 
-        if (!$this->getAttribute('ignoreTypeFilter')){
+        if (!$this->getAttribute('ignoreTypeFilter')) {
             $q[] = $modelQuery;
         }
 
         if ($this->issetAttribute('type')) {
-            $q[] = 'livelloDiDescrizione_s:"'.$this->getAttribute('type').'"';
+            $q[] = 'livelloDiDescrizione_s:"' . $this->getAttribute('type') . '"';
         }
 
         if ($this->issetAttribute('onlyRoots')) {
@@ -93,7 +132,7 @@ class metafad_common_views_components_DataGridSolr extends metafad_common_views_
 
         $curInstituteKey = metafad_usersAndPermissions_Common::getInstituteKey();
         if ($this->getAttribute('filterByInstitute') && $curInstituteKey && $curInstituteKey != "*") {
-            $q[] = 'instituteKey_s:"'.$curInstituteKey.'"';
+            $q[] = '(instituteKey_s:"'.$curInstituteKey.'")';
         }
 
         $sortField = 'document_id';
@@ -120,11 +159,18 @@ class metafad_common_views_components_DataGridSolr extends metafad_common_views_
         $searchQuery['wt'] = 'json';
         $searchQuery['sort'] = $sort;
         $searchQuery['q'] = implode(' AND ', $q);
-        $searchQuery['fq'] = $arrayQuery;
+        $searchQuery['fq'] = (!empty($arrayQuery))?:array();
         $searchQuery['start'] = $start;
         $searchQuery['rows'] = $length;
         $searchQuery['json.nl'] = 'map';
-
+        
+        //Multilingua
+        if($this->getAttribute('multiLanguage') && metafad_common_helpers_LanguageHelper::checkLanguage($this->getAttribute('recordClassName')))
+        {
+            $languagePrefix = $this->_application->getEditingLanguage();
+            $searchQuery['fq'][] = 'language_s:"'. $languagePrefix.'"';
+        }
+        
 		//Faccette per autocomplete
 		list($searchFields) = $this->getSearchFields();
 		$facetFields = explode(',',implode(',',$searchFields));

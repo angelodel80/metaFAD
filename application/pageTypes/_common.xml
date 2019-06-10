@@ -9,8 +9,8 @@
 
     <c:NavigationMenu id="menu" startFrom="home" depth="+10" forceLink="true" drawAllChilds="true" selectParent="true" showPath="true" showOnlyChilds="true"  editableRegion="leftSidebar" attributeToSelect="class" cssCurrent="active" />
 
-    <glz:MessageBox type="ERROR" cssClass="alert alert-error"/>
-    <glz:MessageBox type="SUCCESS" cssClass="alert alert-success"/>
+    <glz:MessageBox type="ERROR" cssClass="alert-block alert-error"/>
+    <glz:MessageBox type="SUCCESS" cssClass="alert-block alert-success"/>
 
     <c:PageTitle id="pageTitle" cssClass="page-title" tag="h1" editableRegion="pageTitle" drawIcon="true"/>
 </glz:EmptyComponent>

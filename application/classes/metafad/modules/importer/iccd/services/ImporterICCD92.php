@@ -69,7 +69,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         $this->dir = $importDir ?: '';
     }
 
-
     /**
      * @param array $options opzioni (per esempio 'forceDraft' per forzare il salvataggio in draft)
      * @return bool
@@ -103,10 +102,9 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
                     $this->progressEvent($progress + $delta*0.75, "Scheda $id: Nessuna immagine da associare");
                 }
 
-
                 $this->logMsg("Scheda $id: Ricerca e associazione AUT/BIB in corso", GLZ_LOG_INFO);
-                $a = $this->saveRefAUT($data, $forceDraft, $overwriteAuthority);
-                $b = $this->saveRefBIB($data, $forceDraft, $overwriteAuthority);
+                $a = $this->saveRefAUT($data, $forceDraft);
+                $b = $this->saveRefBIB($data, $forceDraft);
                 $autBibMsg = ($a || $b) ? "Associazione AUT/BIB completata." : "Nessuna associazione AUT/BIB trovata.";
                 $this->logMsg("Scheda $id: " . $autBibMsg);
                 $this->progressEvent($progress + $delta*0.83, "Scheda $id: " . $autBibMsg);
@@ -114,7 +112,9 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
                 $this->logMsg("Scheda $id: Salvataggio scheda in corso...", GLZ_LOG_INFO);
                 $data->__id = 0;
                 $data->__model = $this->modelPath;
-                $result = $this->addContent($data, false, $forceDraft, $overwriteScheda);
+                $module = org_glizy_Modules::getModule($this->trc->moduleName);
+                $overwrite = $module->isAuthority ? $overwriteAuthority : $overwriteScheda;
+                $result = $this->addContent($data, false, $forceDraft, $overwrite);
                 $this->logMsg("Scheda $id: Salvata con ID={$result['set']['__id']}");
                 $this->progressEvent($progress += $delta, "Scheda $id salvata correttamente con ID = {$result['set']['__id']}");
             }
@@ -140,7 +140,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         return false;
     }
 
-
     private function getAndSaveImage($data)
     {
         $images = $this->immftan->getImages($data);
@@ -160,14 +159,13 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
             }
     }
 
-
-    private function saveRefAUT($data, $forceDraft = false, $overwriteAut = true)
+    private function saveRefAUT($data, $forceDraft = false)
     {
         $count = 0;
         //Salvo i riferimenti relativi ad AUT
         $AUT = $data->AUT;
         if (!empty($AUT)) {
-            $autIDs = $this->getAUTIDs($AUT, $forceDraft, $data, $overwriteAut);
+            $autIDs = $this->getAUTIDs($AUT, $forceDraft, $data);
 
             $count = count($AUT);
             for ($i = 0; $i < $count; $i++)
@@ -175,7 +173,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         } else {
             $AUT = $data->AU[0]->AUT;
             if (!empty($AUT)) {
-                $autIDs = $this->getAUTIDs($AUT, $forceDraft, $data, $overwriteAut);
+                $autIDs = $this->getAUTIDs($AUT, $forceDraft, $data);
 
                 $count = count($autIDs);
                 for ($i = 0; $i < $count; $i++)
@@ -185,14 +183,13 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         return $count;
     }
 
-
-    private function saveRefBIB($data, $forceDraft = false, $overwriteAut = true)
+    private function saveRefBIB($data, $forceDraft = false)
     {
         $count = 0;
         //Salvo i riferimenti relativi a BIB
         $BIB = $data->BIB;
         if (!empty($BIB)) {
-            $bibIDs = $this->getBIBIDs($BIB, $forceDraft, $data, $overwriteAut);
+            $bibIDs = $this->getBIBIDs($BIB, $forceDraft, $data);
 
             $count = count($BIB);
             for ($i = 0; $i < $count; $i++)
@@ -200,7 +197,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         } else {
             $BIB = $data->DO[0]->BIB;
             if (!empty($BIB)) {
-                $bibIDs = $this->getBIBIDs($BIB, $forceDraft, $data, $overwriteAut);
+                $bibIDs = $this->getBIBIDs($BIB, $forceDraft, $data);
 
                 $count = count($bibIDs);
                 for ($i = 0; $i < $count; $i++)
@@ -209,7 +206,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         }
         return $count;
     }
-
 
     /**
      * Salvataggio immagini nel DAM
@@ -251,7 +247,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         return !empty($result) ? $result : NULL;
     }
 
-
     /**
      * Salvataggio tramite proxy delle schede
      *
@@ -262,7 +257,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
      * @param bool $overwrite Se la scheda deve sovrascrivere quella già presente (nel caso in cui $obj->__id > 0)
      * @return array risultato della save
      */
-    private function addContent($obj, $autbib = false, $forceDraft = false, $overwrite = true)
+    private function addContent($obj, $autbib = false, $forceDraft = false, $overwrite = false)
     {
         $id = $this->getIdScheda($obj);
 
@@ -275,7 +270,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         $uniqueIccdId = $this->uniqueIccdIdProxy->createUniqueIccdId($obj);
         $obj = $this->uniqueIccdIdProxy->checkUnique($obj, $uniqueIccdId, true);
         $this->logMsg("Scheda $id: Creazione ID univoco ICCD terminato");
-
 
         if ($obj->__id != 0 && !$overwrite) {
             return array('set' => array('__id' => $obj->__id));
@@ -299,7 +293,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         return $result;
     }
 
-    private function getAUTIDs($AUTs, $forceDraft = false, $linkedData = null, $overwrite = true)
+    private function getAUTIDs($AUTs, $forceDraft = false, $linkedData = null)
     {
         $modelName = 'AUT' . $this->version . '.models.Model';
 
@@ -327,7 +321,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
                     $autCopy->__id = 0;
                 }
 
-                $result = $this->addContent($autCopy, false, $forceDraft, $overwrite);
+                $result = $this->addContent($autCopy, true, $forceDraft);
 
                 $ids[] = array('__AUT' => array('id' => $result['set']['__id'], 'text' => $autCopy->AUTN . ' - ' . $autCopy->AUTH));
             }
@@ -336,8 +330,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
         return $ids;
     }
 
-
-    private function getBIBIDs($BIBs, $forceDraft = false, $linkedData = null, $overwrite = true)
+    private function getBIBIDs($BIBs, $forceDraft = false, $linkedData = null)
     {
         $modelName = 'BIB' . $this->version . '.models.Model';
 
@@ -367,7 +360,7 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
                     $bibCopy->__id = 0;
                 }
 
-                $result = $this->addContent($bibCopy, false, $forceDraft, $overwrite);
+                $result = $this->addContent($bibCopy, true, $forceDraft);
 
                 $ids[] = array('__BIB' => array('id' => $result['set']['__id'], 'text' => $bibCopy->$fieldName . ' - ' . $bibCopy->BIBH));
             }
@@ -375,7 +368,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
 
         return $ids;
     }
-
 
     private function ICCDfind($model, $uniqueIccdId)
     {
@@ -397,7 +389,6 @@ class metafad_modules_importer_iccd_services_ImporterICCD92 extends GlizyObject
 
         return null;
     }
-
 
     /**
      * Codifica UTF-8 di tutti i dati della scheda

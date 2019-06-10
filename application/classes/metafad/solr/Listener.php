@@ -322,11 +322,28 @@ class metafad_solr_Listener extends GlizyObject
           }
         }
 
+        //Codice per gestione multilingua
+        //Non ho bisogno di entrare in questo IF se il model non deve essere
+        //gestito in multilingua o se effettivamente in questa installazione non ho
+        //il multilingua abilitato (tutto questo controllo viene fatto nella funzione)
+        if(metafad_common_helpers_LanguageHelper::checkLanguage($model))
+        {
+            $application = org_glizy_ObjectValues::get('org.glizy', 'application');
+            $languagePrefix = $application->getEditingLanguage();
+            $doc->language_s = $languagePrefix;
+            if($languagePrefix !== 'it')
+            {
+                $doc->id = $languagePrefix . '-' . $doc->id;
+            }
+        }
+        // ----------------
+
         $doc->instituteKey_s = ($data->instituteKey) ?: metafad_usersAndPermissions_Common::getInstituteKey();
         if ($option['reindex'] === true && $doc) {
             $this->count++;
             $this->documents[] = $doc;
-            if (sizeof($this->documents) === 50 || $this->count == $this->total) {
+            $maxSize = (__Config::get('reindex.maxDocumentSize'))?:50;
+            if (sizeof($this->documents) === (int)$maxSize || $this->count == $this->total) {
                 $this->sendRequest('add', $this->documents, $option);
                 $this->documents = array();
             }
@@ -459,7 +476,8 @@ class metafad_solr_Listener extends GlizyObject
         if ($option['reindex'] === true && $doc) {
             $this->count++;
             $this->documents[] = $doc;
-            if (sizeof($this->documents) === 50 || $this->count == $this->total) {
+            $maxSize = (__Config::get('reindex.maxDocumentSize'))?:50;
+            if (sizeof($this->documents) === (int)$maxSize || $this->count == $this->total) {
                 $this->sendRequest('add', $this->documents, $option);
                 $this->documents = array();
             }
